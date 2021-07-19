@@ -1,0 +1,435 @@
+package com.spring.controller;
+
+import java.io.File;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.spring.command.ProPAModifyCommand;
+import com.spring.command.GetCodeCommand;
+import com.spring.command.GetDeleteCode;
+import com.spring.command.ProModifyCommand;
+import com.spring.command.ProPARegistCommand;
+import com.spring.command.ProRegistCommand;
+import com.spring.command.ProjecterCome;
+import com.spring.command.SearchCriteria;
+import com.spring.command.SearchCriteriaByPA;
+import com.spring.dto.DepVO;
+import com.spring.dto.EmpVO;
+import com.spring.dto.PAAttachVO;
+import com.spring.dto.PAVO;
+import com.spring.dto.PjmVO;
+import com.spring.dto.ProEmpVO;
+import com.spring.dto.ProVO;
+import com.spring.dto.RankVO;
+import com.spring.service.DepService;
+import com.spring.service.ProService;
+import com.spring.service.RankService;
+import com.spring.service.RmailService;
+import com.spring.utils.GetAttachesAsMultipartFiles;
+
+@Controller
+@RequestMapping("/project")
+public class ProjectController {
+	
+	@Autowired
+	private ProService proService;
+	
+	@Autowired
+	private DepService depService;
+	
+	@Autowired
+	private RankService rankService;
+	
+	@Autowired
+	private RmailService rmailService;
+	
+	@Resource(name = "PAfileUploadPath")
+	private String PAfileUploadPath;
+	
+	@RequestMapping("/main")
+	public ModelAndView list(HttpSession session,ModelAndView mnv)throws Exception{
+		String url="project/proList.open";
+		
+		EmpVO emp = (EmpVO)session.getAttribute("loginUser");
+		String empId=emp.getEmpId();
+		
+		List<ProVO> doPro = proService.getListDoProById(empId);
+		
+		List<ProVO> AopPro = proService.getListAopProById(empId);
+		
+		List<ProVO> notPro = proService.getListNotProById(empId);
+		
+		mnv.addObject("doPro",doPro);
+		mnv.addObject("AopPro",AopPro);
+		mnv.addObject("notPro",notPro);
+	
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	
+	@RequestMapping(value="/getMemberInfo",method=RequestMethod.POST,produces="text/plain;charset=utf-8")
+	@ResponseBody
+	public ResponseEntity<String> getMemberInfo(@RequestBody GetCodeCommand get)throws Exception{
+		ResponseEntity<String>  entity=null;
+		
+		DepVO dep = get.toDepVO();
+		
+		RankVO rnk = get.toRankVO();
+		
+		
+		try {
+			DepVO dep2 = depService.getDepListByCode(dep.getDepCode());
+			RankVO rank2 = rankService.getRankListByCode(rnk.getRnkCode());
+
+			String depName = dep2.getDepName();
+			String rnkName = rank2.getRnkName();
+			
+			entity = new ResponseEntity<String>(depName+","+rnkName,HttpStatus.OK);
+			
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		return  entity;
+		
+	}
+	
+	
+	
+	@RequestMapping("/projecterCome")
+	public ModelAndView projecterCome(ModelAndView mnv,HttpSession session)throws Exception{
+		String url="project/projecterCome.open";
+		
+		List<DepVO> depList =depService.getDepList();
+		String pCode=(String)session.getAttribute("pCode");
+		
+		ProVO pro = proService.getProInfo(pCode);
+		
+		mnv.addObject("pro", pro);
+		mnv.addObject("depList", depList);
+		mnv.setViewName(url);
+		return mnv;
+		
+	}
+	
+	
+	@RequestMapping(value="/projecter",method= RequestMethod.POST,produces="application/json;charset=utf-8")
+	@ResponseBody
+	public ResponseEntity<String> projecter(@RequestBody ProjecterCome pj,HttpSession session)throws Exception{
+		ResponseEntity<String> entity=null;
+		
+		PjmVO pjm = pj.toPjmVO();
+		
+		proService.insertMember(pjm);
+		
+		rmailService.deleteRmail(pj.getRmCode());
+		
+		try {
+			entity=new ResponseEntity<String>("프로젝트 참여자 추가",HttpStatus.OK);
+			
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		return entity;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@RequestMapping("/membermanage")
+	public ModelAndView memberList(HttpSession session,ModelAndView mnv)throws Exception{
+		String url="project/memberList.open";
+		
+		String pCode = (String)session.getAttribute("pCode");
+		
+		List<ProEmpVO> pjmList = proService.selectProMemberList(pCode);
+		
+		
+		mnv.addObject("pjmList",pjmList);
+		
+		mnv.setViewName(url);
+		return mnv;
+	}
+	
+	
+	
+	
+	@RequestMapping("/ProRegistForm")
+	public String proRegistForm()throws Exception{
+		String url="project/proRegistForm";
+		
+		return url;
+	}
+	
+	
+	
+	@RequestMapping("/ProModifyForm")
+	public ModelAndView proModifyForm(String pCode,ModelAndView mnv)throws Exception{
+		String url="project/proModifyForm";
+		
+		ProVO pro = proService.getProInfo(pCode);
+		
+		mnv.addObject("pro", pro);
+		
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	
+	
+	@RequestMapping("/detail")
+	public ModelAndView detail(HttpSession session,ModelAndView mnv,String pCode)throws Exception{
+		String url="project/proDetail.open";
+		
+		ProVO pro = proService.getProInfo(pCode);
+		
+		session.setAttribute("pCode", pro.getpCode());
+		
+		mnv.addObject("pro", pro);
+		
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	
+	
+	@RequestMapping(value="/regist",method=RequestMethod.POST)
+	public String proRegist(ProRegistCommand proReq,PjmVO pjm,HttpSession session)throws Exception{
+		String url="project/regist_success";
+		
+		ProVO pro=proReq.toProVO();
+		EmpVO emp = (EmpVO)session.getAttribute("loginUser");
+		String empId=emp.getEmpId();
+		
+		proService.insertProject(pro);
+		
+		String pCode = proService.getPcode();
+		
+		pjm.setEmpId(empId);
+		pjm.setpCode(pCode);
+		
+		proService.insertPL(pjm);
+		
+		return url;
+		
+	}
+	
+	@RequestMapping(value="/modify",method=RequestMethod.POST)
+	public ModelAndView proModify(ProModifyCommand prom ,ModelAndView mnv)throws Exception{
+		String url = "project/modify_success";
+		
+		ProVO pro=prom.toProVO();
+		
+		proService.updateProject(pro);
+		
+		mnv.addObject("pCode", pro.getpCode());
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@RequestMapping(value="/doNotPro",method=RequestMethod.POST)
+	public String doNotPro(String pCode)throws Exception{
+		String url = "project/doNotProject";
+		
+		proService.notDoProject(pCode);
+			
+		return url;
+		
+	}
+	
+
+	
+	@RequestMapping(value="/doPro",method=RequestMethod.POST)
+	public String doPro(String pCode)throws Exception{
+		String url = "project/doProject";
+		
+		proService.DoProject(pCode);
+			
+		return url;
+		
+	}
+	
+	
+	
+	
+	
+	
+	/* 자료실 */
+	@RequestMapping("/pa")
+	public ModelAndView pa(HttpSession session,ModelAndView mnv,SearchCriteriaByPA cri)throws Exception{
+		String url="project/paList.open";
+		
+		String pCode = (String)session.getAttribute("pCode");
+		cri.setpCode(pCode);
+		Map<String, Object> dataMap = proService.getPAList(cri);
+
+		mnv.addObject("dataMap",dataMap);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@RequestMapping("/paRegistForm")
+	public ModelAndView paRegistForm(HttpSession session,ModelAndView mnv)throws Exception{
+		String url="project/paRegistForm.open";
+		mnv.setViewName(url);
+		return mnv;
+	}
+	
+	@RequestMapping(value = "/paRegist", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
+	public String paRegist(ProPARegistCommand registReq,Model model, HttpServletRequest request)throws Exception {
+		String url = "project/pa_regist_success";
+		
+		PAVO pa = registReq.toPAVO();
+		List<PAAttachVO> attachList = GetAttachesAsMultipartFiles.paSave(registReq.getUploadFile(), PAfileUploadPath);
+//		pa.setPaTitle((String)request.getAttribute("XSStitle"));
+		pa.setAttachList(attachList);
+		
+		
+		proService.registPA(pa);
+		
+		return url;		
+	}
+	
+	@RequestMapping("/paDetail")
+	public ModelAndView paDetail(HttpSession session,ModelAndView mnv,String pacode)throws Exception{
+		String url="project/paDetail.open";
+		
+		PAVO pa = null;
+		pa = proService.getPA(pacode);
+
+		// 파일명 재정의
+		List<PAAttachVO> attachList = pa.getAttachList();
+		if (attachList != null) {
+			for (PAAttachVO attach : attachList) {
+				String fileName = attach.getPaAtName().split("\\$\\$")[1];
+				attach.setPaAtName(fileName);
+			}
+		}
+
+		mnv.addObject("pa", pa);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@RequestMapping("/paModifyForm")
+	public ModelAndView modifyForm(ModelAndView mnv, String pacode) throws Exception {
+		String url = "project/paModifyForm.open";
+
+		PAVO pa = proService.getPA(pacode);
+
+		// 파일명 재정의
+		List<PAAttachVO> attachList = pa.getAttachList();
+		if (attachList != null) {
+			for (PAAttachVO attach : attachList) {
+				String fileName = attach.getPaAtName().split("\\$\\$")[1];
+				attach.setPaAtName(fileName);
+			}
+		}
+
+		mnv.addObject("pa", pa);
+		mnv.setViewName(url);
+
+		return mnv;
+	}
+	
+	@RequestMapping("/paModify")
+	public ModelAndView paModify(ProPAModifyCommand modifyReq, HttpServletRequest request, ModelAndView mnv) throws Exception {
+		
+		String url = "project/pa_modify_success";		
+		System.out.println(modifyReq.getPaCode());
+		System.out.println(modifyReq.getpCode());
+		System.out.println(modifyReq.getDeleteFile());
+		// 삭제된 파일 삭제
+		if (modifyReq.getDeleteFile() != null && modifyReq.getDeleteFile().length > 0) {
+			for (int paatno : modifyReq.getDeleteFile()) {
+				String fileName = proService.getAttachByPaAtNo(paatno).getPaAtName();
+				System.out.println("fileName : " + fileName);
+				File deleteFile = new File(PAfileUploadPath, fileName);
+				proService.removeAttachByPaAtNo(paatno); // DB 삭제
+				if (deleteFile.exists()) {
+					deleteFile.delete(); // File 삭제
+				}
+			}
+		}
+
+		// 추가 혹은 변경된 파일 저장
+		List<PAAttachVO> attachList = GetAttachesAsMultipartFiles.paSave(modifyReq.getUploadFile(),PAfileUploadPath);
+
+		PAVO pa = modifyReq.toPAVO();
+		pa.setAttachList(attachList);
+
+		// DB에 해당 데이터 추가
+		proService.modifyPA(pa);
+		
+		mnv.addObject("pa", pa);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@RequestMapping("/getPAFile")
+	public String getFile(int paatno,Model model) throws Exception {
+		String url="downloadFile";
+		
+		PAAttachVO attach = proService.getAttachByPaAtNo(paatno);
+		
+		model.addAttribute("savedPath", attach.getPaAtPath());
+		model.addAttribute("fileName", attach.getPaAtName());
+		
+		return url;		
+	}
+	
+	@RequestMapping("/paRemove")
+	public String remove(String pacode) throws Exception {
+
+		String url="project/pa_remove_success";
+		
+		//첨부파일 삭제
+		List<PAAttachVO> attachList = proService.getPA(pacode).getAttachList();				
+		if (attachList != null) {
+			for (PAAttachVO attach : attachList) {
+				File target = new File(attach.getPaAtPath(), attach.getPaAtName());
+				if (target.exists()) {
+					target.delete();
+				}
+			}
+		}
+		
+		//DB삭제
+		proService.remove(pacode);
+
+		return url;
+
+	}
+	
+	
+	
+}

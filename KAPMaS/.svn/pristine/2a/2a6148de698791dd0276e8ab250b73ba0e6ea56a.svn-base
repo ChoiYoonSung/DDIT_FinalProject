@@ -1,0 +1,72 @@
+package com.spring.dao;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.session.SqlSession;
+
+import com.spring.dto.TrashVO;
+
+public class TrashDAOImpl implements TrashDAO{
+
+	private SqlSession session;
+	public void setSqlSession(SqlSession session) {
+		this.session = session;
+	}
+	
+
+	@Override
+	public Map<String, Object> getTrashCntAsTrType(String empId) throws SQLException {
+		List<String> trashType = session.selectList("Trash-Mapper.selectTrashType", empId);
+		List<Integer> trashCnt = new ArrayList<>();
+		
+		TrashVO trashVO = new TrashVO();
+		for(String trash : trashType) {
+			trashVO.setTrType(trash);
+			trashVO.setEmpId(empId);
+			int cnt = session.selectOne("Trash-Mapper.selectTrashCntByTrType",trashVO);
+			trashCnt.add(cnt);
+		}
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("trashType", trashType);
+		dataMap.put("trashCnt", trashCnt);
+		return dataMap;
+	}
+
+
+	@Override
+	public List<TrashVO> getTrashListByTrType(TrashVO trash) throws SQLException {
+		List<TrashVO> trashList = session.selectList("Trash-Mapper.selectTrashListByTrType",trash);
+		
+		return trashList;
+	}
+
+	
+	
+	@Override
+	public void insertTrash(TrashVO trash) throws SQLException {
+		session.update("Trash-Mapper.insertTrash", trash);
+	}
+	
+
+	@Override
+	public void restoreTrash(TrashVO trash) throws SQLException {
+		session.update("Trash-Mapper.restoreBoard", trash);
+		session.update("Trash-Mapper.deleteBoard", trash);
+	}
+
+
+	@Override
+	public void deleteTrash(TrashVO trash) throws SQLException {
+		session.update("Trash-Mapper.deleteBoard", trash);
+		session.update("Trash-Mapper.deleteTrash", trash.getTrCode());
+	}
+
+	
+	
+	
+	
+}

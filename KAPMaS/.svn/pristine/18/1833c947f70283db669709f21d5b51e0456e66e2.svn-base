@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SMail-Mapper">
+	
+	
+	<sql id="search">	
+	and(
+	 SM_RECEIVER like '%'||#{keyword}||'%'			
+	 or
+	 SM_TITLE like '%'||#{keyword}||'%'			
+	)
+	</sql>	
+	
+	
+	<select id="getSendMailListById" resultType="smail">
+		select *
+		from sendmail
+		where emp_id=#{empId}
+		AND NOT(SM_ENABLED = '0')
+		<include refid="search" />
+	</select>
+	
+	
+	
+	<select id="getSendMailListCountById" resultType="int">
+		select count(*)
+		from sendmail
+		where emp_id=#{empId}
+		<include refid="search" />
+	</select>
+	
+	
+	
+	<update id="sendMail" parameterType="smail">
+		insert into 
+		sendmail(SM_CODE,EMP_ID,SM_TITLE,SM_CONTENT,SM_RECEIVER,SM_RSTATUS
+					,SM_SENDDATE,SM_RECEIVEDATE,SM_ENABLED)
+		values(concat('sma',SENDMAIL_SEQ.NEXTVAL),#{empId}
+		,#{smTitle},#{smContent},#{smReceiver},0,sysdate,sysdate,#{smEnabled})
+	</update>
+	
+	
+	<select id="getSmailInfo" parameterType="str" resultType="smail">
+		select *
+		from sendmail
+		where SM_CODE=#{smCode}
+	</select>
+	
+	
+		<select id="getDepEmpList" parameterType="str" resultType="depEmp">
+	
+		select   
+		        b.DEP_NAME as depName
+		        ,(select rnk_Name
+		            from rank
+		            where rnk_code=a.RNK_CODE) as rnkName
+		        ,a.EMP_NAME as empName
+		        ,a.EMP_ID as empId
+		from DEPARTMENT b,EMPLOYEE a
+		where a.DEP_CODE=b.DEP_CODE 
+		 and a.EMP_ENABLED=2
+		 and a.DEP_CODE=#{depCode}
+		 order by substr(a.RNK_CODE,1)
+	</select>
+	
+	
+	<update id="deleteSmailList" >
+		update sendmail
+		set SM_ENABLED = 0
+		where SM_CODE=#{smCode}
+	
+	</update>
+	
+	
+	<update id="readSmail">
+		update sendmail
+		set SM_RSTATUS = 1
+		where SM_CODE=#{smCode}
+		
+	</update>
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,229 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true"%>
+<!DOCTYPE html>
+<head>
+<style>
+.app-sidebar {
+	padding-top: 0px;
+}
+
+#sidebar {
+	position: absolute;
+}
+
+#listTable {
+	height: 460px;
+}
+
+.app-content {
+	padding: 20px 10px 10px 10px;
+}
+
+.row {
+	margin: 0px;
+}
+</style>
+</head>
+<div class="row">
+	<img alt="bestCopBanner"
+		src="https://www.workdb.com.br/img/banner-ex.jpg" width="100%"
+		height="270px" id="banner">
+</div>
+<br>
+<div class="row">
+	<div class="col-xl-6" id="listTable">
+		<div class="panel panel-inverse" data-sortable-id="table-basic-1"
+			style="">
+			<!-- BEGIN panel-heading -->
+			<div class="panel-heading ui-sortable-handle">
+				<h4 class="panel-title">참여자 수가 많은 CoP</h4>
+				<div class="panel-heading-btn">
+					<a href="javascript:;" class="btn btn-xs btn-icon btn-default"
+						data-toggle="panel-expand" data-bs-original-title="" title=""
+						data-tooltip-init="true"><i class="fa fa-expand"></i></a> <a
+						href="javascript:;" class="btn btn-xs btn-icon btn-success"
+						data-toggle="panel-reload" data-bs-original-title="" title=""
+						data-tooltip-init="true"><i class="fa fa-redo"></i></a> <a
+						href="javascript:;" class="btn btn-xs btn-icon btn-warning"
+						data-toggle="panel-collapse" data-bs-original-title="" title=""
+						data-tooltip-init="true"><i class="fa fa-minus"></i></a> <a
+						href="javascript:;" class="btn btn-xs btn-icon btn-danger"
+						data-toggle="panel-remove" data-bs-original-title="" title=""
+						data-tooltip-init="true"><i class="fa fa-times"></i></a>
+				</div>
+			</div>
+			<!-- END panel-heading -->
+
+			<!-- BEGIN panel-body -->
+			<div class="panel-body">
+				<!-- BEGIN table-responsive -->
+				<div class="table-responsive">
+					<table class="table mb-0">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Username</th>
+								<th>Email Address</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td><a
+									href="javascript:OpenWindow('detail', 'copname', '1200', '800')">coppp</a></td>
+								<td>nicky@hotmail.com</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td><a
+									href="javascript:OpenWindow('detail', 'copname', '1200', '800')">coppp</a></td>
+								<td>edmund@yahoo.com</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td><a
+									href="javascript:OpenWindow('detail', 'copname', '1200', '800')">coppp</a></td>
+								<td>harvinder@gmail.com</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td><a
+									href="javascript:OpenWindow('detail', 'copname', '1200', '800')">coppp</a></td>
+								<td>harvinder@gmail.com</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td><a
+									href="javascript:OpenWindow('detail', 'copname', '1200', '800')">coppp</a></td>
+								<td>harvinder@gmail.com</td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td><a
+									href="javascript:OpenWindow('detail', 'copname', '1200', '800')">coppp</a></td>
+								<td>nicky@hotmail.com</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td><a
+									href="javascript:OpenWindow('detail', 'copname', '1200', '800')">coppp</a></td>
+								<td>edmund@yahoo.com</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td><a
+									href="javascript:OpenWindow('detail', 'copname', '1200', '800')">coppp</a></td>
+								<td>harvinder@gmail.com</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td><a
+									href="javascript:OpenWindow('detail', 'copname', '1200', '800')">coppp</a></td>
+								<td>harvinder@gmail.com</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td><a
+									href="javascript:OpenWindow('detail', 'copname', '1200', '800')">coppp</a></td>
+								<td>harvinder@gmail.com</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xl-6" id="listTable">
+		<div class="panel panel-inverse" data-sortable-id="table-basic-2"
+			style="">
+			<!-- BEGIN panel-heading -->
+			<div class="panel-heading ui-sortable-handle">
+				<h4 class="panel-title">활성화된 토론방이 많은 CoP</h4>
+				<div class="panel-heading-btn">
+					<a href="javascript:;" class="btn btn-xs btn-icon btn-default"
+						data-toggle="panel-expand" data-bs-original-title="" title=""
+						data-tooltip-init="true"><i class="fa fa-expand"></i></a> <a
+						href="javascript:;" class="btn btn-xs btn-icon btn-success"
+						data-toggle="panel-reload" data-bs-original-title="" title=""
+						data-tooltip-init="true"><i class="fa fa-redo"></i></a> <a
+						href="javascript:;" class="btn btn-xs btn-icon btn-warning"
+						data-toggle="panel-collapse" data-bs-original-title="" title=""
+						data-tooltip-init="true"><i class="fa fa-minus"></i></a> <a
+						href="javascript:;" class="btn btn-xs btn-icon btn-danger"
+						data-toggle="panel-remove" data-bs-original-title="" title=""
+						data-tooltip-init="true"><i class="fa fa-times"></i></a>
+				</div>
+			</div>
+			<!-- END panel-heading -->
+
+			<!-- BEGIN panel-body -->
+			<div class="panel-body">
+				<!-- BEGIN table-responsive -->
+				<div class="table-responsive">
+					<table class="table mb-0">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Username</th>
+								<th>Email Address</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td>Nicky Almera</td>
+								<td>nicky@hotmail.com</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Edmund Wong</td>
+								<td>edmund@yahoo.com</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Harvinder Singh</td>
+								<td>harvinder@gmail.com</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Harvinder Singh</td>
+								<td>harvinder@gmail.com</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Harvinder Singh</td>
+								<td>harvinder@gmail.com</td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>Nicky Almera</td>
+								<td>nicky@hotmail.com</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Edmund Wong</td>
+								<td>edmund@yahoo.com</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Harvinder Singh</td>
+								<td>harvinder@gmail.com</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Harvinder Singh</td>
+								<td>harvinder@gmail.com</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Harvinder Singh</td>
+								<td>harvinder@gmail.com</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

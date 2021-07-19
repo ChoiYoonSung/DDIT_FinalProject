@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="Emp-Mapper">
+
+
+
+<select id="selectEmpById" parameterType="str" resultType="emp">
+
+select
+*
+from EMPLOYEE
+where EMP_ID=#{empId}
+
+</select>
+
+
+
+
+<select id="selectEmpBydep" parameterType="str" resultType="emp">
+
+select
+*
+from EMPLOYEE
+where DEP_CODE=#{depCode}
+
+</select>
+
+
+<update id="insertEmp" parameterType="emp">
+
+insert into
+EMPLOYEE(EMP_NAME,EMP_ID,EMP_EMAIL,DEP_CODE,RNK_CODE,EMP_AUTH,EMP_PWD)
+values(#{empName},#{empId},#{empEmail},#{depCode},#{rnkCode},#{empAuth},#{empPwd})
+
+</update>
+
+
+
+
+
+<update id="updateEmp" parameterType="emp">
+	update EMPLOYEE 
+	set 
+	EMP_IMG=#{empImg},DEP_CODE=#{depCode},RNK_CODE=#{rnkCode},
+	EMP_PHONE=#{empPhone},EMP_ADD=#{empAdd},EMP_EMAIL=#{empEmail}
+	where EMP_ID=#{empId}
+</update>
+
+
+<update id="updateEmpPwd" parameterType="emp">
+	update EMPLOYEE 
+	set EMP_PWD=#{empPwd}
+	where EMP_ID=#{empId}
+</update>
+
+<update id="updateEmpEnabled" parameterType="emp">
+	update EMPLOYEE
+	set	EMP_ENABLED = 2
+	where EMP_ID = #{empId}
+</update>
+
+
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

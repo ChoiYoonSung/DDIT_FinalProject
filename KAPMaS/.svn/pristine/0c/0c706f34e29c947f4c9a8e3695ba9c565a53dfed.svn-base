@@ -1,0 +1,157 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"  %>
+
+<head>
+	<style type="text/css">
+	body{
+		background-color: white;
+		padding: 50px;
+	}
+	
+	h1 {
+		text-align: center;
+	
+	}	
+	</style>
+
+</head>
+
+
+<body>
+	<h1><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;쪽지&nbsp;&nbsp;상세&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></h1>
+	<br><br>
+	<div>
+	<h4 style="float:left">받는 사람 :  ${emp.empName }</h4>
+	<p style="float:right; margin-right:10px; font-size: large;">${smail.smSenddate }</p>
+	<p style="float:right;margin-right:10px; font-size: large;">제목 : <c:out value="${smail.smTitle }" /></p>
+	</div>
+	<input id="hobbyList" hidden="" name="hobbyList" value="">
+	<br><br><br>
+	<div style="min-height:300px;font-size:15px;">
+		내용 : <br>
+		<c:if test="${smail.smEnabled == '2' }">
+			 ${emp.empName }님을 초대하였습니다.
+		</c:if>
+		<c:if test="${smail.smEnabled != '2' }">
+			<c:out value="${smail.smContent }" />
+		</c:if>
+	</div>
+	<br><br>
+	<div style="margin: 0 auto; width:30%;">
+	<button type="button" class="btn btn-gray me-1 mb-1" 
+		style="float: left;"  onclick="CloseWindow();">&nbsp;&nbsp;&nbsp;취 &nbsp;&nbsp;소&nbsp;&nbsp;&nbsp;</button>
+	<c:if test="${smail.smEnabled == '2' }">
+	<button type="button"  class="btn btn-yellow me-1 mb-1"
+		style="float: right: ;"  onclick="deleteMail('${smail.smCode}');">&nbsp;&nbsp;&nbsp;삭&nbsp;&nbsp;제&nbsp;&nbsp;&nbsp;</button>
+		</c:if>
+		<c:if test="${smail.smEnabled != '2' }">
+	<button type="button"  class="btn btn-yellow me-1 mb-1"
+		style="float: right: ;"  onclick="deleteSmail('${smail.smCode}');">&nbsp;&nbsp;&nbsp;삭&nbsp;&nbsp;제&nbsp;&nbsp;&nbsp;</button>
+		</c:if>
+	
+	
+	
+	</div>
+	
+<script type="text/javascript">
+function deleteMail(smCode){
+	var html='';
+	if(confirm("쪽지를 삭제하시겠습니까?")){
+		
+		
+	}else{
+		return;
+	}
+	
+	
+	html += ''+smCode+'';
+	$('#hobbyList').val(html);   
+	
+	var checked = $('#hobbyList').val();
+	
+	var data = {
+			"checked":checked
+	}
+	
+	$.ajax({
+		url : "<%=request.getContextPath() %>/mypage/deleteSmail",
+		type : "post",
+		data : JSON.stringify(data),
+		contentType:"application/json;charset=utf-8",
+		success:function(data){
+			
+			alert("선택하신 쪽지를 삭제하였습니다\n초대쪽지는 영구삭제됩니다.");
+			CloseWindow();
+		},
+		
+		error:function(error){
+			alert("선택하신 쪽지를 삭제하였습니다\n초대쪽지는 영구삭제됩니다.");
+			CloseWindow();
+		}
+		
+	});
+	
+	
+	
+}
+function deleteSmail(smCode){
+	var html='';
+	if(confirm("쪽지를 삭제하시겠습니까?")){
+		
+		
+	}else{
+		return;
+	}
+	
+	
+	html += ''+smCode+'';
+	$('#hobbyList').val(html);   
+	
+	var checked = $('#hobbyList').val();
+	
+	var data = {
+			"checked":checked
+	}
+	
+	$.ajax({
+		url : "<%=request.getContextPath() %>/mypage/deleteSmailList",
+		type : "post",
+		data : JSON.stringify(data),
+		contentType:"application/json;charset=utf-8",
+		success:function(data){
+			
+			alert("선택하신 쪽지를 삭제하였습니다\n쪽지는 휴지통에 보관되어 30일 후 영구삭제됩니다.");
+			CloseWindow();
+		},
+		
+		error:function(error){
+			alert("선택하신 쪽지를 삭제하였습니다\n쪽지는 휴지통에 보관되어 30일 후 영구삭제됩니다.");
+			CloseWindow();
+		}
+		
+	});
+	
+	
+	
+}
+
+
+
+</script>
+	
+	
+	
+</body>
+
+
+
+
+
+
+
+

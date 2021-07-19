@@ -1,0 +1,44 @@
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+
+<configuration>
+   <settings>
+      <setting name="mapUnderscoreToCamelCase" value="true"/>
+   </settings>
+
+	<typeAliases>
+		<typeAlias type="java.lang.String" alias="str" />
+		<typeAlias type="java.lang.Integer" alias="int" />
+		 
+		<typeAlias type="com.spring.dto.EmpVO" alias="emp" />
+		<typeAlias type="com.spring.dto.MenuVO" alias="menu" />
+		<typeAlias type="com.spring.dto.DepVO" alias="dep" />
+		<typeAlias type="com.spring.dto.RankVO" alias="rank" />
+		<typeAlias type="com.spring.dto.ProVO" alias="pro" />
+		<typeAlias type="com.spring.dto.PjmVO" alias="pjm" />
+		<typeAlias type="com.spring.dto.TotalKnowledgeVO" alias="tk" />
+		<typeAlias type="com.spring.dto.TkAttachVO" alias="tkAttach" />
+		<typeAlias type="com.spring.dto.CoPVO" alias="cop"/>
+		<typeAlias type="com.spring.dto.ProPjmVO" alias="propjm" />
+		<!-- <typeAlias type="com.spring.dto.AttachVO" alias="attach" /> -->
+		<typeAlias type="com.spring.dto.PAVO" alias="pa" />
+		<typeAlias type="com.spring.dto.PAAttachVO" alias="paattach" />
+		<typeAlias type="com.spring.dto.SmailVO" alias="smail" />
+		<typeAlias type="com.spring.dto.RmailVO" alias="rmail" />
+		<typeAlias type="com.spring.dto.ProEmpVO" alias="proEmp" />
+		<typeAlias type="com.spring.dto.NoticeVO" alias="notice" />
+		<typeAlias type="com.spring.dto.DepEmpVO" alias="depEmp" />
+		<typeAlias type="com.spring.dto.TrashVO" alias="trash" />
+		<typeAlias type="com.spring.dto.CopArchiveVO" alias="cArcVO"/>
+		<typeAlias type="com.spring.dto.CopFamilyDiscussionVO" alias="cFdVO"/>
+		<typeAlias type="com.spring.dto.JobVO" alias="job" />
+		<typeAlias type="com.spring.dto.RelegateVO" alias="relegate"/>
+		
+		<typeAlias type="com.spring.dto.TkReplyVO" alias="tkReply"/>
+		<typeAlias type="com.spring.dto.PIVO" alias="pi"/>
+		
+	</typeAliases>
+	
+</configuration>

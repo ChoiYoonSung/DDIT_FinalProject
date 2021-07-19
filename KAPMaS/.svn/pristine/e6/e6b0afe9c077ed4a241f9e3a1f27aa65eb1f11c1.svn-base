@@ -1,0 +1,138 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<head>
+	<style type="text/css">
+	body{
+		background-color: white;
+		padding: 50px;
+	}
+	
+	h1 {
+		text-align: center;
+	
+	}	
+	.pds-wrapper{
+	margin: 0 auto;
+	width:50%;
+}
+	</style>
+
+</head>
+
+
+<body>
+	<h1><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;쪽지&nbsp;&nbsp;답장&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></h1>
+	<form action="reSendMail.do" method="post" enctype="multipart/form-data" name="sendForm">
+	<br><br>
+	<span style="font-size:xx-large;"> 받는 사람| ${emp.empName }</span> 
+	<br><br><br>
+	<div class="mb-3" style="margin: 0 auto;width:50%;">
+	<label class="form-label" for="paTitle">제목</label>
+	<input class="form-control" type="text" id="paTitle" name="title" placeholder="제목을 입력하세요" maxlength="20" >
+	</div>
+	<div class="mb-3" style="margin: 0 auto;width:50%;">
+	<label class="form-label" for="paContent">내용</label>
+	<textarea class="form-control" rows="15" name="content"></textarea>
+	</div>
+	<br><br>
+	<div style="margin: 0 auto;width:24%;">
+	<button type="button" class="btn btn-gray me-1 mb-1" 
+		style="float: left;"  onclick="CloseWindow();">&nbsp;&nbsp;&nbsp;취 &nbsp;&nbsp;소&nbsp;&nbsp;&nbsp;</button>
+	<button type="button"  class="btn btn-yellow me-1 mb-1"
+		style="float: left;"  onclick="send('${emp.empId}');">&nbsp;&nbsp;&nbsp;작&nbsp;&nbsp;성&nbsp;&nbsp;&nbsp;</button>
+	</div>
+	<input hidden="" value="" id="empList" name="empList">
+	</form>
+	<script type="text/javascript">
+		
+		function send(empId){
+			var html='';
+			
+			html += ''+empId+'';
+			
+			$('#empList').val(html);   
+			
+			document.sendForm.submit();
+		}
+	
+	</script>
+	
+	
+	
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

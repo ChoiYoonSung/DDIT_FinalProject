@@ -1,0 +1,28 @@
+package com.spring.dao;
+
+import java.sql.SQLException;
+
+import org.apache.ibatis.session.SqlSession;
+
+import com.spring.dto.TrashVO;
+
+public class TrashDAOImpl implements TrashDAO{
+
+	private SqlSession session;
+	public void setSqlSession(SqlSession session) {
+		this.session = session;
+	}
+	
+	
+	@Override
+	public void insertTrash(TrashVO trash) throws SQLException {
+		
+		session.update("Trash-Mapper.insertTrash", trash);
+		
+	}
+
+	
+	
+	
+	
+}

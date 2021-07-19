@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="Job-Mapper">
+	
+	<select id="getJobList" parameterType="str">
+
+		select *
+		from joblist
+		where p_code=#{pCode}
+	
+	</select>
+	
+	<select id="getJobListById">
+		
+			
+		
+	</select>
+	
+	<select id="getProJobListById" parameterType="job">
+
+		select *
+		from joblist
+		where p_code=#{pCode}
+		and emp_id=#{empId}
+
+	</select>
+	
+	<select id="getJobInfo" parameterType="str">
+		select *
+		from joblist
+		where job_code=#{jobCode}
+	</select>
+	
+	
+	<update id="insertJob" parameterType="job">
+		insert into 
+		joblist (JOB_CODE,P_CODE,EMP_ID,JOB_NAME,JOB_PROGRASS,JOB_CONTENT,JOB_STARTDATE,JOB_ENDDATE,JOB_ENABLED)
+		values(concat('j',JOBLIST_SEQ.NEXTVAL),#{pCode},#{empId},#{jobName},#{jobPrograss},#{jobContent},#{jobStartdate},#{jobEnddate},1)
+	
+	</update>
+	
+	
+	<update id="updateJob" parameterType="job">
+		update joblist 
+		set JOB_PROGRASS=#{jobPrograss},EMP_ID=#{empId},JOB_NAME=#{jobName},JOB_CONTENT=#{jobContent}
+		,JOB_STARTDATE=#{jobStartdate},JOB_ENDDATE=#{jobEnddate}
+		where JOB_CODE=#{jobCode}
+	</update>
+	
+	
+	<update id="doNotJob" parameterType="str">
+		update joblist
+		set JOB_ENABLED=0
+		where JOB_CODE=#{jobCode}
+	</update>
+	
+	<update id="doJob" parameterType="str">
+		update joblist
+		set JOB_ENABLED=1
+		where JOB_CODE=#{jobCode}
+	</update>
+	
+	
+	
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

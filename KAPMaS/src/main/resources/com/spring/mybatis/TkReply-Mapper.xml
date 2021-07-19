@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TkReply-Mapper">
+
+	<select id="selectTkReplySeqNextValue" resultType="int">
+		select totalknowledgereply_seq.nextval
+		from dual
+	</select>
+	
+	<select id="selectTkReplyList" resultType="tkReply">
+		SELECT *
+		FROM TOTALKNOWLEDGEREPLY
+		WHERE TK_CODE = #{tkCode}
+		ORDER BY TK_RP_CODE ASC
+	</select>
+	
+	<select id="countTkReply" resultType="int">
+		SELECT COUNT(TK_RP_CODE)
+		FROM TOTALKNOWLEDGEREPLY
+		WHERE TK_CODE = #{tkCode}
+	</select>
+	
+	<update id="insertTkReply">
+		INSERT INTO TOTALKNOWLEDGEREPLY(TK_RP_CODE,TK_CODE,TK_RP_CONTENT,TK_RP_WRITER)
+		VALUES(#{tkRpCode}, #{tkCode}, #{tkRpContent}, #{tkRpWriter})
+	</update>
+
+	<update id="updatTkReply">
+		UPDATE TOTALKNOWLEDGEREPLY
+		SET
+		TK_RP_CONTENT = #{tkRpContent}
+		WHERE TK_RP_CODE = #{tkRpCode}
+	</update>
+
+	<update id="deleteTkReply">
+		DELETE FROM TOTALKNOWLEDGEREPLY
+		WHERE TK_RP_CODE = #{tkRpCode}
+	</update>
+
+</mapper>
+
+
+
+
+
+
+
+

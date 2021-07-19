@@ -1,0 +1,39 @@
+package com.spring.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+@Controller
+@RequestMapping(value="/cop/detail")
+public class CoPDetailController {
+	
+	@RequestMapping(value = "/main", method=RequestMethod.GET)
+	public String detail() {
+		String url = "cop_detail/main.open";
+		return url;
+	}
+	@RequestMapping(value = "/discussion", method=RequestMethod.GET)
+	public String discussion() {
+		String url = "cop_detail/discussion.open";
+		return url;
+	}
+	@RequestMapping(value = "/coppds", method=RequestMethod.GET)
+	public String coppds() {
+		String url = "cop_detail/coppds.open";
+		return url;
+	}
+	@RequestMapping(value = "/shareProject", method=RequestMethod.GET)
+	public String shareProject() {
+		String url = "cop_detail/shareProject.open";
+		return url;
+	}
+	@RequestMapping(value = "/copManage", method=RequestMethod.GET)
+	public String copManage() {
+		String url = "cop_detail/copManage.open";
+		return url;
+	}
+	
+	
+
+}

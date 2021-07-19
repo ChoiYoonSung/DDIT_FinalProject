@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="RMail-Mapper">
+	
+	
+	<sql id="search">	
+		<if test="searchType == 'r'.toString()">
+			and RM_SENDER like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 't'.toString()">
+			and RM_TITLE like '%'||#{keyword}||'%'			
+		</if>		
+	</sql>	
+	
+	
+	<select id="getReceiveMailListById" resultType="rmail">
+		select *
+		from RECEIVEMAIL
+		where emp_id=#{empId}
+		AND NOT(RM_ENABLED = '0')
+		<include refid="search" />
+	</select>
+	
+	
+	
+	<select id="getReceiveMailListCountById" resultType="int">
+		select count(*)
+		from RECEIVEMAIL
+		where emp_id=#{empId}
+		<include refid="search" />
+	</select>
+	
+	
+	<update id="ReceiveMail" parameterType="rmail">
+		insert into 
+		RECEIVEMAIL (RM_CODE,EMP_ID,RM_TITLE,RM_CONTENT
+		,RM_SENDER,RM_RSTATUS,RM_SENDDATE,RM_RECEIVEDATE,RM_ENABLED)
+		values(concat('rma',RECEIVEMAIL_SEQ.NEXTVAL),#{empId}
+		,#{rmTitle},#{rmContent},#{rmSender},0,sysdate,sysdate,#{rmEnabled})
+	</update>
+	
+	<select id="getRmailInfo" parameterType="str" resultType="rmail">
+
+		select *
+		from RECEIVEMAIL
+		where RM_CODE=#{rmCode}
+	
+	</select>
+	
+
+	<update id="deleteRmailList" >
+		update RECEIVEMAIL
+		set RM_ENABLED = 0
+		where RM_CODE=#{rmCode}
+	
+	</update>
+
+	<update id="deleteAllRmail" >
+		delete from RECEIVEMAIL
+		where RM_CODE=#{rmCode}
+	
+	</update>
+
+	<update id="readRmail">
+		update RECEIVEMAIL
+		set RM_RSTATUS = 1
+		where RM_CODE=#{rmCode}
+		
+	</update>
+
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

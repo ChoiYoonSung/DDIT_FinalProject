@@ -1,0 +1,71 @@
+package com.spring.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import com.spring.command.SearchCriteriaByPA;
+import com.spring.dto.PAVO;
+import com.spring.dto.PjmVO;
+import com.spring.dto.ProEmpVO;
+import com.spring.dto.ProPjmVO;
+import com.spring.dto.ProVO;
+
+public interface ProDAO {
+	
+	//아이디로 내가 들어가있는 프로젝트 리스트 검색(참여중 + 옵저버)
+	List<ProPjmVO> getlistProById(String empId) throws SQLException;
+	
+	//아이디로 내가 참여중인 프로젝트 리스트 검색
+	List<ProVO> getListDoProById(String empId)throws SQLException;
+	
+	//아이디로 내가 옵저버중인 프로젝트 리스트 검색
+	List<ProVO> getListAopProById(String empId)throws SQLException;
+	
+	//아이디로 내가 참여중인 비활성화 프로젝트 리스트 검색
+	List<ProVO> getListNotProById(String empId)throws SQLException;
+	
+	//프로젝트 코드로 정보 가져오기
+	public ProVO getProInfo(String  pCode)throws SQLException;
+	
+	//프로젝트 증록
+	public void insertProject(ProVO pro)throws SQLException;
+	
+	//프로젝트 정보 수정
+	public void updateProject(ProVO pro)throws SQLException;
+	
+	//프로젝트 비활성화
+	public void notDoProject(String pCode)throws SQLException;
+	
+	//프로젝트 활성화
+	public void DoProject(String pCode)throws SQLException;
+	
+	//프로젝트 등록시 PL추가
+	public void insertPL(PjmVO pjm)throws SQLException;
+	
+	//프로젝트 참여자 추가
+	public void insertMember(PjmVO pjm)throws SQLException;
+	
+	//최근등록된 프로젝트 코드 가져오기
+	public String getPcode()throws SQLException;
+
+	// 자료실 등록
+	void insertPA(PAVO pa)throws SQLException;
+	
+	//pa_seq.nextval 가져오기
+	int getPASeqNextValue() throws SQLException;
+
+	List<PAVO> selectPACriteria(SearchCriteriaByPA cri) throws SQLException;
+	
+	int selectPACriteriaTotalCount(SearchCriteriaByPA cri) throws SQLException;
+
+	PAVO selectPAByPACode(String pacode) throws SQLException;
+	
+	//프로젝트 참여 인원 검색
+	List<ProEmpVO> selectProMemberList(String pCode)throws SQLException;
+
+	void updatePA(PAVO pa) throws SQLException;
+
+	void deletePds(String pacode) throws SQLException;
+
+	
+}

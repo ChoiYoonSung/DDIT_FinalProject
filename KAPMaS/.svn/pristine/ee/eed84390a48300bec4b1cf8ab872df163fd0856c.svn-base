@@ -1,0 +1,42 @@
+package com.spring.dto;
+
+public class copFamilyDiscussionVO extends CoPVO {
+
+	private String fdisCode;
+	private String fdisMaker;
+	private String fdisName;
+	private String fdisRegdate;
+
+	public String getFdisCode() {
+		return fdisCode;
+	}
+
+	public void setFdisCode(String fdisCode) {
+		this.fdisCode = fdisCode;
+	}
+
+	public String getFdisMaker() {
+		return fdisMaker;
+	}
+
+	public void setFdisMaker(String fdisMaker) {
+		this.fdisMaker = fdisMaker;
+	}
+
+	public String getFdisName() {
+		return fdisName;
+	}
+
+	public void setFdisName(String fdisName) {
+		this.fdisName = fdisName;
+	}
+
+	public String getFdisRegdate() {
+		return fdisRegdate;
+	}
+
+	public void setFdisRegdate(String fdisRegdate) {
+		this.fdisRegdate = fdisRegdate;
+	}
+
+}

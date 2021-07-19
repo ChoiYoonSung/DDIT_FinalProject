@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TkAttach-Mapper">
+	<select id="selectAttachByTkCode" resultType="tkAttach">
+		select 	*
+		from TKATTACH 
+		where TK_CODE = #{tkCode}
+	</select>	
+	
+	<select id="selectAttachesByTkCode" resultType="tkAttach">
+		select	*		
+		from TKATTACH
+		where TK_CODE=#{tkCode}
+	</select>
+	
+	<update id="insertAttach">
+		INSERT INTO
+		TKATTACH (TK_AT_NO, TK_AT_PATH, TK_AT_NAME, TK_AT_TYPE, TK_CODE)
+		VALUES (TKATTACH_SEQ.NEXTVAL, #{tkAtPath}, #{tkAtName},#{tkAtType}, 
+				#{tkCode} )
+	</update>
+	
+	<update id="deleteAttach">
+		delete from TKATTACH where TK_AT_NO = #{tkAtNo}
+	</update>
+	
+	<update id="deleteAllAttach">
+		delete 
+		from TKATTACH 
+		where TK_CODE = #{tkCode}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+

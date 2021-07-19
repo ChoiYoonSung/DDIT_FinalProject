@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PI-Mapper">
+	<!-- 이슈 전체 조회(프로젝트 내의 이슈) -->
+	 <select id="selectPIList" parameterType="str" resultType="pi">
+	 SELECT *
+	 FROM PROJECTISSUE
+	 WHERE P_CODE = #{pCode}
+	 </select>
+	 
+	 <!-- 마일스톤 조회(프로젝트 내의 마일스톤) -->
+	 <select id="selectPIMileStoneList" parameterType="str" resultType="str">
+	 SELECT distinct(pi_milestone) as pi_milestone
+	 FROM PROJECTISSUE
+	 WHERE P_CODE = #{pCode}
+	 </select>
+	 
+	 
+	 
+	<!-- 이슈 조회(선택 이슈 조회) -->
+	 <select id="selectPI" parameterType="str" resultType="pi">
+	 SELECT *
+	 FROM PROJECTISSUE
+	 WHERE PI_CODE = #{piCode}
+	 </select>
+	 
+	 
+	 
+	 <!-- 이슈 등록(새 마일스톤 등록) -->
+	 <update id="insertPI" parameterType="pi">
+	 	INSERT INTO PROJECTISSUE()
+	 	VALUES()
+	 </update>
+	 
+	 <!-- 이슈 등록(기존 마일스톤 등록) -->
+	 <update id="insertPINew" parameterType="pi">
+	 	INSERT INTO PROJECTISSUE()
+	 	VALUES()
+	 </update>
+	 
+	 <!-- 이슈 수정 -->
+	 <update id="updatePI">
+	 	UPDATE PROJECTISSUE
+	 	SET pi_status = 1
+	 	WHERE PI_CODE = #{piCode}
+	 </update>
+
+</mapper>
