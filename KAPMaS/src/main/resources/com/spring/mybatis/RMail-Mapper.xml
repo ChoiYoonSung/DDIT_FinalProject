@@ -14,14 +14,12 @@
 	</sql>	
 	
 	
-	<select id="getReceiveMailListById" resultType="rmail">
+	<select id="getReceiveMailListById" parameterType="str" resultType="rmail">
 		select *
 		from RECEIVEMAIL
 		where emp_id=#{empId}
 		AND NOT(RM_ENABLED = '0')
-		<include refid="search" />
 	</select>
-	
 	
 	
 	<select id="getReceiveMailListCountById" resultType="int">
@@ -37,7 +35,7 @@
 		RECEIVEMAIL (RM_CODE,EMP_ID,RM_TITLE,RM_CONTENT
 		,RM_SENDER,RM_RSTATUS,RM_SENDDATE,RM_RECEIVEDATE,RM_ENABLED)
 		values(concat('rma',RECEIVEMAIL_SEQ.NEXTVAL),#{empId}
-		,#{rmTitle},#{rmContent},#{rmSender},0,sysdate,sysdate,#{rmEnabled})
+		,#{rmTitle},#{rmContent},#{rmSender},0,to_char(sysdate,'yyyy-mm-dd hh24:mi'),to_char(sysdate,'yyyy-mm-dd hh24:mi'),#{rmEnabled})
 	</update>
 	
 	<select id="getRmailInfo" parameterType="str" resultType="rmail">
@@ -69,7 +67,12 @@
 		
 	</update>
 
-	
+	<select id="getLastRmail" resultType="rmail" >
+		select *
+		from 
+		(SELECT * FROM RECEIVEMAIL WHERE emp_id= #{empId}  ORDER BY RM_RECEIVEDATE DESC)
+		where ROWNUM = 1
+	</select>
 	
 </mapper>
 

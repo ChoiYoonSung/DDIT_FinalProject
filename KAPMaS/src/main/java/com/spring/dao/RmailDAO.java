@@ -2,6 +2,7 @@ package com.spring.dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import com.spring.command.SearchCriteriaById;
 import com.spring.dto.RmailVO;
@@ -11,7 +12,7 @@ public interface RmailDAO {
 	
 	
 	//받은 메세지 리스트
-	List<RmailVO>  selectRMailListById(SearchCriteriaById  crid)throws SQLException;
+	List<RmailVO>  selectRMailListById(String  empId)throws SQLException;
 	
 
 	//검색결과의 전체 리스트 개수
@@ -31,5 +32,8 @@ public interface RmailDAO {
 
 
 	void deleteAllRmail(String rmCode) throws SQLException;
+
+    // 마지막 메시지 가져오기
+	RmailVO selectLastRMailById(String empId);
 
 }

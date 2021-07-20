@@ -2,6 +2,7 @@ package com.spring.controller;
 
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -26,11 +27,13 @@ import com.spring.dto.EmpVO;
 import com.spring.dto.MenuVO;
 import com.spring.dto.NoticeVO;
 import com.spring.dto.ProPjmVO;
+import com.spring.dto.RmailVO;
 import com.spring.service.CoPService;
 import com.spring.service.EmpService;
 import com.spring.service.MenuService;
 import com.spring.service.NoticeService;
 import com.spring.service.ProService;
+import com.spring.service.RmailService;
 
 @Controller
 public class CommonController {
@@ -49,6 +52,9 @@ public class CommonController {
 	
 	@Autowired
 	private NoticeService noticeService;
+	
+	@Autowired
+	private RmailService rmailService;
 	
 	@RequestMapping(value="/common/loginForm",method=RequestMethod.GET)
 	public String loginForm(@RequestParam(defaultValue="")String error,HttpServletResponse response)throws Exception{
@@ -249,21 +255,47 @@ public class CommonController {
 		out.close();
 		
 	}
-
 	
 	
-	
-	
+	// 쪽지 알림
+	@RequestMapping("common/notification")
+	@ResponseBody
+	public String getNotification(HttpSession session, HttpServletRequest request) throws SQLException, ParseException {
+		HttpSession ss = request.getSession();
+		
+		EmpVO emp = (EmpVO)session.getAttribute("loginUser");
+		Date finalDate = null;
+		Date sessionDate = null;
+		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		
+		if(emp != null) {
+			RmailVO lastRMail = rmailService.selectLastRMailById(emp.getEmpId());
+			String receivedate = lastRMail.getRmReceivedate();
+			
+			// 세션 값 가져오기
+			String sessionTime = (String) ss.getAttribute("receiveDate");
+			
+			if(sessionTime == null) {
+				sessionTime = receivedate;
+			}
+			
+			finalDate = f.parse(receivedate);
+			sessionDate = f.parse(sessionTime);
+			
+		   
+		   if(finalDate.compareTo(sessionDate) > 0) { // 새로운 쪽지 도착
+			   ss.setAttribute("receiveDate", receivedate); // 세션 값 변경
+			   return "new";
+		   }else {
+			   ss.setAttribute("receiveDate", sessionTime);
+		       return "same";
+		   }
+		}else {
+			return "same";
+		}
+		
+	}
 }
-
-
-
-
-
-
-
-
-
 
 
 

@@ -8,7 +8,7 @@
 	</div>
 	<div class="pace-activity"></div></div>
 	
-	<div id="loader" class="app-loader loaded">
+	<div id="loader" class="app-loader">
 		<span class="spinner"></span>
 	</div>
 	

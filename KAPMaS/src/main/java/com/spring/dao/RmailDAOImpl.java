@@ -2,6 +2,7 @@ package com.spring.dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
@@ -19,12 +20,9 @@ public class RmailDAOImpl  implements RmailDAO{
 	
 
 	@Override
-	public List<RmailVO> selectRMailListById(SearchCriteriaById crid) throws SQLException {
-		int offset = crid.getStartRowNum();
-		int limit = crid.getPerPageNum();
-		RowBounds rowBounds = new RowBounds(offset,limit);
+	public List<RmailVO> selectRMailListById(String empId) throws SQLException {
 		
-		List<RmailVO> rmailList = session.selectList("RMail-Mapper.getReceiveMailListById", crid, rowBounds);
+		List<RmailVO> rmailList = session.selectList("RMail-Mapper.getReceiveMailListById",empId);
 	
 		
 		return rmailList;
@@ -72,6 +70,13 @@ public class RmailDAOImpl  implements RmailDAO{
 	public void deleteAllRmail(String rmCode) throws SQLException {
 		session.update("RMail-Mapper.deleteAllRmail",rmCode);
 		
+	}
+
+
+	@Override
+	public RmailVO selectLastRMailById(String empId) {
+		RmailVO rmail=session.selectOne("RMail-Mapper.getLastRmail", empId);
+		return rmail;
 	}
 
 }

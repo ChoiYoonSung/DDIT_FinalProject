@@ -4,7 +4,7 @@
 		
 		<!-- BEGIN scroll-top-btn -->
 		<!-- END scroll-top-btn -->
-		<div id="footer" class="app-footer">
+		<div id="footer" class="app-footer" style="margin: 0px;">
 				© 2021 KAPMaS All Rights Reserved
 			</div>
 

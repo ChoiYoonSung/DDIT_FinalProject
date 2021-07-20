@@ -19,17 +19,11 @@ public class RmailServiceImpl implements RmailService{
 
 	
 	@Override
-	public Map<String, Object> selectRMailListById(SearchCriteriaById crid) throws SQLException {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
-		PageMakerById pageMaker = new PageMakerById();
-		pageMaker.setCrid(crid);
-		pageMaker.setTotalCount(rmailDAO.selectSMailCounrListById(crid));
+	public List<RmailVO> selectRMailListById(String empId) throws SQLException {
 		
-		List<RmailVO> rmailList=rmailDAO.selectRMailListById(crid);
-		dataMap.put("rmailList",rmailList );
-		dataMap.put("pageMaker",pageMaker );
+		List<RmailVO> rmailList=rmailDAO.selectRMailListById(empId);
 		
-		return dataMap;
+		return rmailList;
 	}
 
 	@Override
@@ -69,6 +63,14 @@ public class RmailServiceImpl implements RmailService{
 	public void deleteAllRmail(String rmCode) throws SQLException {
 		rmailDAO.deleteAllRmail(rmCode);
 		
+	}
+
+
+	@Override
+	public RmailVO selectLastRMailById(String empId) throws SQLException {
+		RmailVO lastRMail = rmailDAO.selectLastRMailById(empId);
+		
+		return lastRMail;
 	}
 
 }
