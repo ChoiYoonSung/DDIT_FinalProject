@@ -101,7 +101,7 @@ public interface ProService {
 		// 프로젝트 이슈 리스트 조회(프로젝트 내)
 		public List<PIVO> selectPIList(String pCode) throws SQLException;
 		// 프로젝트 마일스톤 리스트 조회(프로젝트 내)
-		public List<String> selectPIMileStoneList(String pCode) throws SQLException;
+		public List<Object> selectPIMileStoneList(String pCode) throws SQLException;
 		// 이슈 조회
 		public PIVO selectPI(String piCode) throws SQLException;
 		//이슈 등록(기존 마일스톤)

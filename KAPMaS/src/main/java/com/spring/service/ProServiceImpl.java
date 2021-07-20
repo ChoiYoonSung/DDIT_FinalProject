@@ -256,8 +256,8 @@ public class ProServiceImpl implements ProService {
 	}
 
 	@Override
-	public List<String> selectPIMileStoneList(String pCode) throws SQLException {
-		List<String> piMileStoneList = proDAO.selectPIMileStoneList(pCode);
+	public List<Object> selectPIMileStoneList(String pCode) throws SQLException {
+		List<Object> piMileStoneList = proDAO.selectPIMileStoneList(pCode);
 		return piMileStoneList;
 	}
 

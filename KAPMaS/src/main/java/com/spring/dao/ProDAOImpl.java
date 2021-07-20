@@ -227,8 +227,8 @@ public class ProDAOImpl implements ProDAO{
 		return piList;
 	}
 	@Override
-	public List<String> selectPIMileStoneList(String pCode) throws SQLException{
-		List<String> piMileStoneList = session.selectList("PI-Mapper.selectPIMileStoneList",pCode);
+	public List<Object> selectPIMileStoneList(String pCode) throws SQLException{
+		List<Object> piMileStoneList = session.selectList("PI-Mapper.selectPIMileStoneList",pCode);
 		return piMileStoneList;
 	}
 	

@@ -13,6 +13,7 @@
 	 SELECT distinct(pi_milestone) as pi_milestone
 	 FROM PROJECTISSUE
 	 WHERE P_CODE = #{pCode}
+	 ORDER BY pi_milestone ASC
 	 </select>
 	 
 	 

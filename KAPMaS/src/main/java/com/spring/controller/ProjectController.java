@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -17,8 +18,10 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.command.GetCodeCommand;
 import com.spring.command.GetJobInfo;
+import com.spring.command.JobModifyCommand;
 import com.spring.command.JobRegistCommand;
 import com.spring.command.ProModifyCommand;
 import com.spring.command.ProPAModifyCommand;
@@ -47,7 +51,9 @@ import com.spring.dto.ProEmpVO;
 import com.spring.dto.ProVO;
 import com.spring.dto.RankVO;
 import com.spring.dto.RelegateVO;
+import com.spring.security.User;
 import com.spring.service.DepService;
+import com.spring.service.EmpService;
 import com.spring.service.JobService;
 import com.spring.service.ProService;
 import com.spring.service.RankService;
@@ -73,12 +79,149 @@ public class ProjectController {
 	@Autowired
 	private JobService jobService;
 	
+	@Autowired
+	private EmpService empService;
 	
 	@Resource(name = "PAfileUploadPath")
 	private String PAfileUploadPath;
 	
 	@Resource(name = "relegateUploadPath")
 	private String relegateUploadPath;
+	
+	
+	@RequestMapping("/meeting")
+	 public String chat(){
+		System.out.println("컨트롤러 들어온다다");
+        return "project/chattingview.open";
+    }
+	
+	
+	
+	@RequestMapping("/JobCome")
+	public ModelAndView JobCome(ModelAndView mnv,HttpSession session,String jobCode)throws Exception{
+		String url="project/JobCome.open";
+		
+		List<DepVO> depList =depService.getDepList();
+		
+		
+		mnv.addObject("jobCode",jobCode);
+		mnv.addObject("depList", depList);
+		mnv.setViewName(url);
+		return mnv;
+		
+	}
+	
+	
+	
+
+	@RequestMapping("/JobModify")
+	public String JobModify(HttpSession session,JobModifyCommand jm)throws SQLException{
+		String url="project/JobModify_success";
+		
+		
+		JobVO job = jm.toJobVO();
+		String ser = jm.getSelbox();
+		String[] serList=jm.getSer().split(",");
+		
+		if(ser.equals("direct")) {
+			String file = serList[serList.length - 1];		
+				
+			job.setJobFile(file);
+			
+			
+			}else {
+				
+				job.setJobFile(jm.getSelbox());
+				
+			}
+			
+		jobService.updateJob(job);
+		
+		ProVO pro = proService.getProInfo(job.getpCode());	
+			pro.setpJob(jm.getSer());
+			
+			proService.updateService(pro);
+		
+		
+		
+		return url;
+		
+	}
+	
+	
+	
+	@RequestMapping("/JobModifyForm")
+	public ModelAndView JobModifyForm(String jobCode,ModelAndView mnv)throws Exception{
+		String url="project/JobModifyForm.open";
+		
+				
+		JobVO job = jobService.getJobInfo(jobCode);
+				
+		EmpVO emp = empService.getEmpById(job.getEmpId());
+		
+		ProVO proi=proService.getProInfo(job.getpCode());
+		String[] serviceList = proi.getpJob().split(",");
+		List<ProEmpVO> pjmList = proService.selectProMemberList(job.getpCode());
+		
+		mnv.addObject("pjmList", pjmList);
+		mnv.addObject("serviceList", serviceList);
+		mnv.addObject("job", job);
+		mnv.addObject("emp", emp);
+		
+		mnv.setViewName(url);
+		return mnv;
+	}
+	
+	
+	
+	@RequestMapping(value="/doNotJob",method=RequestMethod.POST)
+	public String doNotJob(String jobCode)throws Exception{
+		String url = "project/doNotJob";
+		
+		jobService.doNotJob(jobCode);
+			
+		return url;
+		
+	}
+	
+
+	
+	@RequestMapping(value="/doJob",method=RequestMethod.POST)
+	public String doJob(String jobCode)throws Exception{
+		String url = "project/doJob";
+		
+		jobService.doJob(jobCode);
+		
+		return url;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	@RequestMapping("/jobDetail")
+	public ModelAndView jobDetail(String jobCode,ModelAndView mnv)throws SQLException{
+		String url="project/jobDetail.open";
+		
+		JobVO job = jobService.getJobInfo(jobCode);
+		
+		EmpVO emp = empService.getEmpById(job.getEmpId());
+		
+		mnv.addObject("job", job);
+		mnv.addObject("emp", emp);
+		mnv.setViewName(url);
+		
+		return mnv;
+		
+	}
+	
+	
+	
+	
 	
 	@RequestMapping("/main")
 	public ModelAndView list(HttpSession session,ModelAndView mnv)throws Exception{
@@ -714,25 +857,51 @@ public class ProjectController {
 	
 	
 	@RequestMapping("/issue")
-	public ModelAndView projectIssueList(ModelAndView mnv, HttpSession session) throws Exception{
+	public ModelAndView projectIssueList(ModelAndView mnv,  HttpSession session) throws Exception{
 		String url = "project/piList.open";
 		
 		String pCode = (String)session.getAttribute("pCode");
 		
 		List<PIVO> piList = proService.selectPIList(pCode);
-		List<String> piMileStoneList = proService.selectPIMileStoneList(pCode);
+		List<Object> piMileStone = proService.selectPIMileStoneList(pCode);
+		List<Double> piMileStonePercent = new ArrayList<>();
+		String piMileStoneString = "";
+		for (int i = 0; i < piMileStone.size(); i++) {
+			double count = 0;
+			double percent = 0;
+			for (int j = 0; j < piList.size(); j++) {
+				if(piList.get(j).getPiMilestone().equals(piMileStone.get(i))){
+					count += 1;
+					if(piList.get(j).getPiStatus() == 0) {
+						percent+= 1;
+					}
+				}
+			}
+			if(percent == 0.0) {
+				piMileStonePercent.add(0.0);
+			}else {
+				piMileStonePercent.add((percent/count)*100.0);
+			}
+			System.out.println("percent: " + percent);
+			System.out.println("count: " + count);
+			System.out.println((percent/count)*100.0);
+			piMileStoneString += piMileStone.get(i);
+			if(i != piMileStone.size()-1) {
+				piMileStoneString += ",";
+			}
+		}
 		
 		mnv.addObject("piList",piList);
-		mnv.addObject("piMileStoneList",piMileStoneList);
+//		mnv.addObject("piMileStone",piMileStone);
+		mnv.addObject("piMileStone",piMileStoneString);
+		mnv.addObject("piMileStonePercent",piMileStonePercent);
 		
 		mnv.setViewName(url);
 		
 		return mnv;
 	}
 	
-	
-	
-	
+
 	
 	
 	

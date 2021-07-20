@@ -87,7 +87,7 @@ public interface ProDAO {
 	// 프로젝트 이슈
 	public List<PIVO> selectPIList(String pCode) throws SQLException;
 	
-	public List<String> selectPIMileStoneList(String pCode) throws SQLException;
+	public List<Object> selectPIMileStoneList(String pCode) throws SQLException;
 	
 	public PIVO selectPI(String piCode) throws SQLException;
 	

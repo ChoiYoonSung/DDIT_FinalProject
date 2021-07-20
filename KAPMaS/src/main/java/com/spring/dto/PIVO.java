@@ -7,7 +7,7 @@ public class PIVO {
 	private String piRegdate;
 	private String piContent;
 	private String piTitle;
-	private String piStatus;
+	private int piStatus;
 	private String piMilestone;
 	
 	
@@ -48,10 +48,10 @@ public class PIVO {
 	public void setPiTitle(String piTitle) {
 		this.piTitle = piTitle;
 	}
-	public String getPiStatus() {
+	public int getPiStatus() {
 		return piStatus;
 	}
-	public void setPiStatus(String piStatus) {
+	public void setPiStatus(int piStatus) {
 		this.piStatus = piStatus;
 	}
 	public String getPiMilestone() {
