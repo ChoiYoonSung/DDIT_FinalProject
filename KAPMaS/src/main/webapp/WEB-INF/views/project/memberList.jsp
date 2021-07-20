@@ -303,7 +303,7 @@ function page_go(name,img,authority,depCode,rnkCode,email,phone,add,pCode){
 		url : "<%=request.getContextPath() %>/project/getMemberInfo",
 		type : "post",
 		data : JSON.stringify(data),
-		contentType:"application/text;charset=utf-8",
+		contentType:"application/json;charset=utf-8",
 		success:function(data){
 			var result=data.split(',');
 			
@@ -311,9 +311,10 @@ function page_go(name,img,authority,depCode,rnkCode,email,phone,add,pCode){
 			document.getElementById('rnk').innerHTML=result[1];
 			
 		},
-		error:function(error){
+		error:function(request,status,error){
 			
-			alert("시스템오류로입니다.관리자에게 문의해주세요.");
+			 alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+
 		}
 		
 	});

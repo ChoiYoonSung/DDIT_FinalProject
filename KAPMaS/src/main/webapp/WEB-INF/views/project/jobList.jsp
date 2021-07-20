@@ -101,7 +101,7 @@ li {
 
 
 <div class="row" style="margin: 0 auto;">
-			<div class="project-wrapper" style="width: 48%;">
+			<div class="project-wrapper" style="width: 48%;  height: 700px;">
 				<div class="panel panel-inverse" data-sortable-id="index-6">
 					<div class="panel-heading ui-sortable-handle">
 						<h4 class="panel-title">Analytics Details</h4>
@@ -242,7 +242,7 @@ li {
 												</thead>
 												<tbody>
 												<c:forEach items="${jobList}" var="job">
-													<tr onclick="OpenWindow('detail.do','상세보기',1000,1100);">
+													<tr onclick="OpenWindow('jobDetail.do?jobCode=${job.jobCode}','상세보기',800,700);">
 														<td width="1%" class="fw-bold text-inverse dtr-control hide"
 															tabindex="0" id="hiding02">
 															<div id="hiding03"
@@ -260,7 +260,12 @@ li {
 														<td>${job.empId}</td>
 														<td>${job.jobStartdate}</td>
 														<td>${job.jobEnddate}</td>
-														<td>${job.jobPrograss}</td>
+														<td>
+															<div class="progress mb-2">
+																<div class="progress-bar fs-10px fw-bold" style="width: ${job.jobPrograss}%">
+																</div>	
+															</div>
+														</td>
 													</tr>
 													
 												</c:forEach>

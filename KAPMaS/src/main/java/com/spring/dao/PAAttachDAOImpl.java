@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.spring.dto.PAAttachVO;
-import com.spring.dto.PAVO;
 
 public class PAAttachDAOImpl implements PAAttachDAO{
 	

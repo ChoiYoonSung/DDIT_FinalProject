@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.spring.dto.PAAttachVO;
-import com.spring.dto.PAVO;
 
 public interface PAAttachDAO {
 	public void insertPAAttach(PAAttachVO attach) throws SQLException;
