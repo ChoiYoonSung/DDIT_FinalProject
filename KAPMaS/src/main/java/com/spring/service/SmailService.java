@@ -13,7 +13,7 @@ public interface SmailService {
 	
 
 	//보낸 메세지 리스트 
-	Map<String,Object> selectSMailListById(SearchCriteriaById  crid)throws SQLException;
+	List<SmailVO> selectSMailListById(String  empId)throws SQLException;
 	
 	
 	//메세지 보내기

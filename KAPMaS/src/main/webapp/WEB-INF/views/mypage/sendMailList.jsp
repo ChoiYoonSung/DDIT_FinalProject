@@ -9,6 +9,19 @@
 <% int i = 0 ; int b=0;%>
 <c:set var="pageMaker" value="${dataMap.pageMaker }" />
 <head>
+
+
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+<meta content="" name="description" />
+<meta content="" name="author" />
+
+
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+<link href="<%=request.getContextPath() %>/resources/bootstrap/assets/css/vendor.min.css" rel="stylesheet" />
+<link href="<%=request.getContextPath() %>/resources/bootstrap/assets/css/default/app.min.css" rel="stylesheet" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.5/js/min/perfect-scrollbar.jquery.min.js"></script>
+
+
 <style>
 .pds-wrapper{
 	margin: 0 auto;
@@ -29,6 +42,8 @@ th:nth-child(n+3), td:nth-child(n+3){
     background-color: #ffc82d;
     border-color: #ffc82d;
 }
+
+
 </style>
 </head>
 <body style="background: white;">
@@ -82,21 +97,13 @@ th:nth-child(n+3), td:nth-child(n+3){
 								class="fa fa-fw fa-lg fs-12px me-2 fa-circle text-danger"></i>
 								Client</a></li>
 					</ul> -->
-					<div class="ps__rail-x" style="left: 0px; bottom: 0px;">
-						<div class="ps__thumb-x" tabindex="0"
-							style="left: 0px; width: 0px;"></div>
-					</div>
-					<div class="ps__rail-y" style="top: 0px; right: 0px;">
-						<div class="ps__thumb-y" tabindex="0"
-							style="top: 0px; height: 0px;"></div>
-					</div>
 				</div>
 
 			</div>
 		</div>
 
 
-		<div class="mailbox-content">
+		<div class="mailbox-content" >
 			<div class="mailbox-content-header">
 
 				<div class="btn-toolbar align-items-center">
@@ -155,10 +162,7 @@ th:nth-child(n+3), td:nth-child(n+3){
 
 			</div>
 			<div class="mailbox-content-body">
-				<div data-scrollbar="true" data-height="100%"
-					data-skip-mobile="true" class="ps ps--active-y" data-init="true"
-					style="height: 100%;">
-
+				<div data-scrollbar="true" data-height="100%" data-skip-mobile="true">
 					<ul class="list-group list-group-lg no-radius list-email">
 						
 						
@@ -205,15 +209,6 @@ th:nth-child(n+3), td:nth-child(n+3){
 					
 					</ul>
 
-					<div class="ps__rail-x" style="left: 0px; bottom: 0px;">
-						<div class="ps__thumb-x" tabindex="0"
-							style="left: 0px; width: 0px;"></div>
-					</div>
-					<div class="ps__rail-y"
-						style="top: 0px; height: 764px; right: 0px;">
-						<div class="ps__thumb-y" tabindex="0"
-							style="top: 0px; height: 635px;"></div>
-					</div>
 				</div>
 			</div>
 			<div class="mailbox-content-footer d-flex align-items-center">
@@ -235,6 +230,29 @@ th:nth-child(n+3), td:nth-child(n+3){
 <input id="hobbyList" hidden="" name="hobbyList" value="">
 
 
+	<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="<%=request.getContextPath() %>/resources/bootstrap/assets/js/vendor.min.js" type="bb927df14e4b0356ad5b69fe-text/javascript"></script>
+<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/js/app.min.js" type="bb927df14e4b0356ad5b69fe-text/javascript"></script>
+<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/js/theme/default.min.js" type="bb927df14e4b0356ad5b69fe-text/javascript"></script>
+<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/js/demo/email-inbox.demo.js" type="b2d3d270220a6d87af2689e5-text/javascript"></script>
+
+
+<script type="bb927df14e4b0356ad5b69fe-text/javascript">
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-53034621-1', 'auto');
+		ga('send', 'pageview');
+
+	</script>
+<script src="https://ajax.cloudflare.com/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="bb927df14e4b0356ad5b69fe-|49" defer=""></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"rayId":"66f2ccb658aadd8f","version":"2021.6.0","r":1,"token":"4db8c6ef997743fda032d4f73cfeff63","si":10}'></script>
+
+<ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front tagit-autocomplete" style="display: none;"></ul>
+<div role="status" aria-live="assertive" aria-relevant="additions" class="ui-helper-hidden-accessible"></div>
+<div class="note-modal-backdrop" style="display: none;"></div>
+	
+
 	<script>
 	window.onload = function() {
 		$("#all").click(function(){
@@ -255,7 +273,14 @@ th:nth-child(n+3), td:nth-child(n+3){
 				$("#all").prop("checked",false);
 			}
 		});
+		
 	}
+	
+	
+	$('#Demo').perfectScrollbar();
+	$('#Demo').perfectScrollbar("update");
+	$('#Demo').perfectScrollbar("destroy");
+	
 	
 	function palist_go(page, url) {
 

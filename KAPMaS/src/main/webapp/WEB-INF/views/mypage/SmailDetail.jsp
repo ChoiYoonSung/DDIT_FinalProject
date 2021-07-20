@@ -24,6 +24,7 @@
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
 <link href="<%=request.getContextPath() %>/resources/bootstrap/assets/css/vendor.min.css" rel="stylesheet" />
 <link href="<%=request.getContextPath() %>/resources/bootstrap/assets/css/default/app.min.css" rel="stylesheet" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.5/js/min/perfect-scrollbar.jquery.min.js"></script>
 
 
 <link href="<%=request.getContextPath() %>/resources/bootstrap/assets/plugins/tag-it/css/jquery.tagit.css" rel="stylesheet" />
@@ -82,14 +83,6 @@
 								class="fa fa-fw fa-lg fs-12px me-2 fa-circle text-danger"></i>
 								Client</a></li>
 					</ul> -->
-					<div class="ps__rail-x" style="left: 0px; bottom: 0px;">
-						<div class="ps__thumb-x" tabindex="0"
-							style="left: 0px; width: 0px;"></div>
-					</div>
-					<div class="ps__rail-y" style="top: 0px; right: 0px;">
-						<div class="ps__thumb-y" tabindex="0"
-							style="top: 0px; height: 0px;"></div>
-					</div>
 				</div>
 
 			</div>
@@ -131,10 +124,7 @@
 				</div>
 			</div>
 			<div class="mailbox-content-body">
-
-				<div data-scrollbar="true" data-height="100%"
-					data-skip-mobile="true" class="ps" data-init="true"
-					style="height: 100%;">
+			<div data-scrollbar="true" data-height="100%" data-skip-mobile="true">
 					<div class="p-3">
 						<h3 class="mb-3">받는 사람 :  ${emp.empName }</h3>
 						<div class="d-flex mb-3">
@@ -152,11 +142,14 @@
 						</div>
 						<hr class="bg-gray-500">
 						<textarea class="summernote" style="display: none;" name="content" readonly="readonly">
-									
+						
+						<c:if test="${smail.smEnabled == '3' }">
+							 ${emp.empName }님께 업무를 공유하였습니다.
+						</c:if>
 						<c:if test="${smail.smEnabled == '2' }">
 							 ${emp.empName }님을 초대하였습니다.
 						</c:if>
-						<c:if test="${smail.smEnabled != '2' }">
+						<c:if test="${smail.smEnabled == '1' }">
 							<c:out value="${smail.smContent }" />
 						</c:if>
 						
@@ -164,14 +157,6 @@
 						</textarea>
 						
 					
-					</div>
-					<div class="ps__rail-x" style="left: 0px; bottom: 0px;">
-						<div class="ps__thumb-x" tabindex="0"
-							style="left: 0px; width: 0px;"></div>
-					</div>
-					<div class="ps__rail-y" style="top: 0px; right: 0px;">
-						<div class="ps__thumb-y" tabindex="0"
-							style="top: 0px; height: 0px;"></div>
 					</div>
 				</div>
 

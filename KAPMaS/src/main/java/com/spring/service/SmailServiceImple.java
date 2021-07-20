@@ -23,19 +23,12 @@ public class SmailServiceImple implements SmailService{
 	
 	
 	@Override
-	public Map<String, Object> selectSMailListById(SearchCriteriaById crid) throws SQLException {
-		Map<String, Object> dataMap = new HashMap<String,Object>();
-		PageMakerById pageMaker = new PageMakerById();
-		pageMaker.setCrid(crid);
-		pageMaker.setTotalCount(smailDAO.selectSMailCounrListById(crid));
+	public List<SmailVO> selectSMailListById(String empId) throws SQLException {
+		
+		List<SmailVO> smailList=smailDAO.selectSMailListById(empId);
 		
 		
-		List<SmailVO> smailList=smailDAO.selectSMailListById(crid);
-		
-		dataMap.put("smailList",smailList );
-		dataMap.put("pageMaker",pageMaker );
-		
-		return dataMap;
+		return smailList;
 	}
 
 	@Override

@@ -20,14 +20,10 @@ public class SmailDAOImpl implements SmailDAO{
 	
 
 	@Override
-	public List<SmailVO> selectSMailListById(SearchCriteriaById crid) throws SQLException {
-		int offset = crid.getStartRowNum();
-		int limit = crid.getPerPageNum();
-		RowBounds rowBounds = new RowBounds(offset,limit);
+	public List<SmailVO> selectSMailListById(String empId) throws SQLException {
 		
-		List<SmailVO>smailList = session.selectList("SMail-Mapper.getSendMailListById", crid, rowBounds);
+		List<SmailVO>smailList = session.selectList("SMail-Mapper.getSendMailListById",empId);
 
-		
 		
 		return smailList;
 	}

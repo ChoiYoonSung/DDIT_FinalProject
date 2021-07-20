@@ -11,7 +11,7 @@ public interface SmailDAO {
 	
 	
 	//보낸 메세지 리스트 
-		List<SmailVO> selectSMailListById(SearchCriteriaById  crid)throws SQLException;
+		List<SmailVO> selectSMailListById(String  empId)throws SQLException;
 		
 		//검색결과의 전체 리스트 개수
 		int selectSMailCounrListById(SearchCriteriaById  crid)throws SQLException;

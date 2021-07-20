@@ -13,12 +13,11 @@
 	</sql>	
 	
 	
-	<select id="getSendMailListById" resultType="smail">
+	<select id="getSendMailListById" parameterType="str" resultType="smail">
 		select *
 		from sendmail
 		where emp_id=#{empId}
 		AND NOT(SM_ENABLED = '0')
-		<include refid="search" />
 	</select>
 	
 	
@@ -27,7 +26,6 @@
 		select count(*)
 		from sendmail
 		where emp_id=#{empId}
-		<include refid="search" />
 	</select>
 	
 	
@@ -37,7 +35,7 @@
 		sendmail(SM_CODE,EMP_ID,SM_TITLE,SM_CONTENT,SM_RECEIVER,SM_RSTATUS
 					,SM_SENDDATE,SM_RECEIVEDATE,SM_ENABLED)
 		values(concat('sma',SENDMAIL_SEQ.NEXTVAL),#{empId}
-		,#{smTitle},#{smContent},#{smReceiver},0,sysdate,sysdate,#{smEnabled})
+		,#{smTitle},#{smContent},#{smReceiver},0,to_char(sysdate,'yyyy-mm-dd hh24:mi'),to_char(sysdate,'yyyy-mm-dd hh24:mi'),#{smEnabled})
 	</update>
 	
 	
