@@ -26,11 +26,14 @@
 		<bean id="relegateUploadPath" class="java.lang.String">
 			<constructor-arg value="${relegate.upload}"/>
 		</bean>
+		<bean id="CAfileUploadPath" class="java.lang.String">
+			<constructor-arg value="${ca.upload}"/>
+		</bean>
 		<import resource="./mail-context.xml"/>
 		<import resource="./dataSource-context.xml"/>
 		<import resource="./application-context.xml"/>
 		<import resource="./security-context.xml"/>
-		
+		<import resource="./ws-config.xml"/>
 		
 	
 		

@@ -39,9 +39,14 @@
 
 	<bean id="copDAO" class="com.spring.dao.CoPDAOImpl"
 		p:sqlSession-ref="sqlSession" />
+		
+	<bean id="scrapDAO" class="com.spring.dao.ScrapDAOImpl"
+		p:sqlSession-ref="sqlSession" />
+	<bean id="scrapService" class="com.spring.service.ScrapServiceImpl"
+		p:scrapDAO-ref="scrapDAO" />		
 
 	<bean id="copService" class="com.spring.service.CoPServiceImpl"
-		p:copDAO-ref="copDAO" />
+		p:copDAO-ref="copDAO" p:caDAO-ref="CAAttachDAO"/>
 	
 	<bean id="tkAttachDAO" 
 		  class="com.spring.dao.TkAttachDAOImpl"
@@ -54,11 +59,21 @@
 	<bean id="totalKnowledgeDAO"
 		class="com.spring.dao.TotalKnowledgeDAOImpl"
 		p:sqlSession-ref="sqlSession" />
+		
+	<bean id="likeDAO"
+		class="com.spring.dao.LikeDAOImpl"
+		p:sqlSession-ref="sqlSession"/>	
+		
+	<bean id="reportDAO"
+		class="com.spring.dao.ReportDAOImpl"
+		p:sqlSession-ref="sqlSession" />	
 
 	<bean id="totalKnowledgeService"
 		class="com.spring.service.TotalKnowledgeServiceImpl"
 		p:totalKnowledgeDAO-ref="totalKnowledgeDAO"
 		p:tkAttachDAO-ref="tkAttachDAO"
+		p:likeDAO-ref="likeDAO"
+		p:reportDAO-ref="reportDAO"
 		 />
 	<bean id="tkReplyService"
       	 class="com.spring.service.TkReplyServiceImpl"
@@ -111,6 +126,10 @@
 	
 	<bean id="jobService" class="com.spring.service.JobServiceImpl"
 	p:jobDAO-ref="jobDAO"
+	/>
+	
+	<bean id="CAAttachDAO" class="com.spring.dao.CAAttachDAOImpl"
+	p:sqlsession-ref="sqlSession"
 	/>
 	
 	<bean id="taskScheduler" class="com.spring.scheduled.CompletionDateNotice" />

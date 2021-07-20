@@ -28,7 +28,7 @@
 		select *
 		from joblist
 		where p_code=#{pCode}
-		and emp_id=#{empId}
+		<!-- and emp_id=#{empId} -->
 
 	</select>
 	
@@ -50,10 +50,9 @@
 	<update id="updateJob" parameterType="job">
 		update joblist 
 		set JOB_PROGRASS=#{jobPrograss},EMP_ID=#{empId},JOB_NAME=#{jobName},JOB_CONTENT=#{jobContent}
-		,JOB_STARTDATE=#{jobStartdate},JOB_ENDDATE=#{jobEnddate}
+		,JOB_STARTDATE=#{jobStartdate},JOB_ENDDATE=#{jobEnddate},JOB_FILE=#{jobFile}
 		where JOB_CODE=#{jobCode}
 	</update>
-	
 	
 	<update id="doNotJob" parameterType="str">
 		update joblist

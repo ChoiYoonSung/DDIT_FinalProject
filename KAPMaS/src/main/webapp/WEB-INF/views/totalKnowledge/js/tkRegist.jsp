@@ -50,6 +50,26 @@
  	
 	function addKeyword(){
 		var KW = $('#addKW').val();
+		var len = $(".key").length;
+		var keyArr = $(".key").val();
+		
+		if(KW == null || KW == ""){
+			alert("키워드를 입력해주세요");
+			return;
+		}
+		if(len > 4){
+			alert("키워드는 최대 5개까지 입력 가능합니다.");
+			$('#addKW').val("");
+			return;
+		}
+		if(len > 0){
+			for(var i = 0; i < len; i++){
+				if(KW == $(".key")[i].innerText){
+					alert("이미 등록한 키워드입니다.");
+					return;
+				}
+			}
+		}
 		var KWList = $('<li><div class="d-flex align-items-center"><span class="key" style="color:black;"><h5>' + KW +'</h5></span><i class="fas fa-lg fa-fw me-10px fa-times-circle" onclick="delKW(this)"></i></div></li>');
 		$('#KWList').append(KWList);
 		$('#addKW').val("");

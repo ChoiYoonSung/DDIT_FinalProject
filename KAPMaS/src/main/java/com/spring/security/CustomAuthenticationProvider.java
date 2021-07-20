@@ -41,7 +41,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 			
 			//스프링 시큐리티 내부 클래스로 인증 토큰 생성한다
 			UsernamePasswordAuthenticationToken result = 
-					new UsernamePasswordAuthenticationToken(authUser.getUsername(),authUser.getPassword(),authUser.getAuthorities() );
+					new UsernamePasswordAuthenticationToken(authUser,authUser.getPassword(),authUser.getAuthorities() );
 			
 			
 			//전달할 내용을 설정한 후

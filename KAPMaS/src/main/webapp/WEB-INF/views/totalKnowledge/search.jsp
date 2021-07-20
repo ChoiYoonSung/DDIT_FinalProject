@@ -216,6 +216,14 @@ ul li {list-style-type: none; float: left;}
 			$('#addKW').val("");
 			return;
 		}
+		if(len > 0){
+			for(var i = 0; i < len; i++){
+				if(KW == $(".key")[i].innerText){
+					alert("이미 등록한 키워드입니다.");
+					return;
+				}
+			}
+		}
 		
 		var KWList = $('<li><div class="d-flex align-items-center"><a href="#"><i class="fa fa-circle"></i> <span class="key">' + KW +'</span></a><i class="fas fa-lg fa-fw me-10px fa-times-circle" onclick="delKW(this)"></i></div></li>');
 		$('#KWList').append(KWList);

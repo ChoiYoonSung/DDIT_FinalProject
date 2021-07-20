@@ -63,3 +63,32 @@ function MemberPictureThumb(targetObj, fileName) { // (대상, 이미지파일�
 	targetObj.style.backgroundRepeat = "no-repeat";
 	targetObj.style.backgroundSize = "cover";
 }
+
+// 쪽지 알림
+window.setTimeout(function(){	
+	notification = setInterval(function() {
+		$.ajax ({
+			url : "/KAPMaS/common/notification.do",  
+			method : "get",
+			success : function (data) { 
+				if(data == "new"){ // 새로운 쪽지 도착
+					$.gritter.add({
+					    title: '새 쪽지가 도착했습니다!',
+					    text: '확인해보세요~',
+					    sticky: false,
+					    time: '',
+					    image: '/KAPMaS/resources/images/message_icon.png',
+					    class_name: 'gritter-light',
+					    before_open: function(){ },
+					    after_open: function(e){ },
+					    before_close: function(manual_close) { },
+					    after_close: function(manual_close){ } 
+					  });
+                }else{
+                }
+			}
+		});
+	}, 10000); 
+}, 200);
+
+

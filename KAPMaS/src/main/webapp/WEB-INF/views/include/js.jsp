@@ -43,6 +43,11 @@
 	<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/js/demo/table-manage-default.demo.js"></script>
 	<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/plugins/@highlightjs/cdn-assets/highlight.min.js"></script>
 	<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/js/demo/render.highlight.js"></script>
+	<link href="<%=request.getContextPath() %>/resources/bootstrap/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+	<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/plugins/gritter/js/jquery.gritter.js"></script>
 	<script src="<%=request.getContextPath() %>/resources/js/common.js"></script>
 	<script src="<%=request.getContextPath() %>/resources/js/index.js"></script>	
 	<!-- ================== END page-js ================== -->
+	<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/plugins/isotope-layout/dist/isotope.pkgd.min.js" type="text/javascript"></script>
+	<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/js/demo/gallery.demo.js" type="text/javascript"></script>
+	

@@ -8,103 +8,118 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.dto.PAAttachVO;
 import com.spring.dto.TkAttachVO;
-
+import com.spring.dto.caAttachVO;
 
 public class GetAttachesAsMultipartFiles {
 
-	
 	/*
-	public static List<AttachVO> save(List<MultipartFile> multiFiles,String savePath) throws Exception{
+	 * public static List<AttachVO> save(List<MultipartFile> multiFiles,String
+	 * savePath) throws Exception{
+	 * 
+	 * List<AttachVO> attachList = new ArrayList<AttachVO>();
+	 * 
+	 * if(multiFiles != null) { for(MultipartFile multi : multiFiles) { String
+	 * fileName = MakeFileName.toUUIDFileName(multi.getOriginalFilename(), "$$");
+	 * File target = new File(savePath,fileName);
+	 * 
+	 * target.mkdirs();
+	 * 
+	 * multi.transferTo(target);
+	 * 
+	 * AttachVO attach = new AttachVO(); attach.setUploadPath(savePath);
+	 * attach.setFileName(fileName);
+	 * attach.setFileType(fileName.substring(fileName.lastIndexOf(".")+1).
+	 * toUpperCase());
+	 * 
+	 * attachList.add(attach);
+	 * 
+	 * } }
+	 * 
+	 * return attachList;
+	 * 
+	 * 
+	 * 
+	 * }
+	 */
 
-		List<AttachVO> attachList = new ArrayList<AttachVO>();
-		
-		if(multiFiles != null) {
-			for(MultipartFile multi : multiFiles) {
-				String fileName = MakeFileName.toUUIDFileName(multi.getOriginalFilename(), "$$");
-				File target = new File(savePath,fileName);
-				
-				target.mkdirs();
-				
-				multi.transferTo(target);
-				
-				AttachVO attach = new AttachVO();
-				attach.setUploadPath(savePath);
-				attach.setFileName(fileName);
-				attach.setFileType(fileName.substring(fileName.lastIndexOf(".")+1).toUpperCase());
-				
-				attachList.add(attach);
-				
-			}
-		}
-		
-		return attachList;
-		
-		
-		
-	}
-	*/
-		
-	
-	public static List<PAAttachVO> paSave(List<MultipartFile> multiFiles,String savePath) throws Exception{
-		// 프로젝트 자료실 
+	public static List<PAAttachVO> paSave(List<MultipartFile> multiFiles, String savePath) throws Exception {
+		// 프로젝트 자료실
 		List<PAAttachVO> attachList = new ArrayList<PAAttachVO>();
-		
-		if(multiFiles != null) {
-			for(MultipartFile multi : multiFiles) {
+
+		if (multiFiles != null) {
+			for (MultipartFile multi : multiFiles) {
 				String fileName = MakeFileName.toUUIDFileName(multi.getOriginalFilename(), "$$");
-				File target = new File(savePath,fileName);
-				
+				File target = new File(savePath, fileName);
+
 				target.mkdirs();
-				
+
 				multi.transferTo(target);
-				
+
 				PAAttachVO attach = new PAAttachVO();
 				attach.setPaAtPath(savePath);
 				attach.setPaAtName(fileName);
-				attach.setPaAtType(fileName.substring(fileName.lastIndexOf(".")+1).toUpperCase());
-				
+				attach.setPaAtType(fileName.substring(fileName.lastIndexOf(".") + 1).toUpperCase());
+
 				attachList.add(attach);
-				
+
 			}
 		}
-		
+
 		return attachList;
-		
-		
-		
+
 	}
-	
-	public static List<TkAttachVO> tkSave(List<MultipartFile> multiFiles,String savePath) throws Exception{
-		
+
+	public static List<TkAttachVO> tkSave(List<MultipartFile> multiFiles, String savePath) throws Exception {
+
 		List<TkAttachVO> attachList = new ArrayList<TkAttachVO>();
-		
-		if(multiFiles != null) {
-			for(MultipartFile multi : multiFiles) {
+
+		if (multiFiles != null) {
+			for (MultipartFile multi : multiFiles) {
 				String fileName = MakeFileName.toUUIDFileName(multi.getOriginalFilename(), "$$");
-				File target = new File(savePath,fileName);
-				
+				File target = new File(savePath, fileName);
+
 				target.mkdirs();
-				
+
 				multi.transferTo(target);
-				
+
 				TkAttachVO attach = new TkAttachVO();
 				attach.setTkAtPath(savePath);
 				attach.setTkAtName(fileName);
-				attach.setTkAtType(fileName.substring(fileName.lastIndexOf(".")+1).toUpperCase());
-				
+				attach.setTkAtType(fileName.substring(fileName.lastIndexOf(".") + 1).toUpperCase());
+
 				attachList.add(attach);
-				
+
 			}
 		}
-		
+
 		return attachList;
-		
-		
-		
 	}
 	
-	
-	
-	
-	
+	public static List<caAttachVO> caSave(List<MultipartFile> multiFiles, String savePath) throws Exception {
+
+		List<caAttachVO> attachList = new ArrayList<caAttachVO>();
+
+		if (multiFiles != null) {
+			for (MultipartFile multi : multiFiles) {
+				String fileName = MakeFileName.toUUIDFileName(multi.getOriginalFilename(), "$$");
+				File target = new File(savePath, fileName);
+
+				target.mkdirs();
+
+				multi.transferTo(target);
+
+				caAttachVO attach = new caAttachVO();
+				attach.setCaAtPath(savePath);
+				attach.setCaAtName(fileName);
+				attach.setCaAtType(fileName.substring(fileName.lastIndexOf(".") + 1).toUpperCase());
+				System.out.println(attach.getCaAtType());
+
+				attachList.add(attach);
+
+			}
+		}
+
+		return attachList;
+	}
+
 }

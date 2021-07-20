@@ -23,10 +23,7 @@
 
 			<div class="mb-3">
 				<label class="form-label" for="tkContent">내용</label>
-				<textarea class="form-control" rows="15" name="tkContent">
-				</textarea>
-												<textarea class="textarea" name="content" id="content" rows="20"
-									placeholder="1000자 내외로 작성하세요." style="display: none;"></textarea>
+				<textarea class="form-control" rows="15" name="tkContent"></textarea>
 			</div>
 			<div class="app-content">
 				<div class="row">
@@ -78,22 +75,5 @@ window.onload=function(){
 </script>
 
 <%@ include file="/WEB-INF/views/common/summernote.jsp" %>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

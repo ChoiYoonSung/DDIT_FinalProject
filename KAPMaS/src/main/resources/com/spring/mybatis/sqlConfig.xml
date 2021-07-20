@@ -21,6 +21,7 @@
 		<typeAlias type="com.spring.dto.TotalKnowledgeVO" alias="tk" />
 		<typeAlias type="com.spring.dto.TkAttachVO" alias="tkAttach" />
 		<typeAlias type="com.spring.dto.CoPVO" alias="cop"/>
+		<typeAlias type="com.spring.dto.caAttachVO" alias="caAttach"/>
 		<typeAlias type="com.spring.dto.ProPjmVO" alias="propjm" />
 		<!-- <typeAlias type="com.spring.dto.AttachVO" alias="attach" /> -->
 		<typeAlias type="com.spring.dto.PAVO" alias="pa" />
@@ -38,6 +39,10 @@
 		
 		<typeAlias type="com.spring.dto.TkReplyVO" alias="tkReply"/>
 		<typeAlias type="com.spring.dto.PIVO" alias="pi"/>
+		
+		<typeAlias type="com.spring.dto.ScrapVO" alias="scrap"/>
+		<typeAlias type="com.spring.dto.LikeVO" alias="like"/>
+		<typeAlias type="com.spring.dto.ReportVO" alias="report"/>
 		
 	</typeAliases>
 	
