@@ -8,16 +8,31 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.command.LikeCommand;
+import com.spring.command.ReportCommand;
+import com.spring.command.ScrapDeleteCommand;
+import com.spring.command.ScrapInsertCommand;
 import com.spring.command.SearchCriteria;
 import com.spring.command.TkModifyCommand;
 import com.spring.command.TkRegistCommand;
+import com.spring.dto.LikeVO;
+import com.spring.dto.ReportVO;
+import com.spring.dto.ScrapVO;
 import com.spring.dto.TkAttachVO;
+import com.spring.dto.TkReplyVO;
 import com.spring.dto.TotalKnowledgeVO;
+import com.spring.service.ScrapService;
+import com.spring.service.TkReplyService;
 import com.spring.service.TotalKnowledgeService;
 import com.spring.utils.GetAttachesAsMultipartFiles;
 
@@ -28,6 +43,13 @@ public class TotalknowledgeController {
 	
 	@Autowired
 	private TotalKnowledgeService service;
+	
+	@Autowired
+	private TkReplyService rpService;
+	
+	@Autowired
+	private ScrapService scrapService;
+	
 	
 	@Resource(name = "TkfileUploadPath")
 	private String TkfileUploadPath;
@@ -81,7 +103,7 @@ public class TotalknowledgeController {
 	}	
 	
 	@RequestMapping("/detail")
-	public ModelAndView detail(ModelAndView mnv, String tkCode, String from) throws Exception{
+	public ModelAndView detail(ModelAndView mnv, String tkCode, String from ) throws Exception{
 		String url = "totalKnowledge/detail.open";
 		
 		TotalKnowledgeVO tk = null;
@@ -91,6 +113,13 @@ public class TotalknowledgeController {
 			tk = service.read(tkCode);
 		}
 		
+		String tkKeyword = tk.getTkKeyword();
+		String[] tkKeywordArr = null;
+		if(tkKeyword != null) {
+			tkKeywordArr = tkKeyword.split(",");
+		}
+		
+		
 		List<TkAttachVO> attachList = tk.getAttachList();
 		if(attachList != null) {
 			for(TkAttachVO attach : attachList) {
@@ -99,7 +128,12 @@ public class TotalknowledgeController {
 			}
 		}
 		
+		
+		int RpCnt = rpService.getTkReplyListCount(tkCode);
+		
 		mnv.addObject("tk", tk);
+		mnv.addObject("tkKeywordArr", tkKeywordArr);
+		mnv.addObject("RpCnt", RpCnt);
 		mnv.setViewName(url);
 		
 		return mnv;
@@ -141,15 +175,22 @@ public class TotalknowledgeController {
 				attach.setTkAtName(tkAtName);
 			}
 		}
+		
+		String tkKeyword = tk.getTkKeyword();
+		String[] tkKeywordArr = null;
+		if(tkKeyword != null) {
+			tkKeywordArr = tkKeyword.split(",");
+		}
 
 		mnv.addObject("tk", tk);
+		mnv.addObject("tkKeywordArr", tkKeywordArr);
 		mnv.setViewName(url);
 
 		return mnv;
 	}
 	
-	
-	public String modifyPOST(TkModifyCommand modifyReq, HttpServletRequest request) throws Exception {
+	@RequestMapping("/modify")
+	public ModelAndView modify(TkModifyCommand modifyReq, HttpServletRequest request, ModelAndView mnv) throws Exception {
 		
 		String url = "totalKnowledge/modify_success";		
 
@@ -167,14 +208,157 @@ public class TotalknowledgeController {
 		List<TkAttachVO> attachList = GetAttachesAsMultipartFiles.tkSave(modifyReq.getUploadFile(),TkfileUploadPath);
 
 		TotalKnowledgeVO tk = modifyReq.toTotalKnowledgeVO();
-		tk.setTkTitle((String)request.getAttribute("XSStitle"));
 		tk.setAttachList(attachList);
 
 		// DB에 해당 데이터 추가
 		service.modify(tk);
 		
-		return url;
+		mnv.addObject("tk", tk);
+		mnv.setViewName(url);
+		
+		return mnv;
 	}
 	
+	@RequestMapping(value="/InsertScrap", method=RequestMethod.POST, produces="text/plain;charset=utf-8")
+	@ResponseBody
+	public ResponseEntity<String> InsertScrap(@RequestBody ScrapInsertCommand get) throws Exception{
+		ResponseEntity<String> entity = null;
+		
+		ScrapVO scr = get.toScrapVO();
+		
+		try { 
+			scrapService.insertScrap(scr);
+			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return entity;
+	}
+	
+	@RequestMapping(value="/deleteScrap", method=RequestMethod.POST, produces="application/json;charset=utf-8")
+	@ResponseBody
+	public ResponseEntity<String> deleteScrap(@RequestBody ScrapDeleteCommand get) throws Exception{
+		ResponseEntity<String> entity = null;
+		
+		ScrapVO scr = get.toScrapVO();
+		
+		try { 
+			scrapService.deleteScrap(scr);
+			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return entity;
+	}
+	
+	@RequestMapping(value="/scrapCount", method=RequestMethod.POST, produces="application/json;charset=utf-8")
+	@ResponseBody
+	public ResponseEntity<Integer> scrapCount(@RequestBody ScrapDeleteCommand get) throws Exception{
+		ResponseEntity<Integer> entity = null;
+		
+		ScrapVO scr = get.toScrapVO();
+		
+		try { 
+			int count = scrapService.scrapCount(scr);
+			entity = new ResponseEntity<Integer>(count, HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<Integer>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return entity;
+	}
+	@RequestMapping(value="/like", method=RequestMethod.POST, produces="text/plain;charset=utf-8")
+	@ResponseBody
+	public ResponseEntity<String> like(@RequestBody LikeCommand get) throws Exception{
+		ResponseEntity<String> entity = null;
+		
+		LikeVO like = get.toLikeVO();
+		String tkCode = get.getTkCode();
+		try {
+			service.like(tkCode, like);
+			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return entity;
+	}
+	@RequestMapping(value="/likeCancel", method=RequestMethod.POST, produces="application/json;charset=utf-8")
+	@ResponseBody
+	public ResponseEntity<String> likeCancel(@RequestBody LikeCommand get) throws Exception{
+		ResponseEntity<String> entity = null;
+		
+		LikeVO like = get.toLikeVO();
+		String tkCode = get.getTkCode();
+		try { 
+			service.likeCancel(tkCode, like);
+			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return entity;
+	}	
+	
+	@RequestMapping(value="/likeCount", method=RequestMethod.POST, produces="application/json;charset=utf-8")
+	@ResponseBody
+	public ResponseEntity<Integer> likeCount(@RequestBody LikeCommand get) throws Exception{
+		ResponseEntity<Integer> entity = null;
+		
+		LikeVO like = get.toLikeVO();
+		
+		try { 
+			int count = service.likeCount(like);
+			entity = new ResponseEntity<Integer>(count, HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<Integer>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return entity;
+	}	
+	@RequestMapping(value="/report", method=RequestMethod.POST, produces="text/plain;charset=utf-8")
+	@ResponseBody
+	public ResponseEntity<String> report(@RequestBody ReportCommand get) throws Exception{
+		ResponseEntity<String> entity = null;
+		
+		ReportVO rep = get.toReportVO();
+		String tkCode = get.getTkCode();
+		try {
+			service.report(tkCode, rep);
+			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return entity;
+	}
+	@RequestMapping(value="/reportCancel", method=RequestMethod.POST, produces="application/json;charset=utf-8")
+	@ResponseBody
+	public ResponseEntity<String> reportCancel(@RequestBody ReportCommand get) throws Exception{
+		ResponseEntity<String> entity = null;
+		
+		ReportVO rep = get.toReportVO();
+		String tkCode = get.getTkCode();
+		try { 
+			service.reportCancel(tkCode, rep);
+			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return entity;
+	}	
+	
+	@RequestMapping(value="/reportCount", method=RequestMethod.POST, produces="application/json;charset=utf-8")
+	@ResponseBody
+	public ResponseEntity<Integer> reportCount(@RequestBody ReportCommand get) throws Exception{
+		ResponseEntity<Integer> entity = null;
+		
+		ReportVO rep = get.toReportVO();
+		
+		try { 
+			int count = service.reportCount(rep);
+			entity = new ResponseEntity<Integer>(count, HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<Integer>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return entity;
+	}	
+	
+
 }
 

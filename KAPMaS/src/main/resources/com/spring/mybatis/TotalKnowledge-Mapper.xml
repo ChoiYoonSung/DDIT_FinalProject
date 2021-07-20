@@ -110,12 +110,27 @@
 		tk_likecnt=tk_likecnt+1 
 		where tk_code=#{tkCode}
 	</update>
+	<update id="decreaseLikeCnt" parameterType="str">
+		update 
+		totalknowledgeboard 
+		set 
+		tk_likecnt=tk_likecnt-1 
+		where tk_code=#{tkCode}
+	</update>
 	
 	<update id="increaseReportCnt" parameterType="str">
 		update 
 		totalknowledgeboard 
 		set 
 		tk_reportcnt=tk_reportcnt+1 
+		where tk_code=#{tkCode}
+	</update>
+	
+	<update id="decreaseReportCnt" parameterType="str">
+		update 
+		totalknowledgeboard 
+		set 
+		tk_reportcnt=tk_reportcnt-1 
 		where tk_code=#{tkCode}
 	</update>
 	

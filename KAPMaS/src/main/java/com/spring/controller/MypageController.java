@@ -64,17 +64,39 @@ public class MypageController {
 	@Autowired
 	private TrashService trashService;
 	
-	
+	@RequestMapping(value="/jobShare",method=RequestMethod.POST,produces = "text/plain;charset=utf-8")
+	public String jobShare(GetSmailEmpList sm,HttpSession session,HttpServletRequest request)throws Exception{
+		String url = "mypage/send_success";
+		
+		SmailVO smail = sm.toSmailVO();
+		RmailVO rmail = sm.toRmailVO();
+		
+		EmpVO emp=(EmpVO)session.getAttribute("loginUser");
+
+		smail.setEmpId(emp.getEmpId());
+		smail.setSmEnabled(3);
+		rmail.setRmSender(emp.getEmpId());
+		rmail.setRmEnabled(3);
+		String[] empList = sm.getEmpList().split(",");
+		
+		for(String List : empList) {
+			smail.setSmReceiver(List);
+			smailService.sendMail(smail);
+			rmail.setEmpId(List);
+			rmailService.receiveMail(rmail);
+		}
+		
+		return url;
+	}
 	@RequestMapping("/receivemail")
-	public  ModelAndView receiveMailList(SearchCriteriaById crid,ModelAndView mnv,HttpSession session) throws Exception{
+	public  ModelAndView receiveMailList(ModelAndView mnv,HttpSession session) throws Exception{
 		String url="mypage/receiveMailList.open";
 		EmpVO emp=(EmpVO)session.getAttribute("loginUser");
 		
-		crid.setEmpId(emp.getEmpId());
 
-		Map<String, Object> dataMap=rmailService.selectRMailListById(crid);
+		List<RmailVO> rmailList=rmailService.selectRMailListById(emp.getEmpId());
 		
-		mnv.addAllObjects(dataMap);
+		mnv.addObject("rmailList",rmailList);
 		mnv.setViewName(url);
 		return mnv;
 		
@@ -82,17 +104,16 @@ public class MypageController {
 	
 	
 	@RequestMapping("/sendmail")
-	public ModelAndView sendMailList(SearchCriteriaById crid,ModelAndView mnv,HttpSession session) throws Exception{
+	public ModelAndView sendMailList(ModelAndView mnv,HttpSession session) throws Exception{
 		String url="mypage/sendMailList.open";
 		
 		EmpVO emp=(EmpVO)session.getAttribute("loginUser");
 		
-		crid.setEmpId(emp.getEmpId());
 		
-		Map<String, Object> dataMap= smailService.selectSMailListById(crid);
+		List<SmailVO> smailList= smailService.selectSMailListById(emp.getEmpId());
 		
 		
-		mnv.addAllObjects(dataMap);
+		mnv.addObject("smailList",smailList);
 		mnv.setViewName(url);
 		
 		return mnv;

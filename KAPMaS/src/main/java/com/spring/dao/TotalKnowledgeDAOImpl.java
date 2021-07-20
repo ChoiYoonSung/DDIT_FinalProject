@@ -93,6 +93,18 @@ public class TotalKnowledgeDAOImpl implements TotalKnowledgeDAO {
 		session.update("Totalknowledge-Mapper.increaseReportCnt",tkCode);
 		
 	}
+	
+	@Override
+	public void decreaseLikeCnt(String tkCode) throws SQLException {
+		session.update("Totalknowledge-Mapper.decreaseLikeCnt",tkCode);
+		
+	}
+	
+	@Override
+	public void decreaseReportCnt(String tkCode) throws SQLException {
+		session.update("Totalknowledge-Mapper.decreaseReportCnt",tkCode);
+		
+	}
 
 	@Override
 	public void disableTk(String tkCode) throws SQLException {

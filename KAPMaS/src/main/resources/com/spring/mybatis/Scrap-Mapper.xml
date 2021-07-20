@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Scrap-Mapper">
+
+	<update id="insertScrap" parameterType="scrap">
+		insert into scrap 
+		(sc_code, emp_id, sc_title, sc_url, sc_regdate) 
+		values(SCRAP_SEQ.NEXTVAL, #{empId},#{scTitle},#{scUrl}, sysdate)
+	</update>
+
+	<delete id="deleteScrap" parameterType="scrap">
+		delete from scrap
+		where sc_url = #{scUrl}
+		and emp_id = #{empId}
+	</delete>
+	
+	<select id="scrapCount" parameterType="scrap" resultType="int">
+		select count(sc_code)
+		from scrap
+		where sc_url = #{scUrl}
+		and emp_id = #{empId}
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

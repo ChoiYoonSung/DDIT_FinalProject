@@ -8,8 +8,12 @@ import java.util.Map;
 
 import com.spring.command.PageMaker;
 import com.spring.command.SearchCriteria;
+import com.spring.dao.LikeDAO;
+import com.spring.dao.ReportDAO;
 import com.spring.dao.TkAttachDAO;
 import com.spring.dao.TotalKnowledgeDAO;
+import com.spring.dto.LikeVO;
+import com.spring.dto.ReportVO;
 import com.spring.dto.TkAttachVO;
 import com.spring.dto.TotalKnowledgeVO;
 
@@ -25,6 +29,16 @@ public class TotalKnowledgeServiceImpl implements TotalKnowledgeService {
 
 	public void setTkAttachDAO(TkAttachDAO tkAttachDAO) {
 		this.tkAttachDAO = tkAttachDAO;
+	}
+	
+	private LikeDAO likeDAO;
+	public void setLikeDAO(LikeDAO likeDAO) {
+		this.likeDAO = likeDAO;
+	}
+	
+	private ReportDAO reportDAO;
+	public void setReportDAO(ReportDAO reportDAO) {
+		this.reportDAO = reportDAO;
 	}
 
 	@Override
@@ -133,28 +147,44 @@ public class TotalKnowledgeServiceImpl implements TotalKnowledgeService {
 		return tk;
 	}
 
-	@Override
-	public TotalKnowledgeVO report(String tkCode) throws SQLException {
-		TotalKnowledgeVO tk = totalKnowledgeDAO.selectTkByTkCode(tkCode);
-		totalKnowledgeDAO.increaseReportCnt(tkCode);
-		
-		addAttachList(tk);
-		
-		return tk;
-	}
 
 	@Override
-	public TotalKnowledgeVO like(String tkCode) throws SQLException {
-		TotalKnowledgeVO tk = totalKnowledgeDAO.selectTkByTkCode(tkCode);
+	public void like(String tkCode, LikeVO like) throws SQLException {
 		totalKnowledgeDAO.increaseLikeCnt(tkCode);
-		
-//		addAttachList(tk);
-		
-		return tk;
+		likeDAO.insertLike(like);
+	}
+	
+	@Override
+	public void likeCancel(String tkCode, LikeVO like) throws SQLException {
+		totalKnowledgeDAO.decreaseLikeCnt(tkCode);
+		likeDAO.deleteLike(like);
+	}
+	
+	@Override
+	public int likeCount(LikeVO like) throws Exception {
+		int count = likeDAO.likeCount(like);
+		return count;
+	}
+	
+	@Override
+	public void report(String tkCode, ReportVO rep) throws SQLException {
+		totalKnowledgeDAO.increaseLikeCnt(tkCode);
+		reportDAO.insertReport(rep);
+	}
+	
+	@Override
+	public void reportCancel(String tkCode, ReportVO rep) throws SQLException {
+		totalKnowledgeDAO.decreaseLikeCnt(tkCode);
+		reportDAO.deleteReport(rep);
+	}
+	
+	@Override
+	public int reportCount(ReportVO rep) throws SQLException {
+		int count = reportDAO.reportCount(rep);
+		return count;
 	}
 	
 	private void addAttachList(TotalKnowledgeVO tk) throws SQLException {
-		System.out.println("들어옴?01");
  		if (tk == null)	return;
 
 		String tkCode = tk.getTkCode();
@@ -166,6 +196,7 @@ public class TotalKnowledgeServiceImpl implements TotalKnowledgeService {
 	public void disable(String tkCode) throws SQLException {
 		totalKnowledgeDAO.disableTk(tkCode);
 	}
+
 
 
 

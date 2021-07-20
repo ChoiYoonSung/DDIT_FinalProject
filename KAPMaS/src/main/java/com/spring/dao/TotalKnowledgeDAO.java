@@ -25,6 +25,8 @@ public interface TotalKnowledgeDAO {
 	void increaseViewCnt(String tkCode)throws SQLException;
 	void increaseLikeCnt(String tkCode)throws SQLException;
 	void increaseReportCnt(String tkCode)throws SQLException;
+	void decreaseLikeCnt(String tkCode)throws SQLException;
+	void decreaseReportCnt(String tkCode)throws SQLException;
 	
 	String getSeqNextValue() throws SQLException;
 	

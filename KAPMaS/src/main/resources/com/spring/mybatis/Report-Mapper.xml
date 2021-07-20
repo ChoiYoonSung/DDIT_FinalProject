@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Report-Mapper">
+
+	<update id="insertReport" parameterType="report">
+		insert into report
+		(emp_id, bd_code)
+		values(#{empId}, #{bdCode})
+	</update>
+
+	<delete id="deleteReport" parameterType="report">
+		delete from report
+		where bd_code = #{bdCode}
+		and emp_id = #{empId}
+	</delete>
+	
+	<select id="reportCount" parameterType="report" resultType="int">
+		select count(bd_code)
+		from report
+		where emp_id = #{empId}
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

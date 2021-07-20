@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import com.spring.command.SearchCriteria;
+import com.spring.dao.LikeDAO;
 import com.spring.dto.TkReplyVO;
 
 public interface TkReplyService {
@@ -22,4 +23,5 @@ public interface TkReplyService {
 	
 	//삭제
 	void removeTkReply(int tkRpCode)throws SQLException;
+
 }

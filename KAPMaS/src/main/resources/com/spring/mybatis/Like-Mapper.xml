@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Like-Mapper">
+
+	<update id="insertLike" parameterType="like">
+		insert into boardlike
+		(emp_id, bd_code)
+		values(#{empId}, #{bdCode})
+	</update>
+
+	<delete id="deleteLike" parameterType="like">
+		delete from boardlike
+		where bd_code = #{bdCode}
+		and emp_id = #{empId}
+	</delete>
+	
+	<select id="likeCount" parameterType="like" resultType="int">
+		select count(bd_code)
+		from boardlike
+		where emp_id = #{empId}
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.spring.command.PageMaker;
 import com.spring.command.SearchCriteria;
+import com.spring.dao.LikeDAO;
 import com.spring.dao.TkReplyDAO;
 import com.spring.dto.TkReplyVO;
 

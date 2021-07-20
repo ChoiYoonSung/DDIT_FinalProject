@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring.command.SearchCriteria;
+import com.spring.dto.LikeVO;
+import com.spring.dto.ReportVO;
 import com.spring.dto.TkAttachVO;
 import com.spring.dto.TotalKnowledgeVO;
 
@@ -41,7 +43,11 @@ public interface TotalKnowledgeService {
 	// 글읽기(조회수증가)
 	TotalKnowledgeVO read(String tkCode) throws SQLException;
 	// 신고하기
-	TotalKnowledgeVO report(String tkCode) throws SQLException;
+	void report(String tkCode, ReportVO rep) throws SQLException;
+	void reportCancel(String tkCode, ReportVO rep) throws SQLException;
+	int reportCount(ReportVO rep) throws SQLException;
 	// 추천하기
-	TotalKnowledgeVO like(String tkCode) throws SQLException;
+	void like(String tkCode, LikeVO like) throws SQLException;
+	void likeCancel(String tkCode, LikeVO like) throws SQLException;
+	int likeCount(LikeVO like) throws Exception;
 }
