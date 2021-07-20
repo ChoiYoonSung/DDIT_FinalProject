@@ -218,4 +218,15 @@ public class CoPDAOImpl implements CoPDAO {
 		return archiveList;
 	}
 
+	@Override
+	public int getCASeqNextValue() throws SQLException {
+		int cano = session.selectOne("CAAttach-Mapper.selectCASeqNext");
+		return cano;
+	}
+
+	@Override
+	public void insertCA(CopArchiveVO ca) throws SQLException {
+		session.update("CAAttach-Mapper.insertCA", ca);
+	}
+
 }

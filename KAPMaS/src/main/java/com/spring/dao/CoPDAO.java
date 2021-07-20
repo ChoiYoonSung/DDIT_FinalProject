@@ -60,4 +60,8 @@ public interface CoPDAO {
 	List<CopFamilyDiscussionVO> getJoinDisussionList(String userId) throws SQLException;
 
 	List<CopArchiveVO> getMyArchiveList(String userId) throws SQLException;
+
+	int getCASeqNextValue() throws SQLException;
+
+	void insertCA(CopArchiveVO ca) throws SQLException; 
 }

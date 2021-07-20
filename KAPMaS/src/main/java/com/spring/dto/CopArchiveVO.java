@@ -1,5 +1,7 @@
 package com.spring.dto;
 
+import java.util.List;
+
 public class CopArchiveVO {
 
 	private String caCode;
@@ -11,8 +13,26 @@ public class CopArchiveVO {
 	private String caType;
 	private String caEnabled;
 	private String caViewcnt;
-
+	private String empName;
 	private String copName;
+
+	public String getEmpName() {
+		return empName;
+	}
+
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
+
+	private List<caAttachVO> attachList;
+
+	public List<caAttachVO> getAttachList() {
+		return attachList;
+	}
+
+	public void setAttachList(List<caAttachVO> attachList) {
+		this.attachList = attachList;
+	}
 
 	public String getCopName() {
 		return copName;

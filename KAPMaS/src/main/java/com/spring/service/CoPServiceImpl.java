@@ -6,10 +6,12 @@ import java.util.Map;
 
 import com.spring.command.PageMakerByIdForCop;
 import com.spring.command.SearchCriteriaById;
+import com.spring.dao.CAAttachDAO;
 import com.spring.dao.CoPDAO;
 import com.spring.dto.CoPVO;
 import com.spring.dto.CopArchiveVO;
 import com.spring.dto.CopFamilyDiscussionVO;
+import com.spring.dto.caAttachVO;
 
 public class CoPServiceImpl implements CoPService {
 
@@ -19,10 +21,16 @@ public class CoPServiceImpl implements CoPService {
 		this.copDAO = copDAO;
 	}
 
+	private CAAttachDAO caDAO;
+
+	public void setCaDAO(CAAttachDAO caDAO) {
+		this.caDAO = caDAO;
+	}
+
 	@Override
 	public List<CoPVO> getCopList() throws SQLException {
 		List<CoPVO> copVO = copDAO.getCopList();
-		
+
 		return copVO;
 	}
 
@@ -37,23 +45,23 @@ public class CoPServiceImpl implements CoPService {
 
 		PageMakerByIdForCop pageMaker = new PageMakerByIdForCop();
 		pageMaker.setCrid(cri);
-		//pageMaker.setTotalCount(copDAO.getCopCriteriaTotalCount(cri));
-		
+		// pageMaker.setTotalCount(copDAO.getCopCriteriaTotalCount(cri));
+
 		copVO.put("pageMaker", pageMaker);
-		
+
 		return copVO;
 	}
 
 	@Override
 	public Map<String, Object> getOwnCopList(SearchCriteriaById cri) throws SQLException {
 		Map<String, Object> ownCopMap = copDAO.getOwnCopList(cri);
-		
+
 		PageMakerByIdForCop pageMaker = new PageMakerByIdForCop();
 		pageMaker.setCrid(cri);
-		//pageMaker.setTotalCount(copDAO.getCopCriteriaOwnCop(cri));
-		
+		// pageMaker.setTotalCount(copDAO.getCopCriteriaOwnCop(cri));
+
 		ownCopMap.put("ownPagerMaker", pageMaker);
-		
+
 		return ownCopMap;
 	}
 
@@ -82,7 +90,7 @@ public class CoPServiceImpl implements CoPService {
 	}
 
 	@Override
-	public void signUpToCop(CoPVO signUpInfo) throws SQLException{
+	public void signUpToCop(CoPVO signUpInfo) throws SQLException {
 		copDAO.signUpRequestToCop(signUpInfo);
 	}
 
@@ -114,7 +122,7 @@ public class CoPServiceImpl implements CoPService {
 	@Override
 	public List<CopArchiveVO> getRegistarchiveList(SearchCriteriaById cri) {
 		List<CopArchiveVO> archiveList = copDAO.getArchiveListToCri(cri);
-		
+
 		return archiveList;
 	}
 
@@ -134,6 +142,23 @@ public class CoPServiceImpl implements CoPService {
 	public List<CopArchiveVO> getMyArchiveList(String userId) throws SQLException {
 		List<CopArchiveVO> archiveList = copDAO.getMyArchiveList(userId);
 		return archiveList;
+	}
+
+	@Override
+	public void registCA(CopArchiveVO ca) throws SQLException {
+
+		int cpno = copDAO.getCASeqNextValue();
+		String cpnos = "cpa" + Integer.toString(cpno);
+
+		ca.setCaCode(cpnos);
+		copDAO.insertCA(ca);
+
+		if (ca.getAttachList() != null)
+			for (caAttachVO attach : ca.getAttachList()) {
+				attach.setCaCode(cpnos);
+				caDAO.insertCAAttach(attach);
+			}
+
 	}
 
 }

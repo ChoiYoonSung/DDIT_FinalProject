@@ -136,7 +136,6 @@ public class CoPController {
 		String url = "cop/create_success.open";
 
 		EmpVO emp = (EmpVO) session.getAttribute("loginUser");
-		System.out.println(emp);
 		String userName = emp.getEmpName();
 		String userId = emp.getEmpId();
 		CoPVO cop = copReq.toCopVO();

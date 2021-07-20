@@ -58,4 +58,6 @@ public interface CoPService {
 
 	List<CopArchiveVO> getMyArchiveList(String userId) throws SQLException;
 
+	void registCA(CopArchiveVO ca) throws SQLException;
+
 }

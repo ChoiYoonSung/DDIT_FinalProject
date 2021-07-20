@@ -237,9 +237,9 @@
 		ca_title,
 		ca_content,
 		ca_regdate,
-		ca_type,
 		ca_enabled,
-		ca_viewcnt
+		ca_viewcnt,
+		emp_name
 		FROM
 		coparchive
 		where

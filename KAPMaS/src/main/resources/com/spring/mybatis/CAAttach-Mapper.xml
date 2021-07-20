@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="CAAttach-Mapper">
+
+	<select id="selectCASeqNext" resultType="int">
+		select COPARCHIVE_SEQ.NEXTVAL as cano from dual
+	</select>
+	
+	<update id="insertCA" parameterType="cArcVO">
+		insert into COPARCHIVE(
+			ca_code,
+			cop_code,
+			emp_id,
+			ca_title,
+			ca_content,
+			ca_regdate,
+			ca_enabled,
+			ca_viewcnt,
+			emp_name
+			)
+		values(     
+			#{caCode}, #{copCode}, #{empId}, #{caTitle}, #{caContent}, sysdate, 1, 0, #{empName})
+	</update>
+	
+	<update id="insertAttach" parameterType="caAttach">
+		insert into COPARCHIVEATTACH(
+		    ca_at_no,
+		    ca_code,
+		    ca_at_path,
+		    ca_at_name,
+		    ca_at_type)
+		values (
+			COPARCHIVEATTACH_SEQ.nextval,
+		    #{caCode},
+		    #{caAtPath},
+		    #{caAtName},
+		    #{caAtType})
+	</update>
+
+</mapper>

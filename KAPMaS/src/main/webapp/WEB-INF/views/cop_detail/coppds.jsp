@@ -76,7 +76,7 @@
 
 <link href="<%=request.getContextPath()%>/resources/bootstrap/assets/css/forum/app.min.css" rel="stylesheet">
 <link href="<%=request.getContextPath()%>/resources/css/css.css" rel="stylesheet">
-
+<c:set value="${archiveList }" var="cal"/>
 <style>
 li {
 	font-size: 17px;
@@ -95,11 +95,12 @@ li {
 		<div class="col-xl-12 ui-sortable">
 					<br> <a onclick="javascript:history.go(-1)"><i
 				class="ion ion-md-arrow-round-back fa-2x fa-fw float-start me-10px text-black-lighter"></i></a>
-			<h1 class="page-header">자료 목록</h1>
+			<h1 class="page-header">뒤로가기</h1>
 			<div class="panel panel-inverse" data-sortable-id="ui-media-object-1"
 				data-init="true">
 				<div class="panel-heading ui-sortable-handle">
-					<h4 class="panel-title">COP 목록</h4>
+					<h4 class="panel-title">자료 목록</h4>
+					<button type="button" onclick="pdsRegist();" class="btn btn-primary">자료 등록</button>
 				</div>
 				<div class="panel-body">
 					<div class="col-xl-12 ui-sortable">
@@ -113,37 +114,35 @@ li {
 												class="table table-striped table-bordered align-middle">
 												<thead>
 													<tr role="row">
-														<th width="1%" class="sorting sorting_desc" tabindex="0"
+														<th width="25%" class="sorting sorting_desc" tabindex="0"
 															aria-controls="data-table-combine" rowspan="1"
-															colspan="1" style="width: 6px;" data-column-index="0"
+															colspan="1" data-column-index="0"
 															aria-label=": activate to sort column ascending"
 															aria-sort="descending">#</th>
-														<th width="5%" data-orderable="false"
+														<th width="25%" data-orderable="false"
 															class="sorting_disabled" rowspan="1" colspan="1"
-															style="width: 22px;" data-column-index="1" aria-label="">Cop명</th>
-														<th class="text-nowrap sorting sorting_desc" tabindex="0"
+															data-column-index="1" aria-label="">제목</th>
+														<th width="25%" class="text-nowrap sorting sorting_desc" tabindex="0"
 															aria-controls="data-table-combine" rowspan="1"
-															colspan="1" style="width: 104px;" data-column-index="2"
+															colspan="1"data-column-index="2"
 															aria-label=": activate to sort column ascending"
-															aria-sort="descending">참여자 수</th>
-														<th class="text-nowrap sorting sorting_desc" tabindex="0"
+															aria-sort="descending">작성일</th>
+														<th width="25%" class="text-nowrap sorting sorting_desc" tabindex="0"
 															aria-controls="data-table-combine" rowspan="1"
-															colspan="1" style="width: 104px;" data-column-index="3"
+															colspan="1" data-column-index="3"
 															aria-label=": activate to sort column ascending"
-															aria-sort="descending">소유자</th>
+															aria-sort="descending">작성자</th>
 													</tr>
 												</thead>
 												<tbody>
-													<c:set var="occ" value="${ownCopCnt}" />
-													<c:set var="ocv" value="${ownCopVO}" />
-													<c:forEach var="ocv" items="${ownCopVO}" begin="0" end="${fn:length(ownCopVO)}" varStatus="status">
+													<c:forEach var="cal" items="${archiveList}">
 														<tr
-															onclick="OpenWindow('detail/${ocv.copCode}','${ocv.copName}','1440','800');"
+															onclick="javascript:location.href='pdsDetail/${cal.caCode}';"
 															style="cursor: pointer;">
-															<td>${ocv.copCode }</td>
-															<td>${ocv.copName }</td>
-															<td>${occ[status.index].copPersonnel}</td>
-															<td>${ocv.copOwner }</td>
+															<td>${cal.caCode }</td>
+															<td>${cal.caTitle }</td>
+															<td>${cal.caRegdate}</td>
+															<td>${cal.empName }</td>
 														</tr>
 													</c:forEach>
 												</tbody>
@@ -161,6 +160,11 @@ li {
 		</div>
 	</div>
 	<script type="text/javascript">
+	
+	function pdsRegist(){
+		var copNo = location.href.substr(-5,5)
+		location.href = "pdsRegistForm/" + copNo
+	}
 window.onload = function() {
 	var el = document.getElementById('dom');
 	el.setAttribute('hidden', '');
