@@ -34,7 +34,7 @@
 			<div class="error-content">
 				<div class="error-message">페이지를 찾을 수 없습니다.</div>
 				<div>
-					<a href="index.html" class="btn btn-success px-3">돌아가기</a>
+					<a href="javascript:history.go(-1);" class="btn btn-success px-3">돌아가기</a>
 				</div>
 			</div>
 		</div>
