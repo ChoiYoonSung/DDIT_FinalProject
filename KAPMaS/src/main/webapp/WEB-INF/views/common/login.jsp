@@ -83,14 +83,14 @@
 							<label for="password" class="d-flex align-items-center fs-13px text-gray-600">Password</label>
 						</div>
 						<div class="mb-15px">
-							<button type="submit" class="btn btn-success d-block h-45px w-100 btn-lg fs-14px">Sign In</button>
+							<button type="submit" class="btn btn-inverse d-block h-45px w-100 btn-lg fs-14px">Sign In</button>
 						</div>
 						<div class="mb-40px pb-40px text-inverse row">
 							<div class="col-6 text-center">
-								<a href="<%=request.getContextPath() %>/emp/regist" class="text-primary">Sign Up</a>
+								<a href="<%=request.getContextPath() %>/emp/registForm.do" class="text-inverse">Sign Up</a>
 							</div>
 							<div class="col-6 text-center">
-								<a href="<%=request.getContextPath() %>/emp/findForm.do" class="text-primary">Find Password</a>
+								<a href="<%=request.getContextPath() %>/emp/findForm.do" class="text-inverse">Find Password</a>
 							</div>
 						</div>
 						<div>

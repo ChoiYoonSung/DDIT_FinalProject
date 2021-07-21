@@ -36,5 +36,36 @@
 		    #{caAtName},
 		    #{caAtType})
 	</update>
-
+	
+	<select id="getAttachByCaAtNo" resultType="caAttach">
+		SELECT
+		    ca_at_no,
+		    ca_code,
+		    ca_at_path,
+		    ca_at_name,
+		    ca_at_type
+		FROM
+		    coparchiveattach
+		where
+		    ca_at_no = #{int}
+	</select>
+	
+	<delete id="removeAttachByCaAtNo" >
+		delete from coparchiveattach
+		where ca_at_no = #{ca}	
+	</delete>
+	
+	<update id="modifyCa" parameterType="cArcVO">
+		update coparchive
+		set ca_title = #{caTitle},
+		    CA_CONTENT = #{caContent},
+		    ca_regdate = sysdate
+		where
+		    ca_code = #{caCode}
+	</update>
+	
+	<delete id="deleteAllAttach">
+		delete from COPARCHIVEATTACH
+		where ca_code = #{str}
+	</delete>
 </mapper>

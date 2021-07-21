@@ -67,14 +67,13 @@
 	<context:component-scan base-package="com.spring.scheduled" />
 	<task:annotation-driven/>
 	
-	<!-- 
-	 <websocket:handlers>
-    	<websocket:mapping handler="echoHandler" path="/echo"/>
-    	<websocket:sockjs/>
+	
+	<beans:bean id="echoHandler" class="com.spring.chat.EchoHandler"/>
+
+	<websocket:handlers>
+		<websocket:mapping handler="echoHandler" path="/echo"/>
+		<websocket:sockjs/>
 	</websocket:handlers>
 	
-	<beans:bean id="echoHandler" class="com.spring.utils.EchoHandler" />
-	
-	 -->
 	
 </beans:beans>

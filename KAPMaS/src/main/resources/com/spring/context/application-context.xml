@@ -132,6 +132,11 @@
 	p:sqlsession-ref="sqlSession"
 	/>
 	
+	<bean id="chatRoomRepository" class="com.spring.chat.ChatRoomRepository"
+	/>
+	
+	
+	
 	<bean id="taskScheduler" class="com.spring.scheduled.CompletionDateNotice" />
 	
 	<task:scheduler id="sendmailScheduler"/>

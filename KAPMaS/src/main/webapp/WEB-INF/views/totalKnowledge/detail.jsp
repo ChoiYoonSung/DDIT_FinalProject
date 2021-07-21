@@ -5,21 +5,35 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ include file="./reply_js.jsp"%>
 <%@ include file="/WEB-INF/views/totalKnowledge/js/tkDetail.jsp"%>
+<style>
+ #writerImg{width:50px;height:50px;border-radius: 10%;}
+ #writerImgDiv{text-align:center;}
+ .popover {popover-border-color:rgba($black, .2);}
+</style>
 <!-- 클립보드 알림 -->
-<script
-	src="<%=request.getContextPath()%>/resources/bootstrap/color_admin/template/assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
+<script	src="<%=request.getContextPath()%>/resources/bootstrap/color_admin/template/assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
 <!-- jQuery -->
-<script
-	src="<%=request.getContextPath()%>/resources/bootstrap/assets/plugins/jquery/dist/jquery.js"></script>
+<script	src="<%=request.getContextPath()%>/resources/bootstrap/assets/plugins/jquery/dist/jquery.js"></script>
+<!-- popper -->
+<script	src="<%=request.getContextPath()%>/resources/js/popper.min.js"></script>
+<script>
+$(document).ready(function(){
+  $('#qtipInfo').popover({
+	  title: "<h5>작성자 정보</h5>", 
+	  content: '<div id="writerImgDiv"><img class="img-circle" id="writerImg"src="<%=request.getContextPath()%>/emp/getPictureById/${tk.empId}"></div><hr><div><span>이름:${emp.empName}</span><br><span>부서명:${dep.depName}</span></div>', 
+	  html: true, 
+	  placement: "left"}); 
+});
+</script>
+<!-- bootstrap5 -->
 <body style="padding: 40px; background: white;">
-	<div
-		style="max-width: 1000px; min-width: 800px; margin: 0 auto; min-height: 900px;">
+	<div style="max-width: 1000px; min-width: 800px; margin: 0 auto; min-height: 900px;">
 		<section class="content container">
 			<h2 style="text-align: center">${tk.tkTitle}</h2>
 			<input type="hidden" id="scTitle" value="${tk.tkTitle}">
 			<input type="hidden" id="empId" value="${loginUser.empId }">
 			<input type="hidden" id="tkCode" value="${tk.tkCode }">
-			
+			<input type="hidden" id="tkWriter" value="${tk.empId }">
 			
 			<hr>
 			<br>
@@ -74,7 +88,7 @@
 			</div>
 			<div>
 				<p style="float: right">작성일 : ${tk.tkRegdate}</p>
-				<p style="float: right; margin-right: 10px;">작성자 : ${tk.empId }</p>
+				<p id="qtipInfo"class="maninfo" style="float: right; margin-right: 10px;">작성자 : ${tk.empId }</p>
 			</div>
 
 
@@ -210,6 +224,8 @@
 	</form>
 <script>
 window.onload = function(){
+	$('#writerImg').attr("class", "img-circle");
+
 	var iconS = $('#scrapIcon');
 	var iconL = $('#likeIcon');	
 	var iconR = $('#reportIcon');	
@@ -278,6 +294,8 @@ window.onload = function(){
 			AjaxErrorSecurityRedirectHandler(error.status);
 		}
 	});	
+	
+	
 }		
 
 </script>

@@ -25,12 +25,16 @@ import com.spring.command.ScrapInsertCommand;
 import com.spring.command.SearchCriteria;
 import com.spring.command.TkModifyCommand;
 import com.spring.command.TkRegistCommand;
+import com.spring.dto.DepVO;
+import com.spring.dto.EmpVO;
 import com.spring.dto.LikeVO;
 import com.spring.dto.ReportVO;
 import com.spring.dto.ScrapVO;
 import com.spring.dto.TkAttachVO;
 import com.spring.dto.TkReplyVO;
 import com.spring.dto.TotalKnowledgeVO;
+import com.spring.service.DepService;
+import com.spring.service.EmpService;
 import com.spring.service.ScrapService;
 import com.spring.service.TkReplyService;
 import com.spring.service.TotalKnowledgeService;
@@ -49,6 +53,12 @@ public class TotalknowledgeController {
 	
 	@Autowired
 	private ScrapService scrapService;
+	
+	@Autowired
+	private EmpService empService;
+	
+	@Autowired
+	private DepService depService;
 	
 	
 	@Resource(name = "TkfileUploadPath")
@@ -131,7 +141,15 @@ public class TotalknowledgeController {
 		
 		int RpCnt = rpService.getTkReplyListCount(tkCode);
 		
+		String empId = tk.getEmpId();
+		EmpVO emp = empService.getEmpById(empId);
+		String depCode = empService.getEmpById(empId).getDepCode();
+		DepVO dep = depService.getDepListByCode(depCode);
+		
+		
 		mnv.addObject("tk", tk);
+		mnv.addObject("emp", emp);
+		mnv.addObject("dep", dep);
 		mnv.addObject("tkKeywordArr", tkKeywordArr);
 		mnv.addObject("RpCnt", RpCnt);
 		mnv.setViewName(url);

@@ -33,10 +33,6 @@
 		<import resource="./dataSource-context.xml"/>
 		<import resource="./application-context.xml"/>
 		<import resource="./security-context.xml"/>
-		<import resource="./ws-config.xml"/>
-		
-	
-		
 			
 		<!-- member.picture -->
 		<bean id="imgPath" class="java.lang.String">
