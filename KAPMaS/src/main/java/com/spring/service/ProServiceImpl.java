@@ -276,10 +276,20 @@ public class ProServiceImpl implements ProService {
 	public void insertPINew(PIVO pi) throws SQLException {
 		proDAO.insertPINew(pi);
 	}
+	
+	@Override
+	public void updatePI(PIVO pi) throws SQLException {
+		proDAO.updatePI(pi);
+	}
 
 	@Override
 	public void completePI(String piCode) throws SQLException {
 		proDAO.completePI(piCode);
+	}
+
+	@Override
+	public void deletePI(String piCode) throws SQLException {
+		proDAO.deletePI(piCode);
 	}
 
 }

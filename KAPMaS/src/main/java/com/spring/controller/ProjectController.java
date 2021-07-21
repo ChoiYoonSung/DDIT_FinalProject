@@ -22,12 +22,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.chat.ChatRoom;
+import com.spring.chat.ChatRoomForm;
+import com.spring.chat.ChatRoomRepository;
 import com.spring.command.GetCodeCommand;
 import com.spring.command.GetJobInfo;
 import com.spring.command.JobModifyCommand;
@@ -35,6 +40,7 @@ import com.spring.command.JobRegistCommand;
 import com.spring.command.ProModifyCommand;
 import com.spring.command.ProPAModifyCommand;
 import com.spring.command.ProPARegistCommand;
+import com.spring.command.ProPIModifyCommand;
 import com.spring.command.ProRegistCommand;
 import com.spring.command.ProjecterCome;
 import com.spring.command.RelegateCommand;
@@ -88,11 +94,66 @@ public class ProjectController {
 	@Resource(name = "relegateUploadPath")
 	private String relegateUploadPath;
 	
+	@Autowired
+	private ChatRoomRepository chatRoomRepository;
+	
+	
+	
+	@RequestMapping("/chatting")
+	public String chatting() {
+		String url = "project/chat.open";
+		
+		return url;
+	}
+	
 	
 	@RequestMapping("/meeting")
-	 public String chat(){
-		System.out.println("컨트롤러 들어온다다");
-        return "project/chattingview.open";
+	public String meeting() {
+		String url = "project/meeting.open";
+		
+		
+		
+		return url;
+	}
+	
+	
+	@RequestMapping("/meeting2")
+	public ModelAndView meeting(ModelAndView mnv) {
+		String url = "project/rooms.open";
+		
+		mnv.addObject("rooms",chatRoomRepository.findAllRoom());
+		mnv.setViewName(url);
+		return mnv;
+	}
+	
+	@RequestMapping("/rooms/{id}")
+	    public ModelAndView room(@PathVariable String id, ModelAndView mnv){
+		String url = "project/room.open";
+		
+	        ChatRoom room = chatRoomRepository.findRoomById(id);
+	        mnv.addObject("room",room);
+	        mnv.setViewName(url);
+	        return mnv;
+	    }
+	
+	@RequestMapping("/new")
+	public ModelAndView make(ModelAndView mnv) {
+		String url = "project/newRoom.open";
+		
+		 ChatRoomForm form = new ChatRoomForm();
+		
+		mnv.addObject("form", form);
+		mnv.setViewName(url);
+		return mnv;
+	}
+	
+	@RequestMapping("/room/new")
+	public ModelAndView makeRoom(ChatRoomForm form,ModelAndView mnv){
+        chatRoomRepository.createChatRoom(form.getName());
+        String url = "project/rooms.open";
+        mnv.addObject("rooms",chatRoomRepository.findAllRoom());
+        mnv.setViewName(url);
+		return mnv;
     }
 	
 	
@@ -870,7 +931,7 @@ public class ProjectController {
 			double count = 0;
 			double percent = 0;
 			for (int j = 0; j < piList.size(); j++) {
-				if(piList.get(j).getPiMilestone().equals(piMileStone.get(i))){
+				if(piList.get(j).getPiMileStone().equals(piMileStone.get(i))){
 					count += 1;
 					if(piList.get(j).getPiStatus() == 0) {
 						percent+= 1;
@@ -882,9 +943,6 @@ public class ProjectController {
 			}else {
 				piMileStonePercent.add((percent/count)*100.0);
 			}
-			System.out.println("percent: " + percent);
-			System.out.println("count: " + count);
-			System.out.println((percent/count)*100.0);
 			piMileStoneString += piMileStone.get(i);
 			if(i != piMileStone.size()-1) {
 				piMileStoneString += ",";
@@ -892,7 +950,6 @@ public class ProjectController {
 		}
 		
 		mnv.addObject("piList",piList);
-//		mnv.addObject("piMileStone",piMileStone);
 		mnv.addObject("piMileStone",piMileStoneString);
 		mnv.addObject("piMileStonePercent",piMileStonePercent);
 		
@@ -902,10 +959,88 @@ public class ProjectController {
 	}
 	
 
+	@RequestMapping("/piDetail/{piCode}")
+	public ModelAndView projectIssueDetail (@PathVariable String piCode, ModelAndView mnv) throws Exception{
+		String url = "project/piDetail.open";
+		
+		PIVO pi = proService.selectPI(piCode);
+		List<PIVO> piList = proService.selectPIList(pi.getpCode());
+		Double piMileStonePercent = 0.0;
+		double count = 0;
+		double percent = 0;
+		for (int j = 0; j < piList.size(); j++) {
+			if(piList.get(j).getPiMileStone().equals(pi.getPiMileStone())){
+				count += 1;
+				if(piList.get(j).getPiStatus() == 0) {
+					percent+= 1;
+				}
+			}
+		}
+		if(percent == 0.0) {
+			piMileStonePercent = 0.0;
+		}else {
+			piMileStonePercent = (percent/count)*100.0;
+		}
+		
+		mnv.addObject("pi",pi);
+		mnv.addObject("piMileStonePercent",piMileStonePercent);
+		
+		mnv.setViewName(url);
+		return mnv;
+	}
+	
+	
+	@RequestMapping("/piModifyForm")
+	public ModelAndView projectIssueModifyForm( String piCode, ModelAndView mnv)throws Exception{
+		String url = "project/piModifyForm.open";
+		
+		PIVO pi = proService.selectPI(piCode);
+		List<Object> piMileStone = proService.selectPIMileStoneList(pi.getpCode());
+		
+		mnv.addObject("pi",pi);
+		mnv.addObject("piMileStone",piMileStone);
+		
+		mnv.setViewName(url);
+		return mnv;
+	}
 	
 	
 	
+	@RequestMapping("/piComplete")
+	public String projectIssueComplete(String piCode) throws Exception{
+		String url = "project/piComplete";
+		
+		proService.completePI(piCode);
+		
+		return url;
+	}
 	
+	
+	
+	@RequestMapping(value="/piModify", method=RequestMethod.POST, produces = "text/plain;charset=utf-8")
+	public ModelAndView projectIssueModify(ModelAndView mnv, ProPIModifyCommand piCommand) throws Exception{
+		String url = "project/piModify_success";
+		
+		String piCode = piCommand.getPiCode();
+		PIVO pi = piCommand.toPiVO();
+		
+		proService.updatePI(pi);
+		
+		mnv.addObject(piCode);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	
+	@RequestMapping("/piRemove")
+	public String projectIssueRemove(String piCode) throws Exception{
+		String url = "project/piRemove_success";
+		
+		proService.deletePI(piCode);
+		
+		return url;
+	}
 	
 	
 }

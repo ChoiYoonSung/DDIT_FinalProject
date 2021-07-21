@@ -95,5 +95,9 @@ public interface ProDAO {
 	
 	public void insertPINew(PIVO pi) throws SQLException;
 	
+	public void updatePI(PIVO pi) throws SQLException;
+	
 	public void completePI(String piCode) throws SQLException;
+	
+	public void deletePI(String piCode) throws SQLException;
 }

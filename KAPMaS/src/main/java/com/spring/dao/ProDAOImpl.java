@@ -250,8 +250,19 @@ public class ProDAOImpl implements ProDAO{
 	}
 	
 	@Override
+	public void updatePI(PIVO pi) throws SQLException{
+		session.update("PI-Mapper.updatePI", pi);
+	}
+	
+	@Override
 	public void completePI(String piCode) throws SQLException{
-		session.update("PI-Mapper.updatePI", piCode);
+		session.update("PI-Mapper.completePI", piCode);
+	}
+
+
+	@Override
+	public void deletePI(String piCode) throws SQLException {
+		session.update("PI-Mapper.deletePI",piCode);
 	}
 
 }

@@ -108,6 +108,10 @@ public interface ProService {
 		public void insertPI(PIVO pi) throws SQLException;
 		//이슈 등록(새 마일스톤)
 		public void insertPINew(PIVO pi) throws SQLException;
+		//이슈 수정
+		public void updatePI(PIVO pi) throws SQLException;
 		//이슈 완료
 		public void completePI(String piCode) throws SQLException;
+		//이슈 삭제
+		public void deletePI(String piCode) throws SQLException;
 }

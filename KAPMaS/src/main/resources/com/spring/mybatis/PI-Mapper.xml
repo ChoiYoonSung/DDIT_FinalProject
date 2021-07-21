@@ -39,10 +39,23 @@
 	 	VALUES()
 	 </update>
 	 
-	 <!-- 이슈 수정 -->
+	 <!-- 이슈 완료 -->
 	 <update id="updatePI">
 	 	UPDATE PROJECTISSUE
-	 	SET pi_status = 1
+	 	SET pi_code = #{piCode}, emp_id = #{empId}, pi_title = #{piTitle}, pi_content = #{piContent}, pi_milestone=#{piMileStone}, pi_regdate = sysdate
+	 	WHERE PI_CODE = #{piCode}
+	 </update>
+	 
+	 <!-- 이슈 수정 -->
+	 <update id="completePI">
+	 	UPDATE PROJECTISSUE
+	 	SET pi_status = 0, pi_regdate = sysdate
+	 	WHERE PI_CODE = #{piCode}
+	 </update>
+	 
+	 <!-- 이슈 수정 -->
+	 <update id="deletePI">
+	 	DELETE FROM PROJECTISSUE
 	 	WHERE PI_CODE = #{piCode}
 	 </update>
 
