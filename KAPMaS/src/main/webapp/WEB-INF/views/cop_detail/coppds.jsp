@@ -114,24 +114,29 @@ li {
 												class="table table-striped table-bordered align-middle">
 												<thead>
 													<tr role="row">
-														<th width="25%" class="sorting sorting_desc" tabindex="0"
+														<th width="20%" class="sorting sorting_desc" tabindex="0"
 															aria-controls="data-table-combine" rowspan="1"
 															colspan="1" data-column-index="0"
 															aria-label=": activate to sort column ascending"
 															aria-sort="descending">#</th>
-														<th width="25%" data-orderable="false"
+														<th width="20%" data-orderable="false"
 															class="sorting_disabled" rowspan="1" colspan="1"
 															data-column-index="1" aria-label="">제목</th>
-														<th width="25%" class="text-nowrap sorting sorting_desc" tabindex="0"
+														<th width="20%" class="text-nowrap sorting sorting_desc" tabindex="0"
 															aria-controls="data-table-combine" rowspan="1"
 															colspan="1"data-column-index="2"
 															aria-label=": activate to sort column ascending"
 															aria-sort="descending">작성일</th>
-														<th width="25%" class="text-nowrap sorting sorting_desc" tabindex="0"
+														<th width="20%" class="text-nowrap sorting sorting_desc" tabindex="0"
 															aria-controls="data-table-combine" rowspan="1"
 															colspan="1" data-column-index="3"
 															aria-label=": activate to sort column ascending"
 															aria-sort="descending">작성자</th>
+														<th width="20%" class="text-nowrap sorting sorting_desc" tabindex="0"
+															aria-controls="data-table-combine" rowspan="1"
+															colspan="1" data-column-index="4"
+															aria-label=": activate to sort column ascending"
+															aria-sort="descending">조회수</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -143,6 +148,7 @@ li {
 															<td>${cal.caTitle }</td>
 															<td>${cal.caRegdate}</td>
 															<td>${cal.empName }</td>
+															<td>${cal.caViewcnt }</td>
 														</tr>
 													</c:forEach>
 												</tbody>

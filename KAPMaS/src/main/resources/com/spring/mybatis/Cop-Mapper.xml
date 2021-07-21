@@ -280,6 +280,41 @@
 		b.cop_code
 		and a.emp_id = #{empId}
 	</select>
+	
+	<select id="getArchiveDetail" parameterType="str" resultType="cArcVO">
+		SELECT
+		    ca_code,
+		    cop_code,
+		    emp_id,
+		    ca_title,
+		    ca_content,
+		    ca_regdate,
+		    ca_enabled,
+		    ca_viewcnt,
+		    emp_name
+		FROM
+		    coparchive
+		where
+		    ca_code = #{str}
+	</select>
+	
+	<select id="getArchiveAttach" parameterType="str" resultType="caAttach">
+		SELECT
+		    ca_at_no,
+		    ca_code,
+		    ca_at_path,
+		    ca_at_name,
+		    ca_at_type
+		FROM
+		    coparchiveattach
+		where
+		    ca_code = #{str}
+	</select>
+	
+	<delete id="deleteArchive">
+		delete from coparchive
+		where ca_code = #{str}
+	</delete>
 </mapper>
 
 

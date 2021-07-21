@@ -8,6 +8,7 @@ import com.spring.command.SearchCriteriaById;
 import com.spring.dto.CoPVO;
 import com.spring.dto.CopArchiveVO;
 import com.spring.dto.CopFamilyDiscussionVO;
+import com.spring.dto.caAttachVO;
 
 public interface CoPDAO {
 
@@ -63,5 +64,17 @@ public interface CoPDAO {
 
 	int getCASeqNextValue() throws SQLException;
 
-	void insertCA(CopArchiveVO ca) throws SQLException; 
+	void insertCA(CopArchiveVO ca) throws SQLException;
+
+	CopArchiveVO getArchiveDetail(String caCode) throws SQLException;
+
+	List<caAttachVO> getArchiveAttach(String caCode) throws SQLException;
+
+	caAttachVO getAttachByCaAtNo(int caatno) throws SQLException;
+
+	void removeAttachByCaAtNo(int caatno) throws SQLException;
+
+	void modifyCa(CopArchiveVO ca) throws SQLException;
+
+	void deleteArchive(String caCode) throws SQLException; 
 }

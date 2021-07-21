@@ -8,6 +8,8 @@ public interface CAAttachDAO {
 
 	void insertCAAttach(caAttachVO attach) throws SQLException;
 
+	void deleteAllAttach(String caCode) throws SQLException;
+
 	
 	
 }

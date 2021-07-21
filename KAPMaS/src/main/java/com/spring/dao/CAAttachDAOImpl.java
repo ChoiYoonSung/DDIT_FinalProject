@@ -19,4 +19,9 @@ public class CAAttachDAOImpl implements CAAttachDAO {
 		session.update("CAAttach-Mapper.insertAttach", attach);
 	}
 
+	@Override
+	public void deleteAllAttach(String caCode) throws SQLException {
+		session.update("CAAttach-Mapper.deleteAllAttach", caCode);
+	}
+
 }

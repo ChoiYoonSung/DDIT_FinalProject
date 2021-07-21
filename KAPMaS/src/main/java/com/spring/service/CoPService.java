@@ -8,6 +8,7 @@ import com.spring.command.SearchCriteriaById;
 import com.spring.dto.CoPVO;
 import com.spring.dto.CopArchiveVO;
 import com.spring.dto.CopFamilyDiscussionVO;
+import com.spring.dto.caAttachVO;
 
 public interface CoPService {
 
@@ -60,4 +61,14 @@ public interface CoPService {
 
 	void registCA(CopArchiveVO ca) throws SQLException;
 
+	CopArchiveVO getArchiveDetail(String caCode) throws SQLException;
+
+	caAttachVO getAttachByCaAtNo(int caatno) throws SQLException;
+
+	void removeAttachByCaAtNo(int caatno) throws SQLException;
+
+	void modifyCa(CopArchiveVO ca) throws SQLException;
+
+	void archiveRemove(String caCode) throws SQLException;
+ 
 }

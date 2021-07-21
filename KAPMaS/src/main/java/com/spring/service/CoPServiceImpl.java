@@ -161,4 +161,50 @@ public class CoPServiceImpl implements CoPService {
 
 	}
 
+	@Override
+	public CopArchiveVO getArchiveDetail(String caCode) throws SQLException {
+
+		CopArchiveVO ca = copDAO.getArchiveDetail(caCode);
+		addAttachList(ca);
+		return ca;
+	}
+
+	private void addAttachList(CopArchiveVO ca) throws SQLException {
+		if (ca == null)
+			return;
+
+		String caCode = ca.getCaCode();
+		List<caAttachVO> attachList = copDAO.getArchiveAttach(caCode);
+
+		ca.setAttachList(attachList);
+	}
+
+	@Override
+	public caAttachVO getAttachByCaAtNo(int caatno) throws SQLException {
+		caAttachVO cavo = copDAO.getAttachByCaAtNo(caatno);
+		return cavo;
+	}
+
+	@Override
+	public void removeAttachByCaAtNo(int caatno) throws SQLException {
+		copDAO.removeAttachByCaAtNo(caatno);
+	}
+
+	@Override
+	public void modifyCa(CopArchiveVO ca) throws SQLException {
+		copDAO.modifyCa(ca);
+		
+		if(ca.getAttachList() != null)
+			for(caAttachVO attach : ca.getAttachList()) {
+				attach.setCaCode(ca.getCaCode());
+				caDAO.insertCAAttach(attach);
+			}
+	}
+
+	@Override
+	public void archiveRemove(String caCode) throws SQLException {
+		caDAO.deleteAllAttach(caCode);
+		copDAO.deleteArchive(caCode);
+	}
+
 }

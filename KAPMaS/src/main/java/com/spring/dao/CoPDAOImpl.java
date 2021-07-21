@@ -13,6 +13,7 @@ import com.spring.command.SearchCriteriaById;
 import com.spring.dto.CoPVO;
 import com.spring.dto.CopArchiveVO;
 import com.spring.dto.CopFamilyDiscussionVO;
+import com.spring.dto.caAttachVO;
 
 public class CoPDAOImpl implements CoPDAO {
 
@@ -227,6 +228,39 @@ public class CoPDAOImpl implements CoPDAO {
 	@Override
 	public void insertCA(CopArchiveVO ca) throws SQLException {
 		session.update("CAAttach-Mapper.insertCA", ca);
+	}
+
+	@Override
+	public CopArchiveVO getArchiveDetail(String caCode) throws SQLException {	
+		CopArchiveVO ca = session.selectOne("Cop-Mapper.getArchiveDetail", caCode);
+		return ca;
+	}
+
+	@Override
+	public List<caAttachVO> getArchiveAttach(String caCode) throws SQLException {
+		List<caAttachVO> cav = session.selectList("Cop-Mapper.getArchiveAttach", caCode);
+		return cav;
+	}
+
+	@Override
+	public caAttachVO getAttachByCaAtNo(int caatno) throws SQLException {
+		caAttachVO cavo = session.selectOne("CAAttach-Mapper.getAttachByCaAtNo", caatno);
+		return cavo;
+	}
+
+	@Override
+	public void removeAttachByCaAtNo(int caatno) throws SQLException {
+		session.delete("CAAttach-Mapper.removeAttachByCaAtNo", caatno);
+	}
+
+	@Override
+	public void modifyCa(CopArchiveVO ca) throws SQLException {
+		session.update("CAAttach-Mapper.modifyCa", ca);
+	}
+
+	@Override
+	public void deleteArchive(String caCode) throws SQLException {
+		session.update("Cop-Mapper.deleteArchive", caCode);
 	}
 
 }
