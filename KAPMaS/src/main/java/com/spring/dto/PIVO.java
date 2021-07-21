@@ -4,11 +4,11 @@ public class PIVO {
 	private String piCode;
 	private String empId;
 	private String pCode;
-	private String piRegdate;
+	private String piRegDate;
 	private String piContent;
 	private String piTitle;
 	private int piStatus;
-	private String piMilestone;
+	private String piMileStone;
 	
 	
 	
@@ -30,11 +30,11 @@ public class PIVO {
 	public void setpCode(String pCode) {
 		this.pCode = pCode;
 	}
-	public String getPiRegdate() {
-		return piRegdate;
+	public String getPiRegDate() {
+		return piRegDate;
 	}
-	public void setPiRegdate(String piRegdate) {
-		this.piRegdate = piRegdate;
+	public void setPiRegDate(String piRegDate) {
+		this.piRegDate = piRegDate;
 	}
 	public String getPiContent() {
 		return piContent;
@@ -54,10 +54,10 @@ public class PIVO {
 	public void setPiStatus(int piStatus) {
 		this.piStatus = piStatus;
 	}
-	public String getPiMilestone() {
-		return piMilestone;
+	public String getPiMileStone() {
+		return piMileStone;
 	}
-	public void setPiMilestone(String piMilestone) {
-		this.piMilestone = piMilestone;
+	public void setPiMileStone(String piMileStone) {
+		this.piMileStone = piMileStone;
 	}
 }
