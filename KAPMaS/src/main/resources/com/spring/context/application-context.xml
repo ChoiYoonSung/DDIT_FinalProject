@@ -63,6 +63,9 @@
 	<bean id="likeDAO"
 		class="com.spring.dao.LikeDAOImpl"
 		p:sqlSession-ref="sqlSession"/>	
+	<bean id="answerLikeDAO"
+		class="com.spring.dao.AnswerLikeDAOImpl"
+		p:sqlSession-ref="sqlSession"/>	
 		
 	<bean id="reportDAO"
 		class="com.spring.dao.ReportDAOImpl"
@@ -133,9 +136,107 @@
 	/>
 	
 	<bean id="chatRoomRepository" class="com.spring.chat.ChatRoomRepository"
+	p:sqlSession-ref="sqlSession"
 	/>
 	
+	<bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"
+	/>
 	
+	<bean id="meetingDAO" class="com.spring.dao.MeetingDAOImpl"
+	 p:sqlSession-ref="sqlSession"
+	/>
+	
+	<bean id="meetingService" class="com.spring.service.MeetingServiceImpl"
+	p:meetingDAO-ref="meetingDAO"
+	/>
+	
+	<bean id="knowDAO" class="com.spring.dao.KnowDAOImpl"
+	p:sqlSession-ref="sqlSession"
+	/>
+	
+	<bean id="knowService" class="com.spring.service.KnowServiceImpl"
+	p:knowDAO-ref="knowDAO"
+	p:reportDAO-ref="reportDAO"
+	p:likeDAO-ref="likeDAO"
+	/>
+	
+	<bean id="anserDAO" class="com.spring.dao.AnswerDAOImpl"
+	p:sqlsession-ref="sqlSession"
+	/>
+	
+	<bean id="answerService" class="com.spring.service.AnswerServiceImpl"
+	p:answerDAO-ref="anserDAO"
+	p:knowDAO-ref="knowDAO"
+	p:answerLikeDAO-ref="answerLikeDAO"
+	/>
+	
+	<bean id="piReplyDAO" class="com.spring.dao.PiReplyDAOImpl"
+	p:sqlSession-ref="sqlSession"/>
+	
+	<bean id="piReplyService" class="com.spring.service.PiReplyServiceImpl"
+	p:piReplyDAO-ref="piReplyDAO"/>
+	
+	
+	<bean id="asReplyDAO" class="com.spring.dao.AsReplyDAOImpl"
+	p:sqlsession-ref="sqlSession"
+	/>
+	
+	<bean id="asReplyService" class="com.spring.service.AsReplyServiceImpl"
+	p:asReplyDAO-ref="asReplyDAO"
+	/>
+	<bean id="prbDAO" class="com.spring.dao.PRBDAOImpl"
+	p:sqlSession-ref="sqlSession"
+	/>
+	
+	<bean id="prbService" class="com.spring.service.PRBServiceImpl"
+	p:prbDAO-ref="prbDAO"
+	/>
+	
+	<bean id="dfolderDAO" class="com.spring.dao.DfolderDAOImple"
+	p:sqlSession-ref="sqlSession"
+	/>
+	
+	<bean id="dfolderService" class="com.spring.service.DfolderServiceImpl"
+	p:dfolder-ref="dfolderDAO"
+	/>
+	
+	<bean id="documentDAO" class="com.spring.dao.DocumentDAOImpl"
+	p:sqlSession-ref="sqlSession"
+	/>
+	
+	<bean id="documentService" class="com.spring.service.DocumentServiceImpl"
+	p:documentDAO-ref="documentDAO"
+	/>
+	
+	<bean id="adminService" class="com.spring.service.AdminServiceImpl"
+	p:reportDAO-ref="reportDAO"
+	p:adminDAO-ref="adminDAO"
+	/>
+	<bean id="adminDAO" class="com.spring.dao.AdminDAOImpl"
+	p:sqlSession-ref="sqlSession"
+	/>
+	
+	<bean id="systemDAO" class="com.spring.dao.SystemDAOImpl" 
+	p:sqlSession-ref="sqlSession"
+	/>
+	
+	<bean id="systemService" class="com.spring.service.SystemServiceImpl"
+	p:systemDAO-ref="systemDAO"
+	/>
+	
+	<bean id="qnaService" class="com.spring.service.QnaServiceImpl"
+	p:qnaDAO-ref="qnaDAO"
+	/>
+	<bean id="qnaDAO" class="com.spring.dao.QnaDAOImpl"
+	p:sqlsession-ref="sqlSession"
+	/>
+	
+	<bean id="qreplyService" class="com.spring.service.QreplyServiceImpl"
+	p:qreplyDAO-ref="qreplyDAO"
+	/>
+	<bean id="qreplyDAO" class="com.spring.dao.QreplyDAOImpl"
+	p:sqlSession-ref="sqlSession"
+	/>
 	
 	<bean id="taskScheduler" class="com.spring.scheduled.CompletionDateNotice" />
 	

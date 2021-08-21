@@ -9,6 +9,9 @@ import com.spring.dto.TotalKnowledgeVO;
 public interface TotalKnowledgeDAO {
 	
 	List<TotalKnowledgeVO> selectTkCriteria(SearchCriteria cri)	throws SQLException;
+	List<TotalKnowledgeVO> selectTkCriteriaArr(String[] userArray)	throws SQLException;
+	List<TotalKnowledgeVO> selectTkCriteriaArr2(String[] userArray)	throws SQLException;
+	List<TotalKnowledgeVO> selectTkCriteria2(SearchCriteria cri)	throws SQLException;
 	List<TotalKnowledgeVO> getAllList() throws SQLException;
 	
 	int selectTkCriteriaTotalCount(SearchCriteria cri) throws SQLException;

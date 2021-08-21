@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Chat-Mapper">
+
+
+<select id="getAllChatList" resultType="chat">
+
+	SELECT * 
+	FROM CHAT
+	WHERE P_CODE=#{pCode}
+
+</select>
+
+
+<select id="findRoomById" resultType="chat">
+
+	SELECT *
+	FROM CHAT
+	WHERE ROOM_ID=#{roomId}
+
+</select>
+
+
+<update id="createChatRoom" parameterType="chat">
+
+	INSERT INTO 
+	CHAT(ROOM_ID,NAME,P_CODE)
+	values(concat('ch',CHAT_SEQ.NEXTVAL),#{name},#{pCode})
+
+</update>
+
+
+<update id="deleteChatRoom">
+	
+	DELETE FROM CHAT WHERE ROOM_ID=#{roomId}
+
+</update>
+
+
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

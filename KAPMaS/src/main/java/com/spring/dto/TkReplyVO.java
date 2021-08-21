@@ -8,14 +8,21 @@ public class TkReplyVO {
 	private String tkCode;
 	private String tkRpContent;
 	private Date tkRpRegdate;
+	private String tkRpWriter;
+	private String empName;
 	
+	public String getEmpName() {
+		return empName;
+	}
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
 	public Date getTkRpRegdate() {
 		return tkRpRegdate;
 	}
 	public void setTkRpRegdate(Date tkRpRegdate) {
 		this.tkRpRegdate = tkRpRegdate;
 	}
-	private String tkRpWriter;
 	
 	public int getTkRpCode() {
 		return tkRpCode;

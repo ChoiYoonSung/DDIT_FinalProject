@@ -1,13 +1,17 @@
 package com.spring.dao;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.spring.command.SearchCriteriaByPA;
+import com.spring.command.SearchCriteriaByPro;
 import com.spring.dto.PAVO;
 import com.spring.dto.PIVO;
 import com.spring.dto.PjmVO;
 import com.spring.dto.ProEmpVO;
+import com.spring.dto.ProLogVO;
 import com.spring.dto.ProPjmVO;
 import com.spring.dto.ProVO;
 import com.spring.dto.RelegateVO;
@@ -18,13 +22,13 @@ public interface ProDAO {
 	List<ProPjmVO> getlistProById(String empId) throws SQLException;
 	
 	//아이디로 내가 참여중인 프로젝트 리스트 검색
-	List<ProVO> getListDoProById(String empId)throws SQLException;
+	List<ProVO> getListDoProById(SearchCriteriaByPro cri)throws SQLException;
 	
 	//아이디로 내가 옵저버중인 프로젝트 리스트 검색
-	List<ProVO> getListAopProById(String empId)throws SQLException;
+	List<ProVO> getListAopProById(SearchCriteriaByPro cri)throws SQLException;
 	
 	//아이디로 내가 참여중인 비활성화 프로젝트 리스트 검색
-	List<ProVO> getListNotProById(String empId)throws SQLException;
+	List<ProVO> getListNotProById(SearchCriteriaByPro cri)throws SQLException;
 	
 	//프로젝트 코드로 정보 가져오기
 	public ProVO getProInfo(String  pCode)throws SQLException;
@@ -46,6 +50,12 @@ public interface ProDAO {
 	
 	//프로젝트 참여자 추가
 	public void insertMember(PjmVO pjm)throws SQLException;
+	
+	//프로젝트 참여자 제거
+	public void deleteMember(String empId)throws SQLException;
+		
+	//프로젝트 PL 검색
+	PjmVO projectPl(String pCode)throws SQLException;
 	
 	//프로젝트 참여자 역할 추가
 	void updateAu(PjmVO pjm)throws SQLException;
@@ -93,11 +103,21 @@ public interface ProDAO {
 	
 	public void insertPI(PIVO pi) throws SQLException;
 	
-	public void insertPINew(PIVO pi) throws SQLException;
-	
 	public void updatePI(PIVO pi) throws SQLException;
 	
 	public void completePI(String piCode) throws SQLException;
 	
 	public void deletePI(String piCode) throws SQLException;
+
+	List<HashMap<String, Object>> getMainWorkByManager(String pCode) throws SQLException;
+
+	List<HashMap<String, Object>> getMainWorkByCate(String pCode)throws SQLException;
+
+	HashMap<String, Object> getTotalProgress(String pCode) throws SQLException;
+
+	public void insertLog(Map<String, Object> log) throws SQLException;
+
+	List<ProLogVO> getLogList(String pCode) throws SQLException;
+
+	public String selectPjmAuthById(PjmVO pjm);
 }

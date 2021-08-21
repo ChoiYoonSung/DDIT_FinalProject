@@ -15,10 +15,6 @@
 <meta content="" name="description" />
 <meta content="" name="author" />
 
-
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-<link href="<%=request.getContextPath() %>/resources/bootstrap/assets/css/vendor.min.css" rel="stylesheet" />
-<link href="<%=request.getContextPath() %>/resources/bootstrap/assets/css/default/app.min.css" rel="stylesheet" />
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.5/js/min/perfect-scrollbar.jquery.min.js"></script>
 
 
@@ -69,40 +65,13 @@ th:nth-child(n+3), td:nth-child(n+3){
 					</div>
 					<ul class="nav nav-inbox">
 						<li><a href="<%=request.getContextPath() %>/mypage/receivemail.do"><i class="fa fa-hdd fa-lg fa-fw me-2"></i> 
-						수신함 <span class="badge bg-gray-600 fs-10px rounded-pill ms-auto fw-bolder pt-4px pb-5px px-8px">52</span></a></li>
-					<!-- 	<li><a href="email_inbox.html"><i
-								class="fa fa-flag fa-lg fa-fw me-2"></i> Important</a></li> -->
+						수신함 <span class="badge bg-gray-600 fs-10px rounded-pill ms-auto fw-bolder pt-4px pb-5px px-8px"></span></a></li>
 						<li  class="active"><a href="#"><i class="fa fa-envelope fa-lg fa-fw me-2"></i> 발신함</a></li>
-						<!-- <li><a href="email_inbox.html"><i
-								class="fa fa-save fa-lg fa-fw me-2"></i> Drafts</a></li> -->
-						<li><a href="email_inbox.html"><i class="fa fa-trash-alt fa-lg fa-fw me-2"></i> 휴지통</a></li>
 					</ul>
-					<!-- <div class="nav-title">
-						<b>LABEL</b>
-					</div>
-					<ul class="nav nav-inbox">
-						<li><a href="javascript:;"><i
-								class="fa fa-fw fa-lg fs-12px me-2 fa-circle text-inverse"></i>
-								Admin</a></li>
-						<li><a href="javascript:;"><i
-								class="fa fa-fw fa-lg fs-12px me-2 fa-circle text-blue"></i>
-								Designer &amp; Employer</a></li>
-						<li><a href="javascript:;"><i
-								class="fa fa-fw fa-lg fs-12px me-2 fa-circle text-success"></i>
-								Staff</a></li>
-						<li><a href="javascript:;"><i
-								class="fa fa-fw fa-lg fs-12px me-2 fa-circle text-warning"></i>
-								Sponsorer</a></li>
-						<li><a href="javascript:;"><i
-								class="fa fa-fw fa-lg fs-12px me-2 fa-circle text-danger"></i>
-								Client</a></li>
-					</ul> -->
 				</div>
 
 			</div>
 		</div>
-
-
 		<div class="mailbox-content" >
 			<div class="mailbox-content-header">
 
@@ -111,50 +80,13 @@ th:nth-child(n+3), td:nth-child(n+3){
 						<input type="checkbox" class="form-check-input" data-checked="email-checkbox" id="all" data-change="email-select-all"> 
 						<label class="form-check-label" for="all"></label>
 					</div>
-					<!-- <div class="dropdown me-2">
-						<button class="btn btn-white btn-sm" data-bs-toggle="dropdown">
-							View All <span class="caret ms-3px"></span>
-						</button>
-						<div class="dropdown-menu">
-							<a href="javascript:;" class="dropdown-item">
-							<i class="fa fa-circle fs-9px fa-fw me-2"></i> All</a> 
-							<a href="javascript:;" class="dropdown-item">
-							<i class="fa fa-circle fs-9px fa-fw me-2 text-muted"></i> Unread</a> 
-							<a href="javascript:;" class="dropdown-item"><i class="fa fa-circle fs-9px fa-fw me-2 text-blue"></i> Contacts</a> 
-							<a href="javascript:;" class="dropdown-item"><i class="fa fa-circle fs-9px fa-fw me-2 text-success"></i> Groups</a>
-							<a href="javascript:;" class="dropdown-item"><i class="fa fa-circle fs-9px fa-fw me-2 text-warning"></i>Newsletters</a> 
-							<a href="javascript:;" class="dropdown-item"><i class="fa fa-circle fs-9px fa-fw me-2 text-danger"></i> Socialupdates</a> 
-							<a href="javascript:;" class="dropdown-item"><i class="fa fa-circle fs-9px fa-fw me-2 text-indigo"></i>Everything else</a>
-						</div>
-					</div> -->
-					<%-- <button class="btn btn-sm btn-white me-2">
-						<a href="<%=request.getContextPath() %>/mypage/sendmail.do"><i class="fa fa-redo"></i></a>
-					</button>
-					<div class="w-100 d-sm-none d-block mb-2"
-						data-email-action="divider"></div>
- --%>
 					<div class="btn-group">
-						<button class="btn btn-sm btn-white"
-							data-email-action="delete">
-							<i class="fa fa-times me-1"></i> <span class="hidden-xs" onclick="deleteSmail()">Delete</span>
+						<button class="btn btn-sm btn-white" onclick="deleteSmail()">
+							<i class="fa fa-times me-1"></i> <span class="hidden-xs" >Delete</span>
 						</button>
-						<!-- <button class="btn btn-sm btn-white hide"
-							data-email-action="archive">
-							<i class="fa fa-folder me-1"></i> <span class="hidden-xs">Archive</span>
-						</button>
-						<button class="btn btn-sm btn-white hide"
-							data-email-action="archive">
-							<i class="fa fa-trash me-1"></i> <span class="hidden-xs">Junk</span>
-						</button> -->
-					</div>
-
-
-					<div class="btn-group ms-auto">
-						<button class="btn btn-white btn-sm">
-							<i class="fa fa-chevron-left"></i>
-						</button>
-						<button class="btn btn-white btn-sm">
-							<i class="fa fa-chevron-right"></i>
+						&nbsp;&nbsp;&nbsp;
+						<button class="btn btn-sm btn-white" onclick="CloseWindow();">
+							<span class="hidden-xs" >닫기</span>
 						</button>
 					</div>
 
@@ -163,6 +95,7 @@ th:nth-child(n+3), td:nth-child(n+3){
 			</div>
 			<div class="mailbox-content-body">
 				<div data-scrollbar="true" data-height="100%" data-skip-mobile="true">
+					
 					<ul class="list-group list-group-lg no-radius list-email">
 						
 						
@@ -176,8 +109,7 @@ th:nth-child(n+3), td:nth-child(n+3){
 									<input type="checkbox" class="form-check-input" data-checked="email-checkbox" name="hobby" id="all<%=i %>" value="${smail.smCode }"> 
 									<label class="form-check-label" for="all<%=i %>"></label>
 								</div>
-							</div> <a href="email_detail.html" class="email-user bg-blue"> <span class="text-white">F</span>
-						</a>
+							</div> 
 							<div class="email-info">
 								<a href="<%=request.getContextPath() %>/mypage/SmailDetail.do?smCode=${smail.smCode }"> <span class="email-sender">${smail.smReceiver }</span> 
 								<span class="email-title"><c:out value="${smail.smTitle }" /></span> 
@@ -194,8 +126,7 @@ th:nth-child(n+3), td:nth-child(n+3){
 									<input type="checkbox" class="form-check-input" data-checked="email-checkbox" name="hobby" id="all<%=i %>" value="${smail.smCode }"> 
 									<label class="form-check-label" for="all<%=i %>"></label>
 								</div>
-							</div> <a href="email_detail.html" class="email-user bg-blue"> <span class="text-white">F</span>
-						</a>
+							</div> 
 							<div class="email-info">
 								<a href="<%=request.getContextPath() %>/mypage/SmailDetail.do?smCode=${smail.smCode }"> <span class="email-sender">${smail.smReceiver }</span> 
 								<span class="email-title"><c:out value="${smail.smTitle }" /></span> 
@@ -209,17 +140,6 @@ th:nth-child(n+3), td:nth-child(n+3){
 					
 					</ul>
 
-				</div>
-			</div>
-			<div class="mailbox-content-footer d-flex align-items-center">
-				<div class="text-inverse fw-bold">안읽은 메세지 <%=b %> 개</div>
-				<div class="btn-group ms-auto">
-					<button class="btn btn-white btn-sm">
-						<i class="fa fa-fw fa-chevron-left"></i>
-					</button>
-					<button class="btn btn-white btn-sm">
-						<i class="fa fa-fw fa-chevron-right"></i>
-					</button>
 				</div>
 			</div>
 		</div>
@@ -267,11 +187,6 @@ th:nth-child(n+3), td:nth-child(n+3){
 		$("[name=hobby]").click(function(){
 			var num = $("[name=hobby]:checked").not("#allChk").length;
 			
-			if(num == 5){
-				$("#all").prop("checked",true);
-			}else {
-				$("#all").prop("checked",false);
-			}
 		});
 		
 	}
@@ -307,16 +222,63 @@ th:nth-child(n+3), td:nth-child(n+3){
 		var num = $("[name=hobby]:checked").not("#allChk").length;
 		
 		if(num == 0 ){
-			alert("선택한 쪽지가 없습니다.");	
+		/* 	alert("선택한 쪽지가 없습니다.");	
 			return;
+			 */
+			
+			swal({
+				title: '실패',
+				text: '선택한 쪽지가 없습니다.',
+				icon: 'danger', // primary success warning danger
+				buttons: {
+			        	confirm: {
+					text: '확인',
+			                value: true,
+			                visible: true,
+			                className: 'btn btn-danger',
+			                closeModal: true
+			              }
+			        }
+			}).then(function(e){
+				return;
+			});
 		}
 		
-		if(confirm("선택한 쪽지를 삭제하시겠습니까?")){
+	/* 	if(confirm("선택한 쪽지를 삭제하시겠습니까?")){
 			
 			
 		}else{
 			return;
-		}
+		} */
+		
+		   swal({
+               title: '쪽지 삭제',
+               text: '선택한 쪽지를 삭제하시겠습니까?',
+               icon: 'warning', // primary success warning danger
+               buttons: {
+                   cancel: {
+                       text: '취소',
+                       value: false,
+                       visible: true,
+                       className: 'btn btn-default',
+                       closeModal: true,
+                     },
+                     confirm: {
+                       text: '확인',
+                       value: true,
+                       visible: true,
+                       className: 'btn btn-primary',
+                       closeModal: true
+                     }
+               }
+             }).then(function(val){
+                if(val == true){
+                   // true
+                } else {
+                	return;
+                }
+             });
+		
 		
 		if(num == 1){
 			 var id= $("[name=hobby]:checked");
@@ -351,13 +313,30 @@ th:nth-child(n+3), td:nth-child(n+3){
 			contentType:"application/json;charset=utf-8",
 			success:function(data){
 				
-				alert("선택하신 쪽지를 삭제하였습니다\n쪽지는 휴지통에 보관되어 30일 후 영구삭제됩니다.");
-				history.go(0);
+				/* alert("선택하신 쪽지를 삭제하였습니다\n쪽지는 휴지통에 보관되어 30일 후 영구삭제됩니다.");
+				history.go(0); */
+				
+				swal({
+					title: '성공',
+					text: '선택하신 쪽지를 삭제하였습니다\n쪽지는 휴지통에 보관되어 30일 후 영구삭제됩니다.',
+					icon: 'success', // primary success warning danger
+					buttons: {
+				        	confirm: {
+						text: '확인',
+				                value: true,
+				                visible: true,
+				                className: 'btn btn-success',
+				                closeModal: true
+				              }
+				        }
+				}).then(function(e){
+					history.go(0);
+				});
 			},
 			
 			error:function(error){
-				alert("선택하신 쪽지를 삭제하였습니다\n쪽지는 휴지통에 보관되어 30일 후 영구삭제됩니다.");
-				history.go(0);		
+				/* alert("선택하신 쪽지를 삭제하였습니다\n쪽지는 휴지통에 보관되어 30일 후 영구삭제됩니다.");
+				history.go(0);		 */
 			}
 			
 		});

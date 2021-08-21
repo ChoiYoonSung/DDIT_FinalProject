@@ -14,9 +14,16 @@ public class JobVO {
 	private String jobEnddate  ;
 	private String jobEnabled  ;
 	private String jobFile;
+	private String empName;
 	
+	private String pName;
 	
-	
+	public String getpName() {
+		return pName;
+	}
+	public void setpName(String pName) {
+		this.pName = pName;
+	}
 	public String getJobFile() {
 		return jobFile;
 	}
@@ -76,6 +83,12 @@ public class JobVO {
 	}
 	public void setJobEnabled(String jobEnabled) {
 		this.jobEnabled = jobEnabled;
+	}
+	public String getEmpName() {
+		return empName;
+	}
+	public void setEmpName(String empName) {
+		this.empName = empName;
 	}
 	
 	

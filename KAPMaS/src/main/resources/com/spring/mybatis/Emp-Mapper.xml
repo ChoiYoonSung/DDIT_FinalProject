@@ -6,6 +6,12 @@
 <mapper namespace="Emp-Mapper">
 
 
+<select id="getListEmps" resultType="emp">
+select * 
+from EMPLOYEE
+where EMP_ENABLED=2
+</select>
+
 
 <select id="selectEmpById" parameterType="str" resultType="emp">
 
@@ -15,8 +21,6 @@ from EMPLOYEE
 where EMP_ID=#{empId}
 
 </select>
-
-
 
 
 <select id="selectEmpBydep" parameterType="str" resultType="emp">
@@ -38,21 +42,27 @@ values(#{empName},#{empId},#{empEmail},#{depCode},#{rnkCode},#{empAuth},#{empPwd
 </update>
 
 
-
+<update id="secondLoginEmp" parameterType="emp">
+	update EMPLOYEE 
+	set 
+	EMP_IMG=#{empImg},DEP_CODE=#{depCode},RNK_CODE=#{rnkCode},
+	EMP_PHONE=#{empPhone},EMP_EMAIL=#{empEmail},
+	EMP_PWD=#{empPwd},EMP_ENABLED=2
+	where EMP_ID=#{empId}
+</update>
 
 
 <update id="updateEmp" parameterType="emp">
 	update EMPLOYEE 
 	set 
-	EMP_IMG=#{empImg},DEP_CODE=#{depCode},RNK_CODE=#{rnkCode},
-	EMP_PHONE=#{empPhone},EMP_ADD=#{empAdd},EMP_EMAIL=#{empEmail}
+	EMP_IMG=#{empImg},DEP_CODE=#{depCode},RNK_CODE=#{rnkCode},EMP_PWD=#{empPwd}, EMP_PHONE=#{empPhone},EMP_EMAIL=#{empEmail}
 	where EMP_ID=#{empId}
 </update>
 
 
 <update id="updateEmpPwd" parameterType="emp">
 	update EMPLOYEE 
-	set EMP_PWD=#{empPwd}
+	set EMP_PWD=#{empPwd},EMP_ENABLED = 1
 	where EMP_ID=#{empId}
 </update>
 

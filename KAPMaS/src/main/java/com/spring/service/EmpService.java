@@ -1,6 +1,7 @@
 package com.spring.service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,4 +32,10 @@ public interface EmpService {
 	
 	//비밀번호 초기화
 	void reset(EmpVO emp)throws SQLException;
+	
+	//초기 로그인
+	public void seccondEmp(EmpVO emp)throws SQLException;
+	
+	//전체 회원 조회 
+	List<EmpVO> getListEmps()throws SQLException;
 }

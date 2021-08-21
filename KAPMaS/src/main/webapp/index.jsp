@@ -4,11 +4,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
-<c:if test="${!empty loginUser }">
-	<script>
-		location.href="index.do";
-	</script>
+<c:if test="${!empty loginUser && loginUser.empEnabled == 1 }">
+		<script>
+			location.href="<%=request.getContextPath() %>/emp/secondLoginForm.do";
+		</script>
 </c:if>
+
+
+	<c:if test="${!empty loginUser && loginUser.empEnabled == 2 }">
+		
+		<script>
+			location.href="index.do";
+		</script>
+
+	</c:if>
+
 <c:if test="${empty loginUser }">
 	<jsp:forward page="/WEB-INF/views/common/login.jsp"/>
 </c:if>

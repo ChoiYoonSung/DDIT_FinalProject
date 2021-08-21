@@ -2,6 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Pro-Mapper">
+	<sql id="search">
+		and p_name like '%'||#{keyword}||'%'
+	</sql>
+	<sql id="order">
+		<if test="orderType == 's'.toString()">
+			order by TO_NUMBER(substr(A.P_CODE,2)) desc 			
+		</if>		
+		<if test="orderType == 'e'.toString()">
+			order by P_ENDDATE desc			
+		</if>		
+		<if test="orderType == 'p'.toString()">
+			order by NVL(ROUND(avg(C.job_prograss), 1),0) desc
+		</if>	
+		<if test="orderType == ''">
+			order by TO_NUMBER(substr(A.P_CODE,2)) desc 
+		</if>	
+	</sql>
+	
+<update id="proDeleteMem" parameterType="pjm">
+
+	DELETE FROM PJMEMBER WHERE emp_id=#{empId}
+</update>
 
 
 	<update id="updateService" parameterType="pro">
@@ -16,7 +38,7 @@
 	</select>
 	
 	<select id="getProMemberList" resultType="proEmp">
-	 	select 
+		select 
         a.EMP_ID as empId
         ,a.DEP_CODE as depCode
         ,a.RNK_CODE as rnkCode
@@ -24,33 +46,34 @@
         ,a.EMP_NAME as empName
         ,a.EMP_EMAIL as empEmail
         ,a.EMP_PHONE as empPhone
-        ,a.EMP_ADD as empAdd
         ,a.EMP_ENABLED as empEnabled
         ,a.EMP_AUTH as empAuth
         ,a.EMP_IMG as empImg
+        ,round(avg(j.job_prograss)) as empAvg
         ,b.EMP_ID as pjmId
         ,b.P_CODE as pCode
         ,b.PM_AUTHORITY as pmAuthority
-        from EMPLOYEE a ,PJMEMBER b
-        where a.emp_id=b.emp_id
-        and b.P_CODE=#{pCode}
+        
+        from EMPLOYEE a  join PJMEMBER b on ( a.emp_id=b.emp_id and b.P_CODE=#{pCode})left join joblist j on (j.emp_id = a.emp_id and  j.emp_id =b.emp_id and j.p_code = b.p_code)
+        
+        group by a.EMP_NAME,a.EMP_ID,a.DEP_CODE,a.RNK_CODE,a.EMP_PWD,a.EMP_EMAIL,a.EMP_PHONE,a.EMP_ENABLED,a.EMP_AUTH,a.EMP_IMG,b.EMP_ID,b.P_CODE,b.PM_AUTHORITY
 	</select>
 	
 	
 	<select id="getListProById" parameterType="str" resultType="propjm">
-		select 
-		B.P_CODE pCode
-		,A.P_NAME pName
-		,A.P_ENDDATE pEnddate
-		,A.P_STARTDATE pStartdate
-		,B.PM_AUTHORITY pmAuthority
-		from PROJECT A,PJMEMBER B
-		where A.P_CODE = B.P_CODE
-        AND B.EMP_ID=#{empId}
-        AND A.P_ENABLED=1
+			select 
+			B.P_CODE pCode
+			,A.P_NAME pName
+			,A.P_ENDDATE pEnddate
+			,A.P_STARTDATE pStartdate
+			,B.PM_AUTHORITY pmAuthority
+			from PROJECT A,PJMEMBER B
+			where A.P_CODE = B.P_CODE
+	        AND B.EMP_ID=#{empId}
+	        AND A.P_ENABLED=1
 	</select>
 	
-	<select id="getListDoProById" parameterType="str" resultType="pro">
+	<select id="getListDoProById" resultType="pro">
 		select 
 		A.P_CODE pCode
 		,A.P_NAME pName
@@ -62,51 +85,76 @@
 		,A.P_ENABLED pEnabled
 		,A.P_STATUS pStatus
 		,B.pm_Authority pmAuthority
-		from PROJECT A,PJMEMBER B
-		where A.P_CODE = B.P_CODE
-        AND B.EMP_ID=#{empId}
-        AND NOT(B.PM_AUTHORITY = 'a')
+		,NVL(ROUND(avg(C.job_prograss), 1),0) as totalPrograss
+		from PROJECT A  join PJMEMBER B
+        on(
+        A.P_CODE = B.P_CODE
+        AND B.EMP_ID= #{empId}
+        AND NOT(B.PM_AUTHORITY = 'OB')
         AND A.P_ENABLED=1
-        order by TO_NUMBER(substr(A.P_CODE,2)) desc
+        <include refid="search" />
+        )
+        left join JOBLIST C
+		on(
+        C.P_CODE = A.P_CODE)
+        group by A.P_CODE, A.P_NAME,A.P_TITLE,A.P_SUMMARY,A.P_CONTENT,A.P_STARTDATE,A.P_ENDDATE,A.P_ENABLED,A.P_STATUS, B.pm_Authority
+        <include refid="order" />
 	</select>
 			
-	<select id="getListAopProById" parameterType="str" resultType="pro">
-        select 
-     	A.P_CODE pCode            
-		,A.P_NAME pName           
-		,A.P_TITLE pTitle         
-		,A.P_SUMMARY pSummary     
-		,A.P_CONTENT pContent     
-		,A.P_STARTDATE pStartdate 
-		,A.P_ENDDATE pEnddate     
-		,A.P_ENABLED pEnabled     
+	<select id="getListAopProById" resultType="pro">
+       select 
+		A.P_CODE pCode
+		,A.P_NAME pName
+		,A.P_TITLE pTitle
+		,A.P_SUMMARY pSummary
+		,A.P_CONTENT pContent
+		,A.P_STARTDATE pStartdate
+		,A.P_ENDDATE pEnddate
+		,A.P_ENABLED pEnabled
 		,A.P_STATUS pStatus
-		,B.pm_Authority pmAuthority       
-		from PROJECT A,PJMEMBER B
-		where A.P_CODE = B.P_CODE
-        AND B.EMP_ID=#{empId}
-        AND B.PM_AUTHORITY = 'a'
-        order by TO_NUMBER(substr(A.P_CODE,2)) desc
+		,B.pm_Authority pmAuthority
+		,NVL(ROUND(avg(C.job_prograss), 1),0) as totalPrograss
+		from PROJECT A  join PJMEMBER B
+        on(
+        A.P_CODE = B.P_CODE
+        AND B.EMP_ID= #{empId}
+        AND B.PM_AUTHORITY = 'OB'
+        AND A.P_ENABLED=1
+        <include refid="search" />
+        )
+        left join JOBLIST C
+		on(
+        C.P_CODE = A.P_CODE)
+        group by A.P_CODE, A.P_NAME,A.P_TITLE,A.P_SUMMARY,A.P_CONTENT,A.P_STARTDATE,A.P_ENDDATE,A.P_ENABLED,A.P_STATUS, B.pm_Authority
+        <include refid="order" />
 	</select>
 	
-	<select id="getListNotProById" parameterType="str" resultType="pro">
+	<select id="getListNotProById" resultType="pro">
    		select 
-   		A.P_CODE pCode            
-		,A.P_NAME pName           
-		,A.P_TITLE pTitle         
-		,A.P_SUMMARY pSummary     
-		,A.P_CONTENT pContent     
-		,A.P_STARTDATE pStartdate 
-		,A.P_ENDDATE pEnddate     
-		,A.P_ENABLED pEnabled     
+		A.P_CODE pCode
+		,A.P_NAME pName
+		,A.P_TITLE pTitle
+		,A.P_SUMMARY pSummary
+		,A.P_CONTENT pContent
+		,A.P_STARTDATE pStartdate
+		,A.P_ENDDATE pEnddate
+		,A.P_ENABLED pEnabled
 		,A.P_STATUS pStatus
-		,B.pm_Authority pmAuthority       
-		from PROJECT A,PJMEMBER B
-		where A.P_CODE = B.P_CODE
-        AND B.EMP_ID=#{empId}
-        AND NOT(B.PM_AUTHORITY = 'a')
+		,B.pm_Authority pmAuthority
+		,NVL(ROUND(avg(C.job_prograss), 1),0) as totalPrograss
+		from PROJECT A  join PJMEMBER B
+        on(
+        A.P_CODE = B.P_CODE
+        AND B.EMP_ID= #{empId}
+        AND NOT(B.PM_AUTHORITY = 'OB')
         AND A.P_ENABLED=0
-        order by TO_NUMBER(substr(A.P_CODE,2)) desc
+        <include refid="search" />
+        )
+        left join JOBLIST C
+		on(
+        C.P_CODE = A.P_CODE)
+        group by A.P_CODE, A.P_NAME,A.P_TITLE,A.P_SUMMARY,A.P_CONTENT,A.P_STARTDATE,A.P_ENDDATE,A.P_ENABLED,A.P_STATUS, B.pm_Authority
+        <include refid="order" />
 	</select>
 	
 	<update id="insertProject" parameterType="pro">
@@ -170,7 +218,7 @@
 		PR_ATTACH_PATH,
 		EMP_ID,
 		FINAL_ATTACH_PATH)
-		values (concat('prr',PROJECTREPORTBOARD_SEQ.nextval), #{pCode}, sysdate, 0,0, #{prAttachPath}, #{empId}, #{finalAttachPath})
+		values (concat('prr',PROJECTREPORTBOARD_SEQ.nextval), #{pCode}, to_char(sysdate,'yyyy-MM-dd'), 0,0, #{prAttachPath}, #{empId}, #{finalAttachPath})
 	</update>
 	
 	<select id="selectRelegate" resultType="relegate">
@@ -201,7 +249,46 @@
 		and EMP_ID=#{empId}
 	</update>
 	
+	<select id="selectMainWorkByManager" resultType="map">
+	select emp_name as empName, round(avg(job_prograss)) as empAvg
+	from joblist j, EMPLOYEE e 
+	where j.emp_id = e.emp_id and p_code = #{pCode} group by j.emp_id, emp_name
+	</select>
 	
+	<select id="selectMainWorkByCate" resultType="map">
+	select job_file as jobcate, ROUND(RATIO_TO_REPORT(count(job_file)) OVER(), 2) * 100 AS jobcount 
+	from joblist  
+	where p_code = #{pCode}
+	group by job_file
+	</select>
+	
+	<select id="selectTotalProgress" resultType="map">
+	select ROUND(avg(job_prograss), 1) as tp from joblist where p_code = #{pCode}
+	</select>
+	
+	<update id="insertLog" parameterType="map">
+		insert into projectlog(pl_no, p_code, pl_content, pl_regdate)
+		values (PROJECTLOG_SEQ.NEXTVAL, #{pCode}, #{logContent}, sysdate)
+	</update>
+	
+	<select id="selectLogList" resultType="prolog">
+		select * from projectlog where p_code = #{pCode} order by pl_no desc
+	</select>	
+	
+	
+	<select id="projectPl" resultType="pjm">
+		select *
+		from PJMEMBER
+		where p_code = #{pCode}
+		and PM_AUTHORITY='PL'
+	</select>
+	
+	<select id="selectPjmAuthById" resultType="str" parameterType="pjm">
+		select PM_AUTHORITY
+		from PJMEMBER
+		where p_code = #{pCode}
+		and EMP_ID = #{empId}
+	</select>
 </mapper>
 
 

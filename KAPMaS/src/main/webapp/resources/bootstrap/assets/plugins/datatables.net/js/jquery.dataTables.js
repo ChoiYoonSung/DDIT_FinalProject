@@ -11557,7 +11557,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoEmpty": "Showing 0 to 0 of 0 entries",
+			"sInfoEmpty": "출력 정보가 없습니다.",
 	
 	
 			/**
@@ -11579,7 +11579,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoFiltered": "(filtered from _MAX_ total entries)",
+			"sInfoFiltered": "(_MAX_ 개의 항목에서 추출됨)",
 	
 	
 			/**

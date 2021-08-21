@@ -2,6 +2,20 @@
     pageEncoding="UTF-8"%>
 <%@ page trimDirectiveWhitespaces="true" %>
 <script>
-	alert("이슈 정보가 변경되었습니다.");
-	window.location.href="<%=request.getContextPath()%>/project/piDetail/${piCode}";
+	swal({
+		title: '성공',
+		text: '이슈 정보가 변경되었습니다.',
+		icon: 'success', // info success warning danger
+		buttons: {
+	        	confirm: {
+			text: '확인',
+	                value: true,
+	                visible: true,
+	                className: 'btn btn-success', // primary success warning danger
+	                closeModal: true
+	              }
+	        }
+	}).then(function(e){
+		window.location.href="<%=request.getContextPath()%>/project/piDetail/${piCode }";
+	});
 </script>

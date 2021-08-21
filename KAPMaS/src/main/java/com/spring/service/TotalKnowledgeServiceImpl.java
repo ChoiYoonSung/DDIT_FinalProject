@@ -53,8 +53,7 @@ public class TotalKnowledgeServiceImpl implements TotalKnowledgeService {
 	@Override
 	public void regist(TotalKnowledgeVO tk) throws SQLException {
 		
-		String tkCode = "TK" + totalKnowledgeDAO.getSeqNextValue();
-		System.out.println("티케이" + tkCode);
+		String tkCode = "TKB" + totalKnowledgeDAO.getSeqNextValue();
 		
 		tk.setTkCode(tkCode);
 		totalKnowledgeDAO.insertTk(tk);
@@ -99,14 +98,49 @@ public class TotalKnowledgeServiceImpl implements TotalKnowledgeService {
 			for (TotalKnowledgeVO tk : tkList)
 				addAttachList(tk);
 
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(totalKnowledgeDAO.selectTkCriteriaTotalCount(cri));
-
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		dataMap.put("tkList", tkList);
-		dataMap.put("pageMaker", pageMaker);
 
+		return dataMap;
+	}
+	
+	@Override
+	public Map<String, Object> getListArr(String[] userArray) throws Exception {
+		List<TotalKnowledgeVO> tkList = totalKnowledgeDAO.selectTkCriteriaArr(userArray);
+		
+		if (tkList != null)
+			for (TotalKnowledgeVO tk : tkList)
+				addAttachList(tk);
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("tkList", tkList);
+		
+		return dataMap;
+	}
+	@Override
+	public Map<String, Object> getListArr2(String[] userArray) throws Exception {
+		List<TotalKnowledgeVO> tkList = totalKnowledgeDAO.selectTkCriteriaArr2(userArray);
+		
+		if (tkList != null)
+			for (TotalKnowledgeVO tk : tkList)
+				addAttachList(tk);
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("tkList", tkList);
+		
+		return dataMap;
+	}
+	@Override
+	public Map<String, Object> getList2(SearchCriteria cri) throws Exception {
+		List<TotalKnowledgeVO> tkList = totalKnowledgeDAO.selectTkCriteria2(cri);
+		
+		if (tkList != null)
+			for (TotalKnowledgeVO tk : tkList)
+				addAttachList(tk);
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("tkList", tkList);
+		
 		return dataMap;
 	}
 	
@@ -168,13 +202,13 @@ public class TotalKnowledgeServiceImpl implements TotalKnowledgeService {
 	
 	@Override
 	public void report(String tkCode, ReportVO rep) throws SQLException {
-		totalKnowledgeDAO.increaseLikeCnt(tkCode);
+		totalKnowledgeDAO.increaseReportCnt(tkCode);
 		reportDAO.insertReport(rep);
 	}
 	
 	@Override
 	public void reportCancel(String tkCode, ReportVO rep) throws SQLException {
-		totalKnowledgeDAO.decreaseLikeCnt(tkCode);
+		totalKnowledgeDAO.decreaseReportCnt(tkCode);
 		reportDAO.deleteReport(rep);
 	}
 	

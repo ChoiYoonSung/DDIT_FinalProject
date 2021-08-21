@@ -1,7 +1,7 @@
 package com.spring.dao;
 
 import java.sql.SQLException;
-
+import java.util.List;
 
 import com.spring.dto.EmpVO;
 
@@ -21,5 +21,11 @@ public interface EmpDAO {
 	
 	//비밀번호 초기화
 	public void updateEmpPwd(EmpVO emp)throws SQLException;
+
+	//초기 로그인
+	public void seccondEmp(EmpVO emp)throws SQLException;
+	
+	//전체 회원 조회 
+	List<EmpVO> getListEmps()throws SQLException;
 	
 }

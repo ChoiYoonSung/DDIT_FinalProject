@@ -18,9 +18,6 @@ int b = 0;
 <meta content="" name="description" />
 <meta content="" name="author" />
 
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-<link href="<%=request.getContextPath() %>/resources/bootstrap/assets/css/vendor.min.css" rel="stylesheet" />
-<link href="<%=request.getContextPath() %>/resources/bootstrap/assets/css/default/app.min.css" rel="stylesheet" />
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.5/js/min/perfect-scrollbar.jquery.min.js"></script>
 
 
@@ -69,13 +66,12 @@ th:nth-child(n+3), td:nth-child(n+3){
 					</div>
 					<ul class="nav nav-inbox">
 						<li class="active"><a href="#"><i class="fa fa-hdd fa-lg fa-fw me-2"></i> 
-						수신함 <span class="badge bg-gray-600 fs-10px rounded-pill ms-auto fw-bolder pt-4px pb-5px px-8px">52</span></a></li>
+						수신함 <span class="badge bg-gray-600 fs-10px rounded-pill ms-auto fw-bolder pt-4px pb-5px px-8px"></span></a></li>
 					<!-- 	<li><a href="email_inbox.html"><i
 								class="fa fa-flag fa-lg fa-fw me-2"></i> Important</a></li> -->
 						<li><a href="<%=request.getContextPath() %>/mypage/sendmail.do"><i class="fa fa-envelope fa-lg fa-fw me-2"></i> 발신함</a></li>
 						<!-- <li><a href="email_inbox.html"><i
 								class="fa fa-save fa-lg fa-fw me-2"></i> Drafts</a></li> -->
-						<li><a href="#"><i class="fa fa-trash-alt fa-lg fa-fw me-2"></i> 휴지통</a></li>
 					</ul>
 					<!-- <div class="nav-title">
 						<b>LABEL</b>
@@ -133,9 +129,8 @@ th:nth-child(n+3), td:nth-child(n+3){
 					<div class="w-100 d-sm-none d-block mb-2"
 						data-email-action="divider"></div>
  --%>
-					<div class="btn-group" onclick="deleteSmail()">
-						<button class="btn btn-sm btn-white"
-							data-email-action="delete" >
+					<div class="btn-group">
+						<button class="btn btn-sm btn-white" onclick="deleteSmail()">
 							<i class="fa fa-times me-1"></i> <span class="hidden-xs" >Delete</span>
 						</button>
 						<!-- <button class="btn btn-sm btn-white hide"
@@ -146,17 +141,13 @@ th:nth-child(n+3), td:nth-child(n+3){
 							data-email-action="archive">
 							<i class="fa fa-trash me-1"></i> <span class="hidden-xs">Junk</span>
 						</button> -->
+						&nbsp;&nbsp;&nbsp;
+						<button class="btn btn-sm btn-white" onclick="CloseWindow();">
+							<span class="hidden-xs" >닫기</span>
+						</button>
 					</div>
 
 
-					<div class="btn-group ms-auto">
-						<button class="btn btn-white btn-sm">
-							<i class="fa fa-chevron-left"></i>
-						</button>
-						<button class="btn btn-white btn-sm">
-							<i class="fa fa-chevron-right"></i>
-						</button>
-					</div>
 
 				</div>
 
@@ -177,8 +168,7 @@ th:nth-child(n+3), td:nth-child(n+3){
 									<input type="checkbox" class="form-check-input" data-checked="email-checkbox" name="hobby" id="all<%=i %>" value="${rmail.rmCode }"> 
 									<label class="form-check-label" for="all<%=i %>"></label>
 								</div>
-							</div> <a href="email_detail.html" class="email-user bg-blue"> <span class="text-white">F</span>
-						</a>
+							</div> 
 							<div class="email-info" >
 								<a href="<%=request.getContextPath() %>/mypage/RmailDetail.do?rmCode=${rmail.rmCode }"> <span class="email-sender">${rmail.rmSender }</span> 
 								<span class="email-title"><c:out value="${rmail.rmTitle }" /></span> 
@@ -195,8 +185,7 @@ th:nth-child(n+3), td:nth-child(n+3){
 									<input type="checkbox" class="form-check-input" data-checked="email-checkbox" name="hobby" id="all<%=i %>" value="${rmail.rmCode }"> 
 									<label class="form-check-label" for="all<%=i %>"></label>
 								</div>
-							</div> <a href="email_detail.html" class="email-user bg-blue"> <span class="text-white">F</span>
-						</a>
+							</div> 
 						<div class="email-info" >
 								<a href="<%=request.getContextPath() %>/mypage/RmailDetail.do?rmCode=${rmail.rmCode }"> <span class="email-sender">${rmail.rmSender }</span> 
 								<span class="email-title"><c:out value="${rmail.rmTitle }" /></span> 
@@ -209,17 +198,6 @@ th:nth-child(n+3), td:nth-child(n+3){
 						</c:forEach>
 					
 					</ul>
-				</div>
-			</div>
-			<div class="mailbox-content-footer d-flex align-items-center">
-				<div class="text-inverse fw-bold">안읽은 메세지 <%=b %> 개</div>
-				<div class="btn-group ms-auto">
-					<button class="btn btn-white btn-sm">
-						<i class="fa fa-fw fa-chevron-left"></i>
-					</button>
-					<button class="btn btn-white btn-sm">
-						<i class="fa fa-fw fa-chevron-right"></i>
-					</button>
 				</div>
 			</div>
 		</div>
@@ -267,11 +245,6 @@ th:nth-child(n+3), td:nth-child(n+3){
 		$("[name=hobby]").click(function(){
 			var num = $("[name=hobby]:checked").not("#allChk").length;
 			
-			if(num == 5){
-				$("#all").prop("checked",true);
-			}else {
-				$("#all").prop("checked",false);
-			}
 		});
 	}
 	
@@ -301,63 +274,123 @@ th:nth-child(n+3), td:nth-child(n+3){
 		var num = $("[name=hobby]:checked").not("#allChk").length;
 		
 		if(num == 0 ){
-			alert("선택한 쪽지가 없습니다.");	
+			/* alert("선택한 쪽지가 없습니다.");	
 			return;
+			 */
+			
+			swal({
+				title: '실패',
+				text: '선택한 쪽지가 없습니다.',
+				icon: 'error', // primary success warning danger
+				buttons: {
+			        	confirm: {
+					text: '확인',
+			                value: true,
+			                visible: true,
+			                className: 'btn btn-danger',
+			                closeModal: true
+			              }
+			        }
+			}).then(function(e){
+				return;
+			});
 		}
 
 		
-		if(confirm("선택한 쪽지를 삭제하시겠습니까?")){
+	/* 	if(confirm("선택한 쪽지를 삭제하시겠습니까?")){
 			
 			
 		}else{
 			return;
-		}
+		} */
 		
-		if(num == 1){
-			 var id= $("[name=hobby]:checked");
-			html += ''+id.attr('value')+'';
-			$('#hobbyList').val(html);   
-		}else {
-		
-		for(var i = 0; i < num; i++){
-			
-			 var id= $("[name=hobby]:checked").eq(i);
-			 if(i == 0 ){
-			 html += ''+id.attr('value')+'';
-			 continue;
-			 }
-			 html += ',';
-			 html += ''+id.attr('value')+'';
-			 
-			  $('#hobbyList').val(html);   
-			}
-		}
-		
-		var checked = $('#hobbyList').val();
-		
-		var data = {
-				"checked":checked
-		}
-		
-		$.ajax({
-			url : "<%=request.getContextPath() %>/mypage/deleteRmailList",
-			type : "post",
-			data : JSON.stringify(data),
-			contentType:"application/json;charset=utf-8",
-			success:function(data){
-				
-				alert("선택하신 쪽지를 삭제하였습니다\n쪽지는 휴지통에 보관되어 30일 후 영구삭제됩니다.");
-				history.go(0);
-			},
-			
-			error:function(error){
-				alert("선택하신 쪽지를 삭제하였습니다\n쪽지는 휴지통에 보관되어 30일 후 영구삭제됩니다.");
-				history.go(0);		
-			}
-			
-		});
-		
-		
+		   swal({
+               title: '쪽지 삭제',
+               text: '선택한 쪽지를 삭제하시겠습니까?',
+               icon: 'info', // primary success warning danger
+               buttons: {
+                   cancel: {
+                       text: '취소',
+                       value: false,
+                       visible: true,
+                       className: 'btn btn-default',
+                       closeModal: true,
+                     },
+                     confirm: {
+                       text: '확인',
+                       value: true,
+                       visible: true,
+                       className: 'btn btn-primary',
+                       closeModal: true
+                     }
+               }
+             }).then(function(val){
+                if(val == true){
+            		if(num == 1){
+           			 var id= $("[name=hobby]:checked");
+           			html += ''+id.attr('value')+'';
+           			$('#hobbyList').val(html);   
+           		}else {
+           		
+           		for(var i = 0; i < num; i++){
+           			
+           			 var id= $("[name=hobby]:checked").eq(i);
+           			 if(i == 0 ){
+           			 html += ''+id.attr('value')+'';
+           			 continue;
+           			 }
+           			 html += ',';
+           			 html += ''+id.attr('value')+'';
+           			 
+           			  $('#hobbyList').val(html);   
+           			}
+           		}
+           		
+           		var checked = $('#hobbyList').val();
+           		
+           		var data = {
+           				"checked":checked
+           		}
+           		
+           		$.ajax({
+           			url : "<%=request.getContextPath() %>/mypage/deleteRmailList",
+           			type : "post",
+           			data : JSON.stringify(data),
+           			contentType:"application/json;charset=utf-8",
+           			success:function(data){
+           				
+           			/* 	alert("선택하신 쪽지를 삭제하였습니다\n쪽지는 휴지통에 보관되어 30일 후 영구삭제됩니다.");
+           				history.go(0); */
+           				
+           				swal({
+           					title: '성공',
+           					text: '선택하신 쪽지를 삭제하였습니다\n쪽지는 휴지통에 보관되어 30일 후 영구삭제됩니다.',
+           					icon: 'success', // primary success warning danger
+           					buttons: {
+           				        	confirm: {
+           						text: '확인',
+           				                value: true,
+           				                visible: true,
+           				                className: 'btn btn-success',
+           				                closeModal: true
+           				              }
+           				        }
+           				}).then(function(e){
+           					history.go(0);
+           				});
+           			},
+           			
+           			error:function(error){
+           				/* alert("선택하신 쪽지를 삭제하였습니다\n쪽지는 휴지통에 보관되어 30일 후 영구삭제됩니다.");
+           				history.go(0);		 */
+           				
+           			}
+           			
+           		});
+                } else {
+                	return;
+                }
+             });
 	}
 	</script>
 	

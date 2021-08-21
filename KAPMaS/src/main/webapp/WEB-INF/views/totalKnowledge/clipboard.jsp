@@ -4,7 +4,7 @@
 
 <body style="background-color:white;">
 <a href="#" onclick="clip(); return false;"><i class="fas fa-lg fa-fw me-100px fa-clipboard" ></i></a>
-<script src="<%=request.getContextPath() %>/resources/bootstrap/color_admin/template/assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
+<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 
 function clip(){

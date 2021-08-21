@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="JR-Mapper">
+	<!-- 일일 -->
+	<select id="selectDailyReportList" parameterType="str" resultType="dr">
+		SELECT *
+		FROM DAILYREPORT
+		WHERE P_CODE = #{pCode}
+	</select>
+	
+	<select id="selectDailyReport" parameterType="str" resultType="dr">
+		SELECT *
+		FROM DAILYREPORT
+		WHERE DR_CODE = #{drCode}
+	</select>
+	
+	<update id="insertDailyReport" parameterType="dr">
+		INSERT INTO DAILYREPORT
+			( DR_CODE
+			, P_CODE
+			, EMP_ID
+			, JOB_CODE
+			, DR_CONTENT
+			, DR_TITLE
+			, DR_REGDATE
+			)
+		VALUES
+			( concat('DR',DAILYREPORT_SEQ.NEXTVAL)
+			, #{pCode}
+			, #{empId}
+			, #{jobCode}
+			, #{drContent}
+			, #{drTitle}
+			, to_char(sysdate,'yyyy-MM-dd')
+			)
+	</update>
+	
+	<update id="updateDailyReport" parameterType="dr">
+		UPDATE DAILYREPORT
+		SET DR_TITLE = #{drTitle},JOB_CODE = #{jobCode} , DR_CONTENT = #{drContent}, DR_REGDATE = to_char(sysdate,'yyyy-MM-dd')
+		WHERE DR_CODE = #{drCode}
+	</update>
+	
+	<update id="deleteDailyReport" parameterType="str">
+		DELETE FROM DAILYREPORT
+		WHERE DR_CODE = #{drCode}
+	</update>
+	
+	
+	
+	
+	<!-- 주간 -->
+	<select id="selectWeeklyReportList" parameterType="str" resultType="wr">
+		SELECT *
+		FROM WEEKLYREPORT
+		WHERE P_CODE = #{pCode}
+	</select>
+	
+	<select id="selectWeeklyReport" parameterType="str" resultType="wr">
+		SELECT *
+		FROM WEEKLYREPORT
+		WHERE WR_CODE = #{wrCode}
+	</select>
+	
+	<update id="insertWeeklyReport" parameterType="wr">
+		INSERT INTO WEEKLYREPORT
+			(WR_CODE
+			, EMP_ID
+			, P_CODE
+			, WR_TITLE
+			, WR_REGDATE
+			, WR_PLAN
+			, WR_PROG
+			, WR_ISSUE
+			, WR_ISSUEMEASURES
+			, WR_REMARK
+			)
+		VALUES
+			(concat('WR',WEEKLYREPORT_SEQ.NEXTVAL)
+			, #{empId}
+			, #{pCode}
+			, #{wrTitle}
+			, to_char(sysdate,'yyyy-MM-dd')
+			, #{wrPlan}
+			, #{wrProg}
+			, #{wrIssue}
+			, #{wrIssueMeasures}
+			, #{wrRemark}
+			)
+	</update>
+	
+	<update id="updateWeeklyReport" parameterType="wr">
+		UPDATE WEEKLYREPORT
+		SET WR_TITLE = #{wrTitle}
+			, WR_REGDATE = to_char(sysdate,'yyyy-MM-dd')
+			, WR_PLAN = #{wrPlan}
+			, WR_PROG = #{wrProg}
+			, WR_ISSUE = #{wrIssue}
+			, WR_ISSUEMEASURES = #{wrIssueMeasures}
+			, WR_REMARK = #{wrRemark}
+		WHERE WR_CODE = #{wrCode}
+	</update>
+	
+	<update id="deleteWeeklyReport" parameterType="str">
+		DELETE FROM WEEKLYREPORT
+		WHERE WR_CODE = #{wrCode}
+	</update>
+	
+
+</mapper>

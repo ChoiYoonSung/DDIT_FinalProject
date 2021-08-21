@@ -8,6 +8,15 @@ public class CopFamilyDiscussionVO extends CoPVO {
 	private String fdisName;
 	private String fdisRegdate;
 	private String copName;
+	private String fdisSubject;
+
+	public String getFdisSubject() {
+		return fdisSubject;
+	}
+
+	public void setFdisSubject(String fdisSubject) {
+		this.fdisSubject = fdisSubject;
+	}
 
 	public String getCopName() {
 		return copName;

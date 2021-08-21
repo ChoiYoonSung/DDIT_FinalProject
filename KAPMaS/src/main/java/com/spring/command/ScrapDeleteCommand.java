@@ -6,6 +6,7 @@ public class ScrapDeleteCommand {
 	
 	private String empId;
 	private String scUrl;
+	
 	public String getEmpId() {
 		return empId;
 	}

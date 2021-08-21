@@ -82,7 +82,7 @@
 			<div class="panel panel-inverse" data-sortable-id="ui-media-object-1"
 				data-init="true">
 				<div class="panel-heading ui-sortable-handle">
-					<h4 class="panel-title">자료 등록</h4>
+					<h4 class="panel-title">자료 수정</h4>
 				</div>
 				<div class="panel-body">
 					<div class="col-xl-12 ui-sortable">
@@ -90,6 +90,7 @@
 							<div class="panel-body">
 								<form enctype="multipart/form-data" method="post" action="/KAPMaS/cop/detail/pdsModify.do" name="modifyForm" role="form">
 									<input type="hidden" name="caCode" value="${ca.caCode }">
+									<input type="hidden" name="copCode" value="${copCode}">
 									<input type="text" class="form-control" id="pdsTitle" name="caTitle" placeholder="제목을 입력해주세요." value="${ca.caTitle }"/>
 									<hr>
 									<textarea class="summernote" name="caContent">${ca.caContent }</textarea>
@@ -149,7 +150,20 @@
 			$('a[name="attachedFile"] > button').click(function(event){
 				
 				var parent = $(this).parent('a[name="attachedFile"]');
-				alert(parent.attr("attach-fileName")+"파일을 삭제합니다.");
+				swal({
+					title : '확인',
+					text : parent.attr("attach-fileName")+"파일을 삭제합니다.",
+					icon : 'info', // primary success warning danger
+					buttons : {
+						confirm : {
+							text : '확인',
+							value : true,
+							visible : true,
+							className : 'btn btn-primary',
+							closeModal : true
+						}
+					}
+				});
 				
 				var caAtNo = parent.attr("attach-no");
 				
@@ -170,58 +184,164 @@
 		 	
 		 	$('.fileInput').on('change','input[type="file"]',function(event){
 		 		if(this.files[0].size>1024*1024*40){
-		 			alert("파일 용량이 40MB를 초과하였습니다.");
+		 			swal({
+						title : '경고',
+						text : '파일 용량이 40MB를 초과하였습니다.',
+						icon : 'warning', // primary success warning danger
+						buttons : {
+							confirm : {
+								text : '확인',
+								value : true,
+								visible : true,
+								className : 'btn btn-warning',
+								closeModal : true
+							}
+						}
+					});
 		 			this.value="";
 		 			$(this).click();		 			
 		 			return false;
 		 		} 
 	    	});
 		 	
-		 	var copCode = location.href.substr(-5,5);
-		 	
-		 	$('input[name="copCode"]').val(copCode);
-		 	
-		}
+			}
 		function addFile_go(){
-			//alert("click add btn");
-			var attachedFile=$('a[name="attachedFile"]').length;
-			var inputFile=$('input[name="uploadFile"]').length;	
-			var attachCount=attachedFile+inputFile;
-			
-			if(attachCount >=5){
-				alert("파일추가는 5개까지만 가능합니다.");
-				return;
-			}
-			
-			var input=$('<input>').attr({"type":"file","name":"uploadFile"}).css("display","inline"); 
-			var div=$('<div>').addClass("inputRow");
-			div.append(input).append("<button style='border:0;outline:0;' class='badge bg-red' type='button'>X</button");
-			div.appendTo('.fileInput');
-		}
-
-    	
+    		//alert("click addFile btn");
+    		if($('input[name="uploadFile"]').length >=5){
+    			swal({
+					title : '경고',
+					text : '파일추가는 5개까지만 가능합니다.',
+					icon : 'warning', // primary success warning danger
+					buttons : {
+						confirm : {
+							text : '확인',
+							value : true,
+							visible : true,
+							className : 'btn btn-warning',
+							closeModal : true
+						}
+					}
+				});
+    			return;
+    		}
+    		
+    		var input=$('<input>').attr({"type":"file","name":"uploadFile"}).css("display","inline"); 
+    		var div=$('<div>').addClass("inputRow");
+    		div.append(input).append("<button style='border:0;outline:0;' class='badge bg-red' type='button'>삭제</button");
+    		$('.fileInput').append(div);
+    	}
+		
 		function modify_submit(){
-			//alert("click modify btn");
-			
-			var form=document.modifyForm;
-			
-			if($("input[name='title']").val()==""){
-				alert(input.name+"은 필수입니다.");
-				$("input[name='title']").focus();
-				return;
-			}
-			
-			var files = $('input[name="uploadFile"]');
-			for(var file of files){
-				console.log(file.name+" : "+file.value);
-				if(file.value==""){
-					alert("파일을 선택하세요.");
-					file.focus();
-					return false;
+    		var files = $('input[name="uploadFile"]');
+    		for(var file of files){
+    			if(file.value==""){
+        			swal({
+    					title : '경고',
+    					text : '파일을 선택하세요.',
+    					icon : 'warning', // primary success warning danger
+    					buttons : {
+    						confirm : {
+    							text : '확인',
+    							value : true,
+    							visible : true,
+    							className : 'btn btn-warning',
+    							closeModal : true
+    						}
+    					}
+    				});
+    				file.focus();
+    				file.click();
+    				return;
+    			}
+    		}	
+
+    		if($("input[name='caTitle']").val()==""){ //form.title.value	
+    			swal({
+					title : '경고',
+					text : '제목은 필수입니다.',
+					icon : 'warning', // primary success warning danger
+					buttons : {
+						confirm : {
+							text : '확인',
+							value : true,
+							visible : true,
+							className : 'btn btn-warning',
+							closeModal : true
+						}
+					}
+				});
+    			$("input[name='pdsTitle']").focus();
+    			return;
+    		}
+    		if($("textarea[name='caContent']").val()==""){ //form.title.value
+    			swal({
+					title : '경고',
+					text : '내용은 필수입니다.',
+					icon : 'warning', // primary success warning danger
+					buttons : {
+						confirm : {
+							text : '확인',
+							value : true,
+							visible : true,
+							className : 'btn btn-warning',
+							closeModal : true
+						}
+					}
+				});
+    			$("input[name='pdsTitle']").focus();
+    			return;
+    		}
+    	
+    		swal({
+				title : '자료실 글 수정',
+				text : '글 수정을 완료하시겠습니까?',
+				icon : 'info', // primary success warning danger
+				buttons : {
+					cancel : {
+						text : '취소',
+						value : false,
+						visible : true,
+						className : 'btn btn-default',
+						closeModal : true,
+					},
+					confirm : {
+						text : '확인',
+						value : true,
+						visible : true,
+						className : 'btn btn-primary',
+						closeModal : true
+					}
 				}
-			}	
+			}).then(function(val) {
+				if (val == true) {
+		 			var form=document.modifyForm;
+					form.submit();
+				}
+			});
+    	}
+    	
+// 		function modify_submit(){
+// 			//alert("click modify btn");
 			
-			form.submit();
-		}
+// 			var form=document.modifyForm;
+			
+// 			if($("input[name='title']").val()==""){
+// 				alert(input.name+"은 필수입니다.");
+// 				$("input[name='title']").focus();
+// 				return;
+// 			}
+			
+// 			var files = $('input[name="uploadFile"]');
+// 			for(var file of files){
+// 				console.log(file.name+" : "+file.value);
+// 				if(file.value==""){
+// 					alert("파일을 선택하세요.");
+// 					file.focus();
+// 					return false;
+// 				}
+// 			}	
+			
+			
+// 		}
     </script>
 </body>

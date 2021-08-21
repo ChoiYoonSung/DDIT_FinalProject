@@ -3,12 +3,21 @@
 <mapper namespace="Totalknowledge-Mapper">
 
 	<select id="getAllList" resultType="tk">
-		select
-		*
-		from
-		totalknowledgeboard
-		where tk_enabled = 1
-		order by tk_code desc
+		SELECT
+			A.TK_CODE as tkCode,
+			A.EMP_ID as empId,
+			A.TK_TITLE as tkTitle,
+			A.TK_REGDATE as tkRegdate,
+			A.TK_VIEWCNT as tkViewCnt,
+			A.TK_LIKECNT as tkLikeCnt,
+			A.TK_KEYWORD as tkKeyword,
+			A.TK_ENABLED as tkEnabled,
+			A.TK_REPORTCNT as tkReportCnt,
+			A.TK_CONTENT as tkContent,
+			(SELECT C.EMP_NAME FROM EMPLOYEE C WHERE A.EMP_ID = C.EMP_ID)as empName
+		FROM TOTALKNOWLEDGEBOARD A
+		WHERE A.TK_ENABLED = 1
+		ORDER BY A.TK_CODE DESC
 	</select>
 	<select id="getAllListCount" resultType="tk">
 		select
@@ -19,34 +28,117 @@
 	</select>
 
 	<sql id="search">
-		<if test="searchType == 't'.toString()">
-			and tk_title like '%'||#{keyword}||'%'			
-		</if>
 		<if test="searchType == 'w'.toString()">
-			and emp_id like '%'||#{keyword}||'%'			
+			and A.emp_id like '%'||#{keyword}||'%'			
 		</if>
-		<if test="searchType == 'c'.toString()">
-			and tk_content like '%'||#{keyword}||'%'			
-		</if>
-		<if test="searchType == 'tcw'.toString()">
-			and (
-			tk_title like '%'||#{keyword}||'%'
-			or
-			emp_id like '%'||#{keyword}||'%'
-			or
-			tk_content like '%'||#{keyword}||'%'						
-			)			
-		</if>		
-	</sql>
+	</sql>	
+
 	
 	<select id="selectSearchTkList" resultType="tk">
-		select
-		*
-		from
-		totalknowledgeboard
-		where tk_code is not null  			  	
+		SELECT
+		A.TK_CODE as tkCode,
+			A.EMP_ID as empId,
+			A.TK_TITLE as tkTitle,
+			A.TK_REGDATE as tkRegdate,
+			A.TK_VIEWCNT as tkViewCnt,
+			A.TK_LIKECNT as tkLikeCnt,
+			A.TK_KEYWORD as tkKeyword,
+			A.TK_ENABLED as tkEnabled,
+			A.TK_REPORTCNT as tkReportCnt,
+			A.TK_CONTENT as tkContent,
+			(SELECT C.EMP_NAME FROM EMPLOYEE C WHERE A.EMP_ID = C.EMP_ID)as empName
+		FROM TOTALKNOWLEDGEBOARD A
+		WHERE A.TK_ENABLED = 1
+		ORDER BY A.TK_CODE DESC
+	</select>
+	
+	<select id="selectSearchTkListArr" parameterType="str" resultType="tk">
+		SELECT
+		A.TK_CODE as tkCode,
+		A.EMP_ID as empId,
+		A.TK_TITLE as tkTitle,
+		A.TK_REGDATE as tkRegdate,
+		A.TK_VIEWCNT as tkViewCnt,
+		A.TK_LIKECNT as tkLikeCnt,
+		A.TK_KEYWORD as tkKeyword,
+		A.TK_ENABLED as tkEnabled,
+		A.TK_REPORTCNT as tkReportCnt,
+		A.TK_CONTENT as tkContent,
+		(SELECT C.EMP_NAME FROM EMPLOYEE C WHERE A.EMP_ID = C.EMP_ID)as empName
+		FROM TOTALKNOWLEDGEBOARD A
+		WHERE A.tk_enabled = 1
+and(
+		<if test="lists =! null">     
+			<foreach collection="array" item="item" index="index" separator="or">
+			 	A.tk_title LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+ 
+			 </foreach>
+			 or
+			<foreach collection="array" item="item" index="index" separator="or">
+			 	A.tk_content LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+
+			 </foreach>
+			 or
+			<foreach collection="array" item="item" index="index" separator="or">
+			 	A.TK_KEYWORD LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+
+			 </foreach>
+		 </if>)
+		order by A.tk_code desc
+	</select>
+	<select id="selectSearchTkListArr2" parameterType="str" resultType="tk">
+		SELECT
+		A.TK_CODE as tkCode,
+		A.EMP_ID as empId,
+		A.TK_TITLE as tkTitle,
+		A.TK_REGDATE as tkRegdate,
+		A.TK_VIEWCNT as tkViewCnt,
+		A.TK_LIKECNT as tkLikeCnt,
+		A.TK_KEYWORD as tkKeyword,
+		A.TK_ENABLED as tkEnabled,
+		A.TK_REPORTCNT as tkReportCnt,
+		A.TK_CONTENT as tkContent
+		FROM TOTALKNOWLEDGEBOARD A
+		WHERE A.tk_enabled = 1
+and(
+		<if test="lists =! null">     
+			<foreach collection="array" item="item" index="index" separator="or">
+			 	A.tk_title LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+ 
+			 </foreach>
+			 or
+			<foreach collection="array" item="item" index="index" separator="or">
+			 	A.tk_content LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+
+			 </foreach>
+			 or
+			<foreach collection="array" item="item" index="index" separator="or">
+			 	A.TK_KEYWORD LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+
+			 </foreach>
+		 </if>)
+		order by A.tk_code desc
+	</select>
+	
+	<select id="selectSearchTkListViewOrder" resultType="tk">
+		SELECT
+		A.TK_CODE as tkCode,
+		A.EMP_ID as empId,
+		A.TK_TITLE as tkTitle,
+		A.TK_REGDATE as tkRegdate,
+		A.TK_VIEWCNT as tkViewCnt,
+		A.TK_LIKECNT as tkLikeCnt,
+		A.TK_KEYWORD as tkKeyword,
+		A.TK_ENABLED as tkEnabled,
+		A.TK_REPORTCNT as tkReportCnt,
+		A.TK_CONTENT as tkContent,
+		(SELECT C.EMP_NAME FROM EMPLOYEE C WHERE A.EMP_ID = C.EMP_ID)as empName
+		FROM TOTALKNOWLEDGEBOARD A
+		where A.TK_CODE is not null
+		and A.TK_ENABLED = 1  			  	
 		<include refid="search" />
-		order by tk_code desc
+		and A.TK_REGDATE between sysdate - 7 and sysdate
+		order by A.TK_VIEWCNT desc
 	</select>
 	
 	<select id="selectSearchTkListCount" resultType="int">
@@ -60,9 +152,20 @@
 	</select>
 	
 	<select id="selectTkByTkCode"  parameterType="str" resultType="tk">
-		select * 
-		from totalknowledgeboard 
-		where tk_code=#{tkCode}
+		SELECT
+		A.TK_CODE as tkCode,
+		A.EMP_ID as empId,
+		A.TK_TITLE as tkTitle,
+		A.TK_REGDATE as tkRegdate,
+		A.TK_VIEWCNT as tkViewCnt,
+		A.TK_LIKECNT as tkLikeCnt,
+		A.TK_KEYWORD as tkKeyword,
+		A.TK_ENABLED as tkEnabled,
+		A.TK_REPORTCNT as tkReportCnt,
+		A.TK_CONTENT as tkContent,
+		(SELECT C.EMP_NAME FROM EMPLOYEE C WHERE A.EMP_ID = C.EMP_ID)as empName
+		FROM TOTALKNOWLEDGEBOARD A
+		where A.tk_code=#{tkCode}
 	</select>
 	
 	<update id="insertTk" parameterType="tk">
@@ -70,7 +173,7 @@
 		into 
 		totalknowledgeboard(tk_code, emp_id, tk_title, tk_regdate, tk_keyword, tk_content)
 		values
-		(#{tkCode},#{empId},#{tkTitle},sysdate, #{tkKeyword}, #{tkContent})
+		(#{tkCode},#{empId},#{tkTitle},to_char(sysdate,'yyyy-MM-dd'), #{tkKeyword}, #{tkContent})
 	</update>
 	
 	<update id="updateTk" parameterType="tk">
@@ -142,7 +245,7 @@
 		select * 
 		from totalknowledgeboard 
 		where content like '%'||#{fileName}||'%'		
-	</select>	
+	</select>
 	
 </mapper>
 

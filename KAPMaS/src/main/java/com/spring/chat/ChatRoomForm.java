@@ -15,6 +15,15 @@ public class ChatRoomForm {
 		this.name = name;
 	}
     
+	
+	public ChatRoom toChatRoom() {
+		ChatRoom chat = new ChatRoom();
+		chat.setName(name);
+		
+		return chat;
+		
+	}
+	
     
     
 }

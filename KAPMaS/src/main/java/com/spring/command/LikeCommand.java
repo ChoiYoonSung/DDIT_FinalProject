@@ -6,7 +6,6 @@ public class LikeCommand {
 	
 	private String empId;
 	private String bdCode;
-	private String tkCode;
 	public String getBdCode() {
 		return bdCode;
 	}
@@ -19,17 +18,10 @@ public class LikeCommand {
 	public void setEmpId(String empId) {
 		this.empId = empId;
 	}
-	
-	public String getTkCode() {
-		return tkCode;
-	}
-	public void setTkCode(String tkCode) {
-		this.tkCode = tkCode;
-	}
 	public LikeVO toLikeVO() {
 		LikeVO like = new LikeVO();
-		like.setEmpId(this.empId);
-		like.setBdCode(this.bdCode);
+		like.setEmpId(empId);
+		like.setBdCode(bdCode);
 		
 		return like;
 	}

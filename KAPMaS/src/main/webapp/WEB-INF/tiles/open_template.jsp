@@ -16,11 +16,11 @@ margin : 0px;
 	visibility: hidden;
 }
 </style>
+<tiles:insertAttribute name="js"  ignore="true"/>
 </head>
 <body>
 
-<tiles:insertAttribute name="body" />
+<tiles:insertAttribute name="body" ignore="true"/>
 
-<tiles:insertAttribute name="js" />
 </body>
 </html>

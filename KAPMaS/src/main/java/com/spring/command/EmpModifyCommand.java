@@ -13,7 +13,6 @@ public class EmpModifyCommand {
 	private String empPwd; // 비번
 	private String empEmail; // 이메일
 	private String empPhone; // 폰
-	private String empAdd; // 주소
 
 	private MultipartFile empImg; // 프로필 사진 경로
 	private String oldImg; // 이전 사진
@@ -75,13 +74,6 @@ public class EmpModifyCommand {
 		this.empPhone = empPhone;
 	}
 
-	public String getEmpAdd() {
-		return empAdd;
-	}
-
-	public void setEmpAdd(String empAdd) {
-		this.empAdd = empAdd;
-	}
 
 	public MultipartFile getEmpImg() {
 		return empImg;
@@ -114,10 +106,10 @@ public class EmpModifyCommand {
 		emp.setEmpId(this.empId);
 		emp.setDepCode(this.depCode);
 		emp.setRnkCode(this.rnkCode);
+		emp.setEmpPwd(this.empPwd);
 		emp.setEmpName(this.empName);
 		emp.setEmpEmail(this.empEmail);
 		emp.setEmpPhone(this.empPhone.replace("-", ""));
-		emp.setEmpAdd(this.empAdd);
 
 		return emp;
 	}

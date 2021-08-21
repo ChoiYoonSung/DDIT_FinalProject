@@ -36,14 +36,32 @@
 		<typeAlias type="com.spring.dto.CopFamilyDiscussionVO" alias="cFdVO"/>
 		<typeAlias type="com.spring.dto.JobVO" alias="job" />
 		<typeAlias type="com.spring.dto.RelegateVO" alias="relegate"/>
-		
+		<typeAlias type="com.spring.dto.ProLogVO" alias="prolog"/>
 		<typeAlias type="com.spring.dto.TkReplyVO" alias="tkReply"/>
 		<typeAlias type="com.spring.dto.PIVO" alias="pi"/>
-		
 		<typeAlias type="com.spring.dto.ScrapVO" alias="scrap"/>
 		<typeAlias type="com.spring.dto.LikeVO" alias="like"/>
 		<typeAlias type="com.spring.dto.ReportVO" alias="report"/>
-		
+		<typeAlias type="com.spring.chat.ChatRoom" alias="chat"/>
+		<typeAlias type="com.spring.dto.MeetingVO" alias="meeting"/>
+		<typeAlias type="com.spring.dto.DailyReportVO" alias="dr"/>
+		<typeAlias type="com.spring.dto.WeeklyReportVO" alias="wr"/>
+		<typeAlias type="com.spring.dto.CopMemberVO" alias="copMemberVO"/>
+		<typeAlias type="com.spring.dto.shareProjectVO" alias="shareVO"/>
+		<typeAlias type="com.spring.dto.confirmRequestVO" alias="shareRequestVO"/>
+		<typeAlias type="com.spring.dto.KnowVO" alias="know"/>
+		<typeAlias type="com.spring.dto.AnswerVO" alias="answer"/>
+		<typeAlias type="com.spring.dto.AsReplyVO" alias="asReply"/>
+		<typeAlias type="com.spring.dto.PIReplyVO" alias="piReply"/>
+		<typeAlias type="com.spring.dto.familyDiscussionContentVO" alias="cFdContentVO"/>
+		<typeAlias type="com.spring.dto.PRBVO" alias="prb"/>
+		<typeAlias type="com.spring.dto.DfolderVO" alias="df"/>
+		<typeAlias type="com.spring.dto.DocumentVO" alias="document"/>
+		<typeAlias type="com.spring.dto.SystemVO" alias="system"/>
+		<typeAlias type="com.spring.dto.BoardSelectVO" alias="boardSelect"/>
+		<typeAlias type="com.spring.dto.QnaVO" alias="qna"/>
+		<typeAlias type="com.spring.dto.QreplyVO" alias="qreply"/>
+		<typeAlias type="com.spring.dto.AnswerLikeVO" alias="aLike"/>
 	</typeAliases>
 	
 </configuration>

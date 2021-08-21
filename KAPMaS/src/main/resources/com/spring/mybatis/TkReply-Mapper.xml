@@ -8,10 +8,16 @@
 	</select>
 	
 	<select id="selectTkReplyList" resultType="tkReply">
-		SELECT *
-		FROM TOTALKNOWLEDGEREPLY
-		WHERE TK_CODE = #{tkCode}
-		ORDER BY TK_RP_CODE ASC
+		SELECT
+			A.TK_RP_CODE as tkRpCode,
+			A.TK_CODE as tkCode,
+			A.TK_RP_CONTENT as tkRpContent,
+			A.TK_RP_REGDATE as tkRpRegdate,
+			A.TK_RP_WRITER as tkRpWriter,
+			(SELECT C.EMP_NAME FROM EMPLOYEE C WHERE A.TK_RP_WRITER = C.EMP_ID) as empName
+		FROM TOTALKNOWLEDGEREPLY A
+		WHERE A.TK_CODE = #{tkCode}
+		ORDER BY A.TK_RP_CODE ASC
 	</select>
 	
 	<select id="countTkReply" resultType="int">

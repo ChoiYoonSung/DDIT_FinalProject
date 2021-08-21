@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Sys-Mapper">
+
+
+<select id="getSystemList" resultType="system">
+
+select *
+from SYSTEMGUIDE
+</select>
+
+
+<select id="getSystemInfo" resultType="system">
+
+select * 
+from SYSTEMGUIDE
+where SG_CODE=#{sgCode}
+
+</select>
+
+
+<update id="insertSystem">
+insert into SYSTEMGUIDE(SG_CODE,SG_TITLE,SG_CONTENT,SG_REGDATE,SG_VIEWCNT,SG_TYPE)
+values(concat('sys',SYSTEMGUIDE_SEQ.NEXTVAL),#{sgTitle},#{sgContent},to_char(sysdate,'yyyy-MM-dd'),0,#{sgType})
+
+</update>
+
+
+<update id="deleteSystem">
+
+delete from SYSTEMGUIDE
+where  SG_CODE=#{sgCode}
+
+</update>
+
+
+<update id="updateSystem">
+
+update SYSTEMGUIDE
+set SG_TITLE = #{sgTitle} , SG_CONTENT = #{sgContent} ,SG_TYPE = #{sgType}
+where SG_CODE=#{sgCode}
+
+</update>
+
+	<update id="increaseSystemCnt" >
+		update 
+		SYSTEMGUIDE 
+		set 
+		SG_VIEWCNT=SG_VIEWCNT+1 
+		where SG_CODE=#{sgCode}
+	</update>
+	<update id="decreaseSystemCnt" >
+		update 
+		SYSTEMGUIDE 
+		set 
+		SG_VIEWCNT=SG_VIEWCNT-1 
+		where SG_CODE=#{sgCode}
+	</update>
+	
+	<select id="getGuideList" resultType="system">
+		select *
+		from systemguide
+		where sg_type = #{keyword}
+	</select>
+
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

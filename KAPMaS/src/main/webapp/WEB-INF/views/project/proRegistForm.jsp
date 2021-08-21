@@ -4,6 +4,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/WEB-INF/views/include/style.jsp" %>		
 <head>
+ 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/FullCalendar/vendor/css/fullcalendar.min.css" />
+    <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/FullCalendar/vendor/css/bootstrap.min.css">
+    <link rel="stylesheet" href='<%=request.getContextPath() %>/resources/FullCalendar/vendor/css/select2.min.css' />
+    <link rel="stylesheet" href='<%=request.getContextPath() %>/resources/FullCalendar/vendor/css/bootstrap-datetimepicker.min.css' />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,500,600">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/FullCalendar/css/main.css">
+    
+<link href="<%=request.getContextPath() %>/resources/css/css.css" rel="stylesheet" id="innerCss">
 <style>
 	body{
 		background-color: white;
@@ -32,17 +45,6 @@
   }
 	
 </style>
- 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/FullCalendar/vendor/css/fullcalendar.min.css" />
-    <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/FullCalendar/vendor/css/bootstrap.min.css">
-    <link rel="stylesheet" href='<%=request.getContextPath() %>/resources/FullCalendar/vendor/css/select2.min.css' />
-    <link rel="stylesheet" href='<%=request.getContextPath() %>/resources/FullCalendar/vendor/css/bootstrap-datetimepicker.min.css' />
-
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,500,600">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
-    <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/FullCalendar/css/main.css">
 
 </head>
 
@@ -50,7 +52,7 @@
 <body>
 <br>
 <br>
-<h1><img src="<%=request.getContextPath() %>/resources/images/logo-remove.png" 
+<h1 onclick="fillArea();"><img src="<%=request.getContextPath() %>/resources/images/logo-remove.png" 
 		alt="" style="width: 100px;">프로젝트 등록 화면</h1>
 
 <div class="nav-wizards-container">
@@ -80,7 +82,7 @@
 			
 			<div id="step1">
 			<div class="row mb-15px">
-			<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+			<span  style="width: 100px; height: 30px;">
 			<h6 style="line-height: 5px;">프로젝트 이름</h6>
 			</span>
 				<div class="col-md-9">
@@ -89,7 +91,7 @@
 			</div>
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+				<span style="width: 100px; height: 30px;">
 				<h6 style="line-height: 5px;">프로젝트 주제</h6>
 				</span>
 				<div class="col-md-9">
@@ -98,7 +100,7 @@
 			</div>
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+				<span style="width: 100px; height: 30px;">
 				<h6 style="line-height: 5px;">프로젝트 개요</h6>
 				</span>
 				<div class="col-md-9">
@@ -107,7 +109,7 @@
 			</div>
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+				<span  style="width: 100px; height: 30px;">
 				<h6 style="line-height: 5px;">프로젝트 내용</h6>
 				</span>
 				<div class="col-md-9">
@@ -309,7 +311,6 @@
 			<button type="submit"  class="btn btn-yellow me-1 mb-1" id="bthree"
 			style="float: right;">&nbsp;&nbsp;&nbsp;완 &nbsp;&nbsp;료&nbsp;&nbsp;&nbsp;</button>
 			
-			
 		</form>
 
 <script src="<%=request.getContextPath() %>/resources/FullCalendar/vendor/js/jquery.min.js"></script>
@@ -327,6 +328,12 @@
 <script src="<%=request.getContextPath() %>/resources/js/common.js"></script>
 
 <script>
+document.addEventListener('keydown', function(event) {
+	  if (event.keyCode === 13) {
+	    event.preventDefault();
+	  };
+	}, true);
+
 	window.onload = function() {
 		var el = document.getElementById('step2');
 		el.setAttribute('hidden', '');
@@ -339,30 +346,101 @@
 
 	}
 
+	function fillArea(){
+		$("#pName").val("ddit 최종 발표 프로젝트");
+		$("#pTitle").val("발표 전 중간 점검");
+		$("#pSummary").val("중간 점검");
+		$("#pContent").val("프로젝트 최종 발표전 점검을 위하여 프로젝트를 진행합니다.");
+	}
+	
 	function oneStep() {
 		
 		var memId = $("#pName").val();
 		if(memId == "") {
-			alert("프로젝트 이름을 입력하셔야 합니다");
-			return;
+			/* alert("프로젝트 이름을 입력하셔야 합니다");
+			return; */
+			swal({
+				title: '실패',
+				text: '프로젝트 이름을 입력하셔야 합니다',
+				icon: 'error', // primary success warning danger
+				buttons: {
+			        	confirm: {
+					text: '확인',
+			                value: true,
+			                visible: true,
+			                className: 'btn btn-danger',
+			                closeModal: true
+			              }
+			        }
+			});
+				return;
+			
 		}
 		
 
 		var memName = $("#pTitle").val();
 		if(memName == "") {
-			alert("프로젝트 주제를 입력하셔야 합니다");
+			/* alert("프로젝트 주제를 입력하셔야 합니다");
+			return; */
+			
+			swal({
+				title: '실패',
+				text: '프로젝트 주제를 입력하셔야 합니다',
+				icon: 'error', // primary success warning danger
+				buttons: {
+			        	confirm: {
+					text: '확인',
+			                value: true,
+			                visible: true,
+			                className: 'btn btn-danger',
+			                closeModal: true
+			              }
+			        }
+			});
 			return;
 		}
 		
 		var pSum=$("#pSummary").val()
 		if(pSum == "") {
-			alert("프로젝트 개요를 입력하셔야 합니다");
+			/* alert("프로젝트 개요를 입력하셔야 합니다");
+			return; */
+			
+			swal({
+				title: '실패',
+				text: '프로젝트 개요를 입력하셔야 합니다',
+				icon: 'error', // primary success warning danger
+				buttons: {
+			        	confirm: {
+					text: '확인',
+			                value: true,
+			                visible: true,
+			                className: 'btn btn-danger',
+			                closeModal: true
+			              }
+			        }
+			});
 			return;
 		}
 		
 		var pCon=$("#pContent").val()
 		if(pCon == "") {
-			alert("프로젝트 내용을 입력하셔야  합니다.");
+			/* alert("프로젝트 내용을 입력하셔야  합니다.");
+			return; */
+			
+			swal({
+				title: '실패',
+				text: '프로젝트 내용을 입력하셔야  합니다.',
+				icon: 'error', // primary success warning danger
+				buttons: {
+			        	confirm: {
+					text: '확인',
+			                value: true,
+			                visible: true,
+			                className: 'btn btn-danger',
+			                closeModal: true
+			              }
+			        }
+			});
 			return;
 		}
 
@@ -391,8 +469,24 @@
 		var e34=$("#startDate").val();
 		
 		if (e34 == ""){
-			alert("날짜를 입력하셔야 합니다.");
+		/* 	alert("날짜를 입력하셔야 합니다.");
+			return; */
+			swal({
+				title: '실패',
+				text: '날짜를 입력하셔야 합니다.',
+				icon: 'error', // primary success warning danger
+				buttons: {
+			        	confirm: {
+					text: '확인',
+			                value: true,
+			                visible: true,
+			                className: 'btn btn-danger',
+			                closeModal: true
+			              }
+			        }
+			});
 			return;
+			
 		}
 		
 		
@@ -430,8 +524,25 @@
 	
 	
 	function threeStep() {
-		alert("등록완료");
-		CloseWindow();
+		/* alert("등록완료");
+		CloseWindow(); */
+		
+		swal({
+			title: '성공',
+			text: '등록완료',
+			icon: 'success', // primary success warning danger
+			buttons: {
+		        	confirm: {
+				text: '확인',
+		                value: true,
+		                visible: true,
+		                className: 'btn btn-success',
+		                closeModal: true
+		              }
+		        }
+		}).then(function(e){
+			CloseWindow();
+		});
 	}
 	
 

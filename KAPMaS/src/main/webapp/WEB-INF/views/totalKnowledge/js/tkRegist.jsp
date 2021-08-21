@@ -7,38 +7,37 @@
 
 <html>
 <head>
+<style>
+#KWList > li > div > i:hover {color: red;}
+</style>
 
-<link href="<%=request.getContextPath()%>/resources/bootstrap/color_admin/template/assets/plugins/nvd3/build/nv.d3.css"	rel="stylesheet">
+<script	src="<%=request.getContextPath()%>/resources/bootstrap/assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
+<link href="<%=request.getContextPath()%>/resources/bootstrap/assets/plugins/nvd3/build/nv.d3.css"	rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
 <link href="<%=request.getContextPath()%>/resources/bootstrap/assets/css/forum/vendor.min.css" rel="stylesheet">
 <link href="<%=request.getContextPath()%>/resources/bootstrap/assets/css/forum/app.min.css" rel="stylesheet">
-<script	src="<%=request.getContextPath()%>/resources/bootstrap/color_admin/template/assets/js/forum/vendor.min.js" type="text/javascript"></script>
-<script	src="<%=request.getContextPath()%>/resources/bootstrap/color_admin/template/assets/js/forum/app.min.js"	type="text/javascript"></script>
+<script	src="<%=request.getContextPath()%>/resources/bootstrap/assets/js/forum/vendor.min.js" type="text/javascript"></script>
+<script	src="<%=request.getContextPath()%>/resources/bootstrap/assets/js/forum/app.min.js"	type="text/javascript"></script>
 
-<script>   
-  	window.onload=function(){
-  		
-//   		Summernote_start($('#tkContent')); 
-	
-	 	$('.fileInput').on('change','input[type="file"]',function(event){
-	 		if(this.files[0].size>1024*1024*40){
-	 			alert("파일 용량이 40MB를 초과하였습니다.");
-	 			this.value="";
-	 			$(this).click();		 			
-	 			return false;
-	 		} 
-	   	});
-	 	
-	 	$('div.fileInput').on('click','div.inputRow > button',function(event){
-	 		$(this).parent('div.inputRow').remove();
-	 	});
-}
-  </script>
+
 <script>
  	function addFile_go(){
  		//alert("click addFile btn");
  		if($('input[name="uploadFile"]').length >=5){
- 			alert("파일추가는 5개까지만 가능합니다.");
+ 			swal({
+ 				title : '알림',
+ 				text : '파일첨부는 5개까지 가능합니다.',
+ 				icon : 'warning',
+ 				buttons : {
+ 					confirm : {
+ 						text : '확인',
+ 						value : true,
+ 						visible : true,
+ 						className : 'btn btn-warning me-1',
+ 						closeModal : true
+ 					}
+ 				}
+ 			});
  			return;
  		}
  		
@@ -49,28 +48,84 @@
  	}
  	
 	function addKeyword(){
-		var KW = $('#addKW').val();
+		var KW = $.trim($('#addKW').val());
 		var len = $(".key").length;
 		var keyArr = $(".key").val();
 		
 		if(KW == null || KW == ""){
-			alert("키워드를 입력해주세요");
+			swal({
+				title : '알림',
+				text : '키워드를 입력해주세요',
+				icon : 'warning',
+				buttons : {
+					confirm : {
+						text : '확인',
+						value : true,
+						visible : true,
+						className : 'btn btn-warning me-1',
+						closeModal : true
+					}
+				}
+			});
+			return;
+		}
+		if(KW.length > 10){
+			swal({
+				title : '알림',
+				text : '키워드는 최대 10글자까지 입력 가능합니다.',
+				icon : 'warning',
+				buttons : {
+					confirm : {
+						text : '확인',
+						value : true,
+						visible : true,
+						className : 'btn btn-warning me-1',
+						closeModal : true
+					}
+				}
+			});
 			return;
 		}
 		if(len > 4){
-			alert("키워드는 최대 5개까지 입력 가능합니다.");
+			swal({
+				title : '알림',
+				text : '키워드는 최대 5개까지 입력 가능합니다.',
+				icon : 'warning',
+				buttons : {
+					confirm : {
+						text : '확인',
+						value : true,
+						visible : true,
+						className : 'btn btn-warning me-1',
+						closeModal : true
+					}
+				}
+			});
 			$('#addKW').val("");
 			return;
 		}
 		if(len > 0){
 			for(var i = 0; i < len; i++){
 				if(KW == $(".key")[i].innerText){
-					alert("이미 등록한 키워드입니다.");
+					swal({
+						title : '알림',
+						text : '이미 등록한 키워드입니다.',
+						icon : 'warning',
+						buttons : {
+							confirm : {
+								text : '확인',
+								value : true,
+								visible : true,
+								className : 'btn btn-warning me-1',
+								closeModal : true
+							}
+						}
+					});
 					return;
 				}
 			}
 		}
-		var KWList = $('<li><div class="d-flex align-items-center"><span class="key" style="color:black;"><h5>' + KW +'</h5></span><i class="fas fa-lg fa-fw me-10px fa-times-circle" onclick="delKW(this)"></i></div></li>');
+		var KWList = $('<li><div class="d-flex align-items-center"><span class="key" style="color:black;"><b>' + KW +'</b></span><i name="delIcon"class="fas fa-lg fa-fw me-10px fa-times-circle" onclick="delKW(this)"></i></div></li>');
 		$('#KWList').append(KWList);
 		$('#addKW').val("");
 	}
@@ -86,7 +141,20 @@
  		for(var file of files){
  			console.log(file.name+" : "+file.value);
  			if(file.value==""){
- 				alert("파일을 선택하세요.");
+				swal({
+					title : '알림',
+					text : '파일을 선택하세요.',
+					icon : 'warning',
+					buttons : {
+						confirm : {
+							text : '확인',
+							value : true,
+							visible : true,
+							className : 'btn btn-warning me-1',
+							closeModal : true
+						}
+					}
+				});
  				file.focus();
  				file.click();
  				return;
@@ -94,7 +162,20 @@
  		}	
  		
  		if($("input[name='tkTitle']").val()==""){ //form.title.value
- 			alert("제목은 필수입니다.");
+			swal({
+				title : '알림',
+				text : '제목을 입력해주세요',
+				icon : 'warning',
+				buttons : {
+					confirm : {
+						text : '확인',
+						value : true,
+						visible : true,
+						className : 'btn btn-warning me-1',
+						closeModal : true
+					}
+				}
+			});
  			$("input[name='tkTitle']").focus();
  			return;
  		}

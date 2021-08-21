@@ -60,7 +60,7 @@ public class TrashDAOImpl implements TrashDAO{
 
 	@Override
 	public void deleteTrash(TrashVO trash) throws SQLException {
-		session.update("Trash-Mapper.restoreTrash", trash);
+		session.update("Trash-Mapper.deleteTrash", trash);
 	}
 
 }

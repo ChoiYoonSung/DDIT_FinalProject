@@ -21,9 +21,6 @@
 <meta content="" name="description" />
 <meta content="" name="author" />
 
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-<link href="<%=request.getContextPath() %>/resources/bootstrap/assets/css/vendor.min.css" rel="stylesheet" />
-<link href="<%=request.getContextPath() %>/resources/bootstrap/assets/css/default/app.min.css" rel="stylesheet" />
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.5/js/min/perfect-scrollbar.jquery.min.js"></script>
 
 
@@ -55,13 +52,12 @@
 					</div>
 					<ul class="nav nav-inbox">
 						<li><a href="<%=request.getContextPath() %>/mypage/receivemail.do"><i class="fa fa-hdd fa-lg fa-fw me-2"></i> 
-						수신함 <span class="badge bg-gray-600 fs-10px rounded-pill ms-auto fw-bolder pt-4px pb-5px px-8px">52</span></a></li>
+						수신함 <span class="badge bg-gray-600 fs-10px rounded-pill ms-auto fw-bolder pt-4px pb-5px px-8px"></span></a></li>
 					<!-- 	<li><a href="email_inbox.html"><i
 								class="fa fa-flag fa-lg fa-fw me-2"></i> Important</a></li> -->
 						<li  class="active"><a href="<%=request.getContextPath() %>/mypage/sendmail.do"><i class="fa fa-envelope fa-lg fa-fw me-2"></i> 발신함</a></li>
 						<!-- <li><a href="email_inbox.html"><i
 								class="fa fa-save fa-lg fa-fw me-2"></i> Drafts</a></li> -->
-						<li><a href="email_inbox.html"><i class="fa fa-trash-alt fa-lg fa-fw me-2"></i> 휴지통</a></li>
 					</ul>
 					<!-- <div class="nav-title">
 						<b>LABEL</b>
@@ -109,18 +105,16 @@
 					</div>
 					</c:if>
 					
-						<!-- <a href="javascript:;" class="btn btn-white btn-sm"><i
-							class="fa fa-fw fa-archive"></i> <span class="d-none d-lg-inline">Archive</span></a> -->
-				<!-- 	<div class="btn-group ms-auto me-2">
-						<a href="email_inbox.html" class="btn btn-white btn-sm disabled"><i
-							class="fa fa-fw fa-arrow-up"></i></a> <a href="email_inbox.html"
-							class="btn btn-white btn-sm"><i
-							class="fa fa-fw fa-arrow-down"></i></a>
+					
+						<div class="btn-group">
+						&nbsp;&nbsp;&nbsp;
+						<button class="btn btn-sm btn-white" onclick="CloseWindow();">
+							<span class="hidden-xs" >닫기</span>
+						</button>
 					</div>
-					<div class="btn-group">
-						<a href="email_inbox.html" class="btn btn-white btn-sm"><i
-							class="fa fa-fw fa-times"></i></a>
-					</div> -->
+					
+					
+					
 				</div>
 			</div>
 			<div class="mailbox-content-body">
@@ -133,11 +127,10 @@
 							</a> -->
 							<div class="ps-3">
 								<div class="email-from text-inverse fs-14px mb-3px fw-bold">
-									${emp.empEmail }</div>
+									제목 : ${smail.smTitle }</div>
 								<div class="mb-3px">
 									<i class="fa fa-clock fa-fw"></i> ${smail.smSenddate }
 								</div>
-								<div class="email-to">To: ${loginUser.empEmail }</div>
 							</div>
 						</div>
 						<hr class="bg-gray-500">
@@ -161,18 +154,6 @@
 				</div>
 
 			</div>
-			<div
-				class="mailbox-content-footer d-flex align-items-center justify-content-end">
-				<div class="btn-group me-2">
-					<a href="email_inbox.html" class="btn btn-white btn-sm disabled"><i
-						class="fa fa-fw fa-arrow-up"></i></a> <a href="email_inbox.html"
-						class="btn btn-white btn-sm"><i class="fa fa-fw fa-arrow-down"></i></a>
-				</div>
-				<div class="btn-group">
-					<a href="email_inbox.html" class="btn btn-white btn-sm"><i
-						class="fa fa-fw fa-times"></i></a>
-				</div>
-			</div>
 		</div>
 
 
@@ -182,14 +163,57 @@
 	</div>
 	
 <script type="text/javascript">
+
+window.onload = function() {
+	$(".summernote").summernote({
+	    placeholder: '내용을 입력해주세요.',
+	    height: "300",
+	    minHeight: "300",              
+	    maxHeight: "300",
+	    disableResizeEditor: true,
+	    toolbar : false
+    });
+	
+	$('.summernote').summernote('disable');
+}
+
 function deleteMail(smCode){
 	var html='';
-	if(confirm("쪽지를 삭제하시겠습니까?")){
+	/* if(confirm("쪽지를 삭제하시겠습니까?")){
 		
 		
 	}else{
 		return;
-	}
+	} */
+	
+	   swal({
+           title: '쪽지 삭제',
+           text: '쪽지를 삭제하시겠습니까?',
+           icon: 'warning', // primary success warning danger
+           buttons: {
+               cancel: {
+                   text: '취소',
+                   value: false,
+                   visible: true,
+                   className: 'btn btn-default',
+                   closeModal: true,
+                 },
+                 confirm: {
+                   text: '확인',
+                   value: true,
+                   visible: true,
+                   className: 'btn btn-primary',
+                   closeModal: true
+                 }
+           }
+         }).then(function(val){
+            if(val == true){
+               // true
+            } else {
+            	return;
+            }
+         });
+	
 	
 	
 	html += ''+smCode+'';
@@ -214,9 +238,6 @@ function deleteMail(smCode){
 		},
 		
 		error:function(error){
-			alert("선택하신 쪽지를 삭제하였습니다\n초대쪽지는 영구삭제됩니다.");
-			/* CloseWindow();  */
-			window.location.href="<%=request.getContextPath() %>/mypage/sendmail.do";
 		}
 		
 	});
@@ -250,15 +271,34 @@ function deleteSmail(smCode){
 		contentType:"application/json;charset=utf-8",
 		success:function(data){
 			
-			alert("선택하신 쪽지를 삭제하였습니다\n쪽지는 휴지통에 보관되어 30일 후 영구삭제됩니다.");
+			<%-- alert("선택하신 쪽지를 삭제하였습니다\n쪽지는 휴지통에 보관되어 30일 후 영구삭제됩니다.");
 			/* CloseWindow();  */
-			window.location.href="<%=request.getContextPath() %>/mypage/sendmail.do";
+			window.location.href="<%=request.getContextPath() %>/mypage/sendmail.do"; --%>
+			
+			
+			swal({
+				title: '성공',
+				text: '선택하신 쪽지를 삭제하였습니다\n쪽지는 휴지통에 보관되어 30일 후 영구삭제됩니다.',
+				icon: 'success', // primary success warning danger
+				buttons: {
+			        	confirm: {
+					text: '확인',
+			                value: true,
+			                visible: true,
+			                className: 'btn btn-success',
+			                closeModal: true
+			              }
+			        }
+			}).then(function(e){
+				window.location.href="<%=request.getContextPath() %>/mypage/sendmail.do";
+			});
 		},
 		
 		error:function(error){
-			alert("선택하신 쪽지를 삭제하였습니다\n쪽지는 휴지통에 보관되어 30일 후 영구삭제됩니다.");
+			<%-- alert("선택하신 쪽지를 삭제하였습니다\n쪽지는 휴지통에 보관되어 30일 후 영구삭제됩니다.");
 			/* CloseWindow();  */
-			window.location.href="<%=request.getContextPath() %>/mypage/sendmail.do";
+			window.location.href="<%=request.getContextPath() %>/mypage/sendmail.do"; --%>
+			
 		}
 		
 	});

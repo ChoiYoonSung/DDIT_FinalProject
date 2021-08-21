@@ -29,6 +29,13 @@
 		<bean id="CAfileUploadPath" class="java.lang.String">
 			<constructor-arg value="${ca.upload}"/>
 		</bean>
+		<bean id="MeetingUploadPath" class="java.lang.String">
+			<constructor-arg value="${meeting.upload}"/>
+		</bean>
+		<bean id="FormUploadPath" class="java.lang.String">
+			<constructor-arg value="${form.upload}"/>
+		</bean>
+		
 		<import resource="./mail-context.xml"/>
 		<import resource="./dataSource-context.xml"/>
 		<import resource="./application-context.xml"/>

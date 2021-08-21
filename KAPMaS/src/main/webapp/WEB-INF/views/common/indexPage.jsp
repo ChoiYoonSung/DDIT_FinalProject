@@ -5,16 +5,13 @@
 
 
 <iframe class="content-wrapper"name="ifr" src="main.do" frameborder="0"></iframe>
- 	 
-
 
 <!-- handlebars -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>
-
 <script type="text/x-handlebars-template"  id="subMenu-list-template" >
 {{#each .}}
-			<div class="menu-item subMenu">
-				<a href="javascript:goPage('{{murl}}','{{mcode}}');isActive('{{mcode}}');" class="menu-link"><div class="menu-text">{{mname}}</div></a>
+			<div class="menu-item subMenu kapmas-submenu-{{mcode}}">
+				<a href="javascript:goPage('{{murl}}{{#ifEq murl 'M010100'}} {{pCode}} {{/ifEq}}','{{mcode}}'); menuSelect('{{mcode }}, 10');" class="menu-link snd" id="submenu-{{mcode}}"><div class="menu-text">{{mname}}</div></a>
 			</div>
 {{/each}}
 </script>
@@ -25,13 +22,11 @@ Handlebars.registerHelper('ifEq', function(v1, v2, options) {
 	  }
 	  return options.inverse(this);
 	});
-	
-var url = window.location.href;
-var mcode = url.substr(-7);
+
 function init(){
 	goPage('${menu.murl}','${menu.mcode}');
 	subMenu('${menu.mcode}'.substring(0,3)+"0000");
-	menuSelect(mcode);
+	menuSelect('${menu.mcode}',10);
 };
 
 </script>

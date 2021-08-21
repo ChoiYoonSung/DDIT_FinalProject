@@ -19,6 +19,7 @@
 		from RECEIVEMAIL
 		where emp_id=#{empId}
 		AND NOT(RM_ENABLED = '0')
+		order by RM_RECEIVEDATE DESC
 	</select>
 	
 	

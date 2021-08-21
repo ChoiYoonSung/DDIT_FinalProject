@@ -14,11 +14,11 @@
 }
 
 #listTable {
-	height: 460px;
+	height: 4px;
 }
 
 .app-content {
-	padding: 20px 10px 10px 10px;
+	padding: 0px 10px 10px 10px;
 }
 
 .row {
@@ -26,14 +26,17 @@
 }
 </style>
 </head>
-<div class="banner-img" style="width: 100%; height: 270px; background-size: cover; background-repeat: no-repeat; background-image: url('<%=request.getContextPath() %>/cop/getBannerByCode/${copInfo.copCode}');"></div>
+<div class="app-content">
+<div class="banner-img"
+	style="width: 100%; height: 290px; background-size: cover; background-repeat: no-repeat; background-image: url('<%=request.getContextPath() %>/cop/getBannerByCode/${copInfo.copCode}');"></div>
+	 </div>
 <br>
 <div class="row">
-	<div class="col-xl-6" id="listTable">
+	<div class="col-6" id="listTable">
 		<div class="panel panel-inverse" data-sortable-id="table-basic-1"
 			style="">
 			<!-- BEGIN panel-heading -->
-			<div class="panel-heading ui-sortable-handle">
+			<div class="panel-heading">
 				<h4 class="panel-title">토론방 리스트</h4>
 				<div class="panel-heading-btn">
 					<a href="javascript:;" class="btn btn-xs btn-icon btn-default"
@@ -44,7 +47,7 @@
 			<!-- END panel-heading -->
 
 			<!-- BEGIN panel-body -->
-			<div class="panel-body" style="height: 400px;">
+			<div class="panel-body" style="height: 300px;">
 				<!-- BEGIN table-responsive -->
 				<div class="table-responsive">
 					<table class="table mb-0">
@@ -63,8 +66,8 @@
 									<td></td>
 								</tr>
 							</c:if>
-							<c:forEach var="cfd" items="${discussionList }">
-								<tr>
+							<c:forEach var="cfd" items="${discussionList }" begin="0" end="6">
+								<tr onclick="javascript:location.href='<%=request.getContextPath()%>/cop/detail/discussion/fdisDetail/${cfd.fdisCode }';" style="cursor: pointer;">
 									<td>${cfd.fdisCode }</td>
 									<td>${cfd.fdisName }</td>
 									<td>${cfd.fdisRegdate }</td>
@@ -76,11 +79,11 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-xl-6" id="listTable">
+	<div class="col-6" id="listTable">
 		<div class="panel panel-inverse" data-sortable-id="table-basic-2"
 			style="">
 			<!-- BEGIN panel-heading -->
-			<div class="panel-heading ui-sortable-handle">
+			<div class="panel-heading">
 				<h4 class="panel-title">자료실 리스트</h4>
 				<div class="panel-heading-btn">
 					<a href="javascript:;" class="btn btn-xs btn-icon btn-default"
@@ -91,7 +94,7 @@
 			<!-- END panel-heading -->
 
 			<!-- BEGIN panel-body -->
-			<div class="panel-body" style="height: 400px;">
+			<div class="panel-body" style="height: 300px;">
 				<!-- BEGIN table-responsive -->
 				<div class="table-responsive">
 					<table class="table mb-0">
@@ -112,8 +115,8 @@
 									<td></td>
 								</tr>
 							</c:if>
-							<c:forEach var="ca" items="${archiveList }">
-								<tr>
+							<c:forEach var="ca" items="${archiveList }" begin="0" end="6">
+								<tr onclick="javascript:location.href='<%=request.getContextPath()%>/cop/detail/coppds/pdsDetail/${ca.caCode}';" style="cursor: pointer;">
 									<td>${ca.caCode }</td>
 									<td>${ca.caTitle }</td>
 									<td>${ca.empId }</td>

@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PRB-Mapper">
+
+
+	<sql id="search">
+		<if test="searchType == 'w'.toString()">
+			AND A.EMP_ID LIKE '%'||#{keyword}||'%'			
+		</if>
+	</sql>	
+	
+	<select id="getAllList" resultType="prb">
+		SELECT
+			A.PR_CODE prCode,
+			A.P_CODE pCode,
+			A.PR_REGDATE prRegdate,
+			A.PR_LIKECNT prLikecnt,
+			A.PR_VIEWCNT prViewcnt,
+			A.PR_ATTACH_PATH prAttachPath,
+			A.EMP_ID empId,
+			A.FINAL_ATTACH_PATH finalAttachPath,
+			A.PR_ENABLED prEnabled,
+			A.PR_TITLE prTitle,
+			B.P_NAME pName,
+			B.P_TITLE pTitle,
+			B.P_SUMMARY pSummary,
+			B.P_CONTENT pContent,
+            (SELECT C.EMP_NAME FROM EMPLOYEE C WHERE A.EMP_ID = C.EMP_ID)as empName
+		FROM PROJECTREPORTBOARD A
+		INNER JOIN PROJECT B ON A.P_CODE = B.P_CODE	
+		WHERE A.PR_ENABLED = 1;
+		<include refid="search" />
+		ORDER BY A.PR_CODE DESC
+	</select>
+	<select id="getAllListCount" parameterType="str" resultType="prb">
+		select
+		COUNT(*) cnt
+		from
+		projectreportboard
+		where pr_enabled = 1
+		AND EMP_ID LIKE '%'||#{keyword}||'%'		
+	</select>
+	
+	<select id="selectSearchPrbListArr" parameterType="str" resultType="prb">
+		SELECT
+			A.PR_CODE prCode,
+			A.P_CODE pCode,
+			A.PR_REGDATE prRegdate,
+			A.PR_LIKECNT prLikecnt,
+			A.PR_VIEWCNT prViewcnt,
+			A.PR_ATTACH_PATH prAttachPath,
+			A.EMP_ID empId,
+			A.FINAL_ATTACH_PATH finalAttachPath,
+			A.PR_ENABLED prEnabled,
+			A.PR_TITLE prTitle,
+			B.P_NAME pName,
+			B.P_TITLE pTitle,
+			B.P_SUMMARY pSummary,
+			B.P_CONTENT pContent,
+			(SELECT C.EMP_NAME FROM EMPLOYEE C WHERE A.EMP_ID = C.EMP_ID)as empName
+		FROM PROJECTREPORTBOARD A
+		INNER JOIN PROJECT B ON A.P_CODE = B.P_CODE	
+		WHERE A.PR_CODE is not null
+		<if test="lists =! null">     
+			and
+			<foreach collection="array" item="item" index="index" separator="or">
+			 	B.P_NAME LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+			 	and A.PR_ENABLED = 1
+			 </foreach>
+			 or
+			<foreach collection="array" item="item" index="index" separator="or">
+			 	B.P_TITLE LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+			 	and A.PR_ENABLED = 1
+			 </foreach>
+			 or
+			<foreach collection="array" item="item" index="index" separator="or">
+			 	B.P_SUMMARY LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+			 	and A.PR_ENABLED = 1
+			 </foreach>
+			 or
+			<foreach collection="array" item="item" index="index" separator="or">
+			 	B.P_CONTENT LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+			 	and A.PR_ENABLED = 1
+			 </foreach>
+			 or
+			<foreach collection="array" item="item" index="index" separator="or">
+			 	A.PR_TITLE LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+			 	and A.PR_ENABLED = 1
+			 </foreach>
+		 </if>
+		ORDER BY A.PR_REGDATE DESC
+	</select>
+	<select id="selectSearchPrbListArr2" parameterType="str" resultType="prb">
+		SELECT
+			A.PR_CODE prCode,
+			A.P_CODE pCode,
+			A.PR_REGDATE prRegdate,
+			A.PR_LIKECNT prLikecnt,
+			A.PR_VIEWCNT prViewcnt,
+			A.PR_ATTACH_PATH prAttachPath,
+			A.EMP_ID empId,
+			A.FINAL_ATTACH_PATH finalAttachPath,
+			A.PR_ENABLED prEnabled,
+			A.PR_TITLE prTitle,
+			B.P_NAME pName,
+			B.P_TITLE pTitle,
+			B.P_SUMMARY pSummary,
+			B.P_CONTENT pContent
+		FROM PROJECTREPORTBOARD A
+		INNER JOIN PROJECT B ON A.P_CODE = B.P_CODE	
+		WHERE A.PR_CODE is not null
+		<if test="lists =! null">     
+			and
+			<foreach collection="array" item="item" index="index" separator="or">
+			 	B.P_NAME LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+			 	and A.PR_ENABLED = 1
+			 </foreach>
+			 or
+			<foreach collection="array" item="item" index="index" separator="or">
+			 	B.P_TITLE LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+			 	and A.PR_ENABLED = 1
+			 </foreach>
+			 or
+			<foreach collection="array" item="item" index="index" separator="or">
+			 	B.P_SUMMARY LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+			 	and A.PR_ENABLED = 1
+			 </foreach>
+			 or
+			<foreach collection="array" item="item" index="index" separator="or">
+			 	B.P_CONTENT LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+			 	and A.PR_ENABLED = 1
+			 </foreach>
+			 or
+			<foreach collection="array" item="item" index="index" separator="or">
+			 	A.PR_TITLE LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+			 	and A.PR_ENABLED = 1
+			 </foreach>
+		 </if>
+		ORDER BY A.PR_REGDATE DESC
+	</select>
+	
+	<select id="selectSearchPrbListViewOrder" resultType="prb">
+		SELECT
+			A.PR_CODE prCode,
+			A.P_CODE pCode,
+			A.PR_REGDATE prRegdate,
+			A.PR_LIKECNT prLikecnt,
+			A.PR_VIEWCNT prViewcnt,
+			A.PR_ATTACH_PATH prAttachPath,
+			A.EMP_ID empId,
+			A.FINAL_ATTACH_PATH finalAttachPath,
+			A.PR_ENABLED prEnabled,
+			A.PR_TITLE prTitle,
+			B.P_NAME pName,
+			B.P_TITLE pTitle,
+			B.P_SUMMARY pSummary,
+			B.P_CONTENT pContent,
+			(SELECT C.EMP_NAME FROM EMPLOYEE C WHERE A.EMP_ID = C.EMP_ID)as empName
+		FROM PROJECTREPORTBOARD A
+		INNER JOIN PROJECT B ON A.P_CODE = B.P_CODE	
+		WHERE A.PR_ENABLED = 1
+		AND A.PR_REGDATE
+		BETWEEN SYSDATE - 8 AND SYSDATE		
+		ORDER BY A.PR_VIEWCNT DESC
+	</select>
+	
+	<select id="selectPrbByPrbCode"  parameterType="str" resultType="prb">
+		SELECT
+			A.PR_CODE prCode,
+			A.P_CODE pCode,
+			A.PR_REGDATE prRegdate,
+			A.PR_LIKECNT prLikecnt,
+			A.PR_VIEWCNT prViewcnt,
+			A.PR_ATTACH_PATH prAttachPath,
+			A.EMP_ID empId,
+			A.FINAL_ATTACH_PATH finalAttachPath,
+			A.PR_ENABLED prEnabled,
+			A.PR_TITLE prTitle,
+			B.P_NAME pName,
+			B.P_TITLE pTitle,
+			B.P_SUMMARY pSummary,
+			B.P_CONTENT pContent,
+			(SELECT C.EMP_NAME FROM EMPLOYEE C WHERE A.EMP_ID = C.EMP_ID)as empName
+		FROM PROJECTREPORTBOARD A
+		INNER JOIN PROJECT B ON A.P_CODE = B.P_CODE	
+		WHERE A.PR_ENABLED = 1
+		AND A.PR_CODE = #{prCode}
+<!-- 		<include refid="search" /> -->
+	</select>
+	
+	<update id="disablePrb" parameterType="str">
+		update 
+		projectreportboard
+		set 
+		pr_ENABLED=0
+		where pr_code=#{prCode}
+	</update>
+	
+	<update id="increaseViewCnt" parameterType="str">
+		update 
+		projectreportboard 
+		set 
+		pr_viewcnt=pr_viewcnt+1 
+		where pr_code=#{prCode}
+	</update>
+	
+	<update id="increaseLikeCnt" parameterType="str">
+		update 
+		projectreportboard 
+		set 
+		pr_likecnt=pr_likecnt+1 
+		where pr_code=#{prCode}
+	</update>
+	<update id="decreaseLikeCnt" parameterType="str">
+		update 
+		projectreportboard 
+		set 
+		pr_likecnt=pr_likecnt-1 
+		where pr_code=#{prCode}
+	</update>
+	
+	
+	<select id="selectSeqNext" resultType="str">
+		select projectreportboard_SEQ.NEXTVAL as pr_code from dual
+	</select>
+	
+	<select id="selectPrbByPcode"  parameterType="str" resultType="prb">
+		SELECT
+			A.PR_CODE prCode,
+			A.P_CODE pCode,
+			A.PR_REGDATE prRegdate,
+			A.PR_LIKECNT prLikecnt,
+			A.PR_VIEWCNT prViewcnt,
+			A.PR_ATTACH_PATH prAttachPath,
+			A.EMP_ID empId,
+			A.FINAL_ATTACH_PATH finalAttachPath,
+			A.PR_ENABLED prEnabled,
+			A.PR_TITLE prTitle,
+			B.P_NAME pName,
+			B.P_TITLE pTitle,
+			B.P_SUMMARY pSummary,
+			B.P_CONTENT pContent,
+			(SELECT C.EMP_NAME FROM EMPLOYEE C WHERE A.EMP_ID = C.EMP_ID)as empName
+		FROM PROJECTREPORTBOARD A
+		INNER JOIN PROJECT B ON A.P_CODE = B.P_CODE	
+		WHERE A.PR_ENABLED = 1
+		AND A.P_CODE = #{pCode}
+<!-- 		<include refid="search" /> -->
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

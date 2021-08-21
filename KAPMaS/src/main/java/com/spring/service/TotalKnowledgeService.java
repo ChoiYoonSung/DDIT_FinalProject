@@ -28,7 +28,12 @@ public interface TotalKnowledgeService {
 	
 	// 리스트조회
 	Map<String, Object> getList(SearchCriteria cri) throws SQLException, Exception;
+	Map<String, Object> getList2(SearchCriteria cri) throws SQLException, Exception;
 	List<TotalKnowledgeVO> getListList() throws SQLException, Exception;
+	
+	// 검색
+	Map<String, Object> getListArr(String[] userArray) throws SQLException, Exception;
+	Map<String, Object> getListArr2(String[] userArray) throws SQLException, Exception;
 	
 	//본문 이미지파일명으로 가져오기
 	TotalKnowledgeVO findFileInContent(String fileName)throws SQLException;

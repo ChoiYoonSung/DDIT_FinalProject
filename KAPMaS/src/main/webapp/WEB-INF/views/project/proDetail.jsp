@@ -54,19 +54,17 @@ button{
 </style>
 <link href="<%=request.getContextPath() %>/resources/bootstrap/assets/plugins/countdown/jquery.countdown.css" rel="stylesheet">
 </head>
-<body style="padding: 40px; ">
+<body>
 <div class="project-wrapper">
 	<div class="panel panel-inverse" data-sortable-id="index-6">
 			<div class="panel-heading ui-sortable-handle">
-				<h4 class="panel-title">Analytics Details</h4>
+				<h4 class="panel-title">프로젝트 상세정보</h4>
 				<div class="panel-heading-btn">
-					<a href="javascript:;" class="btn btn-xs btn-icon btn-default"
-						data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
 				</div>
 			</div>
 			<div class="table-responsive">
 			
-	<div class="coming-soon">
+	<div class="coming-soon" style="min-height: 94vh;">
 		<div class="coming-soon-header">
 			<div class="bg-cover"></div>
 			<div class="brand">
@@ -106,19 +104,24 @@ button{
 		<div class="coming-soon-content">
 		
 		<div class="btn-wrapper">
-		<button class="btn btn-gray " onclick="CloseWindow();">취소</button>
-		<button class="btn btn-warning " onclick="OpenWindow('ProModifyForm.do?pCode=${pro.pCode}','프로젝트 수정',900,900);">수정&nbsp;<i class="fas fa-cog fa-spin"></i></button>
-		<button class="btn btn-warning " onclick="OpenWindow('','프로젝트 등록',900,900);">프로젝트 이관&nbsp;<i class="fas fa-circle-notch fa-spin"></i></button>
-		<c:if test="${pro.pEnabled == '0' }">
-			<button type="button" class="btn btn-warning " onclick="doPro();">활성화&nbsp;<i class="fas fa-sync fa-spin"></i></button>
+		<button class="btn btn-gray " onclick="CloseWindow();">닫기</button>
+		
+		
+		
+		<c:if test="${loginUser.empId == pjm.empId }">
+			<c:if test="${pro.pEnabled == '0' }">
+				<button type="button" class="btn btn-warning " onclick="doPro();">활성화&nbsp;</button>
+			</c:if>
+			<c:if test="${pro.pEnabled == '1' }">
+			<button class="btn btn-warning " onclick="OpenWindow('ProModifyForm.do?pCode=${pro.pCode}','프로젝트 수정',900,550);">수정&nbsp;</button>
+				<button class="btn btn-warning " onclick="OpenWindow('relegateForm.do?pCode=${pro.pCode}','프로젝트 이관',700,770);">프로젝트 이관&nbsp;</button>
+				<button type="button" class="btn btn-primary" onclick="doNotPro();">비활성화&nbsp;</button>
+			</c:if>
 		</c:if>
-		<c:if test="${pro.pEnabled == '1' }">
-			<button type="button" class="btn btn-primary" onclick="doNotPro();">비활성화&nbsp;<i class="fas fa-sync fa-spin"></i></button>
-		</c:if>
+		
 	</div>
 		</div>
 	</div>
-
 
 		</div>
 	</div>
@@ -127,8 +130,6 @@ button{
 
 
 <input type="text" hidden="" id="end" value="${pro.pEnddate }">
-
-
 
 	<form id="pp" action="<%=request.getContextPath() %>/project/doNotPro.do" method="post">
 	<input name="pCode" hidden="" value="${pro.pCode }">
@@ -149,23 +150,89 @@ window.onload=function(){
 
 
 function doNotPro(){
-		if(confirm("프로젝트를 비활성화 하게시겠습니까? 다시 활성화 할수 있습니다.")){
+	
+	/* 
+		if(confirm("프로젝트를 비활성화 하시겠습니까? 다시 활성화 할수 있습니다.")){
 			var form=document.getElementById('pp');
 			form.submit();
 	}else{
 		return;
-	}
+	} */
+		
+		   swal({
+               title: '프로젝트 비활성화',
+               text: '프로젝트를 비활성화 하시겠습니까? 다시 활성화 할수 있습니다.',
+               icon: 'warning', // primary success warning danger
+               buttons: {
+                   cancel: {
+                       text: '취소',
+                       value: false,
+                       visible: true,
+                       className: 'btn btn-default',
+                       closeModal: true,
+                     },
+                     confirm: {
+                       text: '확인',
+                       value: true,
+                       visible: true,
+                       className: 'btn btn-primary',
+                       closeModal: true
+                     }
+               }
+             }).then(function(val){
+                if(val == true){
+                	var form=document.getElementById('pp');
+        			form.submit();
+                } else {
+                	return;
+                }
+             });	
+		
+		
 }
 
 
 function doPro(){
-			if(confirm("프로젝트를 활성화 하게시겠습니까? 다시 비활성화 할수 있습니다.")){
+
+	
+/* 	if(confirm("프로젝트를 활성화 하시겠습니까? 다시 비활성화 할수 있습니다.")){
 				var form=document.getElementById('pd');
 				form.submit();
 		}else{
 			return;
-		}
+		} */
 	
+	   swal({
+           title: '프로젝트 활성화',
+           text: '프로젝트를 활성화 하시겠습니까? 다시 비활성화 할수 있습니다.',
+           icon: 'warning', // primary success warning danger
+           buttons: {
+               cancel: {
+                   text: '취소',
+                   value: false,
+                   visible: true,
+                   className: 'btn btn-default',
+                   closeModal: true,
+                 },
+                 confirm: {
+                   text: '확인',
+                   value: true,
+                   visible: true,
+                   className: 'btn btn-primary',
+                   closeModal: true
+                 }
+           }
+         }).then(function(val){
+            if(val == true){
+            	var form=document.getElementById('pd');
+				form.submit();
+            } else {
+            	return;
+            }
+         });		
+			
+			
+			
 }
 
 
@@ -215,10 +282,21 @@ function counter(){
 		if(s < 10){
 			s = '0'+s;
 		}
+		if(d<0){
+			d = "기";
+			h = "간";
+			m = "종";
+			s = "료";
+			$('#Days').html(d)
+			$('#Hours').html(h)
+			$('#Minutes').html(m)
+			$('#Seconds').html(s)
+		}else{
 		$('#Days').html(d)
 		$('#Hours').html(h)
 		$('#Minutes').html(m)
 		$('#Seconds').html(s)
+		}
 	}, 1000);
 }
 

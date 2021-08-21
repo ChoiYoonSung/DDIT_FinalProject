@@ -1,7 +1,11 @@
 
 function menuSelect(mcode, length){
+	if(length == undefined){
+		length = 10;
+	}
 	for (var i = 0; i < length; i++) {
 		$('div.kapmas-menu-M0'+i+'0000').removeClass('active');
+		$('div.kapmas-menu-M0'+i+'0000').removeClass('sidebar-selected');
 		$('div.kapmas-menu-M0'+i+'0000').removeClass('close');
 		$('div.kapmas-menu-M0'+i+'0000').removeClass('expand');
 		$('div.kapmas-submenu-'+ mcode.substr(0,4) +i+'00').removeClass('active');
@@ -9,10 +13,12 @@ function menuSelect(mcode, length){
 	
 	if (mcode.substr(3) == "0000"){
 		$('div.kapmas-menu-' + mcode).addClass('active');
+		$('div.kapmas-menu-' + mcode).addClass('sidebar-selected');
 		$('div.kapmas-menu-' + mcode).addClass('expand');
 	}else{
 		$('div.kapmas-submenu-' + mcode).addClass('active');
 		$('div.kapmas-menu-' + mcode.substr(0,3) + "0000").addClass('active');
+		$('div.kapmas-menu-' + mcode.substr(0,3) + "0000").addClass('sidebar');
 		$('div.kapmas-menu-' + mcode.substr(0,3) + "0000").addClass('expand');
 	}
 }
@@ -25,28 +31,9 @@ function subMenu(mcode){
 			});
 	}else{
 		$('.subMenuList').html("");
+		$('.subMenuList').css("display",'none');
 	}
 };
-
-
-
-function isActive(mcode){
-	
-//	var ele = $(this).parent();
-//	var wcode = this.location.href.substr(-7);
-//	alert(this);
-//	console.log(this);
-//	alert(event.target);
-//	if(wcode == (mcode)){
-//		
-//	}else{
-//		
-//	}
-	
-//	alert(ele.attr('class'));
-//	ele.setAttribute("class","menu-item subMenu has-sub active");
-};
-
 
 //handelbars printElement (args : data Array, appent target, handlebar template, remove class)
 function printData(dataArr,target,templateObject,removeClass){

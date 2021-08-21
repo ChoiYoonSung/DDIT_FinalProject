@@ -50,46 +50,45 @@
 <body>
 <br>
 <br>
-<h1><img src="<%=request.getContextPath() %>/resources/images/logo-remove.png" 
-		alt="" style="width: 100px;">프로젝트 수정 화면</h1>
+<h1> <img src="/KAPMaS/resources/images/logo-remove.png" alt="" style="width: auto;height: 50px;">  프로젝트 수정</h1>
 
 		<form id="sub" style="padding-left: 100px; padding-top: 25px; padding-right: 100px;" action="modify.do" method="post">
 			<input type="text" hidden="" name="pCode" value="${pro.pCode }">
 			
 			<div id="step1">
 			<div class="row mb-15px">
-			<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+			<span class="badge  text-black col-3" style=" height: 30px;">
 			<h6>프로젝트 이름</h6>
 			</span>
 				<div class="col-md-9">
-					<input type="text" name="pName" class="form-control mb-5px" placeholder="${pro.pName }">
+					<input type="text" name="pName" class="form-control mb-5px" value="${pro.pName }" placeholder="${pro.pName }">
 				</div>
 			</div>
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+				<span class="badge  text-black col-3" style=" height: 30px;">
 				<h6>프로젝트 주제</h6>
 				</span>
 				<div class="col-md-9">
-					<input type="text" name="pTitle" class="form-control mb-5px" placeholder="${pro.pTitle }">
+					<input type="text" name="pTitle" class="form-control mb-5px" value="${pro.pTitle }" placeholder="${pro.pTitle }">
 				</div>
 			</div>
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+			<span class="badge  text-black col-3" style=" height: 30px;">
 				<h6>프로젝트 개요</h6>
 				</span>
 				<div class="col-md-9">
-					<input type="text" name="pSummary" class="form-control mb-5px" placeholder="${pro.pSummary }">
+					<input type="text" name="pSummary" class="form-control mb-5px" value="${pro.pSummary }" placeholder="${pro.pSummary }">
 				</div>
 			</div>
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+			<span class="badge  text-black col-3" style=" height: 30px;">
 				<h6>프로젝트 내용</h6>
 				</span>
 				<div class="col-md-9">
-					<textarea class="form-control" rows="5" name="pContent" placeholder="${pro.pContent }"></textarea>
+					<textarea class="form-control" rows="5" name="pContent">${pro.pContent }</textarea>
 				</div>
 			</div>
 			</div>

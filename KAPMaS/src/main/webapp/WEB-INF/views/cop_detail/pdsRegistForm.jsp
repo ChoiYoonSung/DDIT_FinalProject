@@ -75,7 +75,7 @@
 <body>
 	<div class="row" style="margin: 0px;">
 		<div class="col-xl-12 ui-sortable">
-			<br> <a onclick="javascript:history.go(-1)"> <i
+			<br> <a onclick="javascript:location.href='<%=request.getContextPath()%>/cop/detail/coppds/${copCode}'" style="cursor: pointer;"> <i
 				class="ion ion-md-arrow-round-back fa-2x fa-fw float-start me-10px text-black-lighter"></i>
 			</a>
 			<h1 class="page-header">뒤로가기</h1>
@@ -127,12 +127,35 @@
 			    height: "300",
 			    minHeight: "300",              
 			    maxHeight: "300",
-			    disableResizeEditor: true
+			    disableResizeEditor: true,
+			    disableDragAndDrop:true,
+    	 		toolbar: [
+		    	    ['style', ['bold', 'italic', 'underline', 'clear']],
+		    	    ['font', ['strikethrough', 'superscript', 'subscript']],
+		    	    ['fontsize', ['fontsize']],
+		    	    ['color', ['color']],
+		    	    ['para', ['ul', 'ol', 'paragraph']],
+		    	    ['height', ['height']]
+		    	  ]
 		    });
+			
 			
 		 	$('.fileInput').on('change','input[type="file"]',function(event){
 		 		if(this.files[0].size>1024*1024*40){
-		 			alert("파일 용량이 40MB를 초과하였습니다.");
+		 			swal({
+						title : '경고',
+						text : '파일 용량이 40MB를 초과하였습니다.',
+						icon : 'warning', // primary success warning danger
+						buttons : {
+							confirm : {
+								text : '확인',
+								value : true,
+								visible : true,
+								className : 'btn btn-warning',
+								closeModal : true
+							}
+						}
+					});
 		 			this.value="";
 		 			$(this).click();		 			
 		 			return false;
@@ -143,42 +166,122 @@
 		 		$(this).parent('div.inputRow').remove();
 		 	});
 		 	
-		 	var copCode = location.href.substr(-5,5);
+		 	var copCode = "${copCode}";
 		 	
 		 	$('input[name="copCode"]').val(copCode);
 		}
     	function addFile_go(){
     		//alert("click addFile btn");
     		if($('input[name="uploadFile"]').length >=5){
-    			alert("파일추가는 5개까지만 가능합니다.");
+    			swal({
+					title : '경고',
+					text : '파일추가는 5개까지만 가능합니다.',
+					icon : 'warning', // primary success warning danger
+					buttons : {
+						confirm : {
+							text : '확인',
+							value : true,
+							visible : true,
+							className : 'btn btn-warning',
+							closeModal : true
+						}
+					}
+				});
     			return;
     		}
     		
     		var input=$('<input>').attr({"type":"file","name":"uploadFile"}).css("display","inline"); 
     		var div=$('<div>').addClass("inputRow");
-    		div.append(input).append("<button style='border:0;outline:0;' class='badge bg-red' type='button'>삭제</button");    		   		
+    		div.append(input).append("<button style='border:0;outline:0;' class='badge bg-red' type='button'>삭제</button");
     		$('.fileInput').append(div);
     	}
     	
     	function regist_go(){
     		var files = $('input[name="uploadFile"]');
     		for(var file of files){
-    			console.log(file.name+" : "+file.value);
     			if(file.value==""){
-    				alert("파일을 선택하세요.");
+        			swal({
+    					title : '경고',
+    					text : '파일을 선택하세요.',
+    					icon : 'warning', // primary success warning danger
+    					buttons : {
+    						confirm : {
+    							text : '확인',
+    							value : true,
+    							visible : true,
+    							className : 'btn btn-warning',
+    							closeModal : true
+    						}
+    					}
+    				});
     				file.focus();
     				file.click();
     				return;
     			}
     		}	
-    		
-    		if($("input[name='pdsTitle']").val()==""){ //form.title.value
-    			alert("제목은 필수입니다.");
+
+    		if($("input[name='caTitle']").val()==""){ //form.title.value
+    			swal({
+					title : '경고',
+					text : '제목은 필수입니다.',
+					icon : 'warning', // primary success warning danger
+					buttons : {
+						confirm : {
+							text : '확인',
+							value : true,
+							visible : true,
+							className : 'btn btn-warning',
+							closeModal : true
+						}
+					}
+				});
+    			$("input[name='pdsTitle']").focus();
+    			return;
+    		}
+    		if($("textarea[name='caContent']").val()==""){ //form.title.value
+    			swal({
+					title : '경고',
+					text : '내용은 필수입니다.',
+					icon : 'warning', // primary success warning danger
+					buttons : {
+						confirm : {
+							text : '확인',
+							value : true,
+							visible : true,
+							className : 'btn btn-warning',
+							closeModal : true
+						}
+					}
+				});
     			$("input[name='pdsTitle']").focus();
     			return;
     		}
     	
-    		document.registForm.submit();	
+    		swal({
+				title : '자료실 글 작성',
+				text : '글 작성을 완료하시겠습니까?',
+				icon : 'info', // primary success warning danger
+				buttons : {
+					cancel : {
+						text : '취소',
+						value : false,
+						visible : true,
+						className : 'btn btn-default',
+						closeModal : true,
+					},
+					confirm : {
+						text : '확인',
+						value : true,
+						visible : true,
+						className : 'btn btn-primary',
+						closeModal : true
+					}
+				}
+			}).then(function(val) {
+				if (val == true) {
+	    			document.registForm.submit();	
+				}
+			});
     	}
     </script>
 </body>

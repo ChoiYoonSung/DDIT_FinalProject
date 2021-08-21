@@ -3,6 +3,7 @@
 <%@ page trimDirectiveWhitespaces="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <head>
 
@@ -74,14 +75,9 @@
 <script
 	src="<%=request.getContextPath()%>/resources/bootstrap/assets/plugins/jszip/dist/jszip.min.js"></script>
 
-<link href="<%=request.getContextPath()%>/resources/bootstrap/assets/css/forum/app.min.css" rel="stylesheet">
 <link href="<%=request.getContextPath()%>/resources/css/css.css" rel="stylesheet">
 <c:set value="${archiveList }" var="cal"/>
 <style>
-li {
-	font-size: 17px;
-}
-
 #dom {
 	box-shadow: 2px 2px 10px silver;
 	border-radius: 10px;
@@ -93,9 +89,11 @@ li {
 <body>
 	<div class="row" style="margin: 0px;">
 		<div class="col-xl-12 ui-sortable">
-					<br> <a onclick="javascript:history.go(-1)"><i
-				class="ion ion-md-arrow-round-back fa-2x fa-fw float-start me-10px text-black-lighter"></i></a>
-			<h1 class="page-header">뒤로가기</h1>
+			<!-- <br> 
+			<a onclick="javascript:history.go(-1)">
+			<i class="ion ion-md-arrow-round-back fa-2x fa-fw float-start me-10px text-black-lighter"></i>
+			</a>
+			<h1 class="page-header">뒤로가기</h1> -->
 			<div class="panel panel-inverse" data-sortable-id="ui-media-object-1"
 				data-init="true">
 				<div class="panel-heading ui-sortable-handle">
@@ -110,33 +108,15 @@ li {
 									class="dataTables_wrapper dt-bootstrap4 no-footer">
 									<div class="dataTables_wrapper dt-bootstrap">
 										<div class="row">
-											<table id="data-table-combine"
-												class="table table-striped table-bordered align-middle">
+											<table id="data-table-combine" style="text-align:center;"
+												class="table table-hover mb-0 text-inverse">
 												<thead>
 													<tr role="row">
-														<th width="20%" class="sorting sorting_desc" tabindex="0"
-															aria-controls="data-table-combine" rowspan="1"
-															colspan="1" data-column-index="0"
-															aria-label=": activate to sort column ascending"
-															aria-sort="descending">#</th>
-														<th width="20%" data-orderable="false"
-															class="sorting_disabled" rowspan="1" colspan="1"
-															data-column-index="1" aria-label="">제목</th>
-														<th width="20%" class="text-nowrap sorting sorting_desc" tabindex="0"
-															aria-controls="data-table-combine" rowspan="1"
-															colspan="1"data-column-index="2"
-															aria-label=": activate to sort column ascending"
-															aria-sort="descending">작성일</th>
-														<th width="20%" class="text-nowrap sorting sorting_desc" tabindex="0"
-															aria-controls="data-table-combine" rowspan="1"
-															colspan="1" data-column-index="3"
-															aria-label=": activate to sort column ascending"
-															aria-sort="descending">작성자</th>
-														<th width="20%" class="text-nowrap sorting sorting_desc" tabindex="0"
-															aria-controls="data-table-combine" rowspan="1"
-															colspan="1" data-column-index="4"
-															aria-label=": activate to sort column ascending"
-															aria-sort="descending">조회수</th>
+														<th width="12%">#</th>
+														<th width="50%">제목</th>
+														<th width="12%">작성자</th>
+														<th width="12%">작성일</th>
+														<th width="12%">조회수</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -145,21 +125,19 @@ li {
 															onclick="javascript:location.href='pdsDetail/${cal.caCode}';"
 															style="cursor: pointer;">
 															<td>${cal.caCode }</td>
-															<td>${cal.caTitle }</td>
-															<td>${cal.caRegdate}</td>
+															<td style="text-align:left">${cal.caTitle }</td>
 															<td>${cal.empName }</td>
+															<td>${cal.caRegdate}</td>
 															<td>${cal.caViewcnt }</td>
 														</tr>
 													</c:forEach>
 												</tbody>
 											</table>
-
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-
 					</div>
 				</div>
 			</div>
@@ -168,135 +146,44 @@ li {
 	<script type="text/javascript">
 	
 	function pdsRegist(){
-		var copNo = location.href.substr(-5,5)
-		location.href = "pdsRegistForm/" + copNo
-	}
-window.onload = function() {
-	var el = document.getElementById('dom');
-	el.setAttribute('hidden', '');
-	
-}
-
-function page(name,img,authority,depCode,rnkCode,email,phone,add,pCode){
-	var el = document.getElementById('dom');
-	el.removeAttribute('hidden');
-	page_go(name,img,authority,depCode,rnkCode,email,phone,add,pCode)
-}
-
-
-
-function page_go(name,img,authority,depCode,rnkCode,email,phone,add,pCode){
-	
-	
-	var data={
-			"depCode":depCode,
-			"rnkCode":rnkCode
+		location.href = "pdsRegistForm/" + "${copCode}";
 	}
 	
-	$.ajax({
-		url : "<%=request.getContextPath()%>/project/getMemberInfo",
-		type : "post",
-		data : JSON.stringify(data),
-		contentType:"application/json",
-		success:function(data){
-			var result=data.split(',');
-			
-			document.getElementById('dep').innerHTML=result[0];
-			document.getElementById('rnk').innerHTML=result[1];
-			
-		},
-		error:function(error){
-			
-			alert("시스템오류로입니다.관리자에게 문의해주세요.");
-		}
+	window.onload = function() {
+		var el = document.getElementById('dom');
+		el.setAttribute('hidden', '');
+	}
 		
-	});
-	
-	
-	document.getElementById('name').innerHTML=name ;
-	document.getElementById('authority').innerHTML=authority ;
-	var img = document.getElementById('image');
-	img.setAttribute('src', '<%=request.getContextPath()%>/resources/images/logo-remove.png');
-	document.getElementById('mail').innerHTML=email ;
-	document.getElementById('ph').innerHTML=phone ;
-	document.getElementById('ad').innerHTML=add ;
-	
-	
-	
-}
+	var options = {
+		dom : '<"dataTables_wrapper dt-bootstrap"<"row"<"col-xl-12 d-xl-block justify-content-center"fr>>t<"row"<"col-md-5"i><"col-md-7"p>>>',
+		buttons : [ {
+			extend : 'copy',
+			className : 'btn-sm'
+		}, {
+			extend : 'csv',
+			className : 'btn-sm'
+		}, {
+			extend : 'excel',
+			className : 'btn-sm'
+		}, {
+			extend : 'pdf',
+			className : 'btn-sm'
+		}, {
+			extend : 'print',
+			className : 'btn-sm'
+		} ],
+		keys : true,
+		order : [ [ 0, 'desc' ] ],
+		ordering : true,
+		serverSide : false,
+		lengthMenu : [10, 25, 50]
+	};
 
-function changeAu(code,id,AU){
-	
-	var au = $("#"+AU+" option:selected").val();
-	
-	var data = {
-			"au":au
-		   ,"code":code
-		   ,"id": id
-			
-	} 
-	
-	$.ajax({
-		url : "<%=request.getContextPath()%>/project/updateAu",
-				type : "post",
-				data : JSON.stringify(data),
-				contentType : "application/json;charset=utf-8",
-				success : function(data) {
+	if ($(window).width() <= 767) {
+		options.rowReorder = false;
+		options.colReorder = false;
+	}
 
-					alert("역할을 부여하였습니다");
-					history.go(0);
-				},
-
-				error : function(error) {
-					alert(error.status);
-				}
-
-			})
-
-		}
-
-		var options = {
-			dom : '<"dataTables_wrapper dt-bootstrap"<"row"<"col-xl-7 d-block d-sm-flex d-xl-block justify-content-center"<"d-block d-lg-inline-flex me-0 me-md-3"l><"d-block d-lg-inline-flex"B>><"col-xl-5 d-flex d-xl-block justify-content-center"fr>>t<"row"<"col-md-5"i><"col-md-7"p>>>',
-			buttons : [ {
-				extend : 'copy',
-				className : 'btn-sm'
-			}, {
-				extend : 'csv',
-				className : 'btn-sm'
-			}, {
-				extend : 'excel',
-				className : 'btn-sm'
-			}, {
-				extend : 'pdf',
-				className : 'btn-sm'
-			}, {
-				extend : 'print',
-				className : 'btn-sm'
-			} ],
-			responsive : true,
-			colReorder : true,
-			keys : true,
-			rowReorder : true,
-			select : true,
-			order : [ [ 0, 'desc' ] ],
-			ordering : true,
-			serverSide : false,
-			lengthMenu : [10, 25, 50]
-		};
-
-		if ($(window).width() <= 767) {
-			options.rowReorder = false;
-			options.colReorder = false;
-		}
-
-		$('#data-table-combine').DataTable(options);
-
-		$(document).ready(
-				function() {
-					$('#hiding01').attr('style', "display:none;"); //숨기기
-					$('.fw-bold text-inverse dtr-control hide').attr('style',
-							"display:none;"); //숨기기
-
-				});
+	$('#data-table-combine').DataTable(options);
 	</script>
 </body>

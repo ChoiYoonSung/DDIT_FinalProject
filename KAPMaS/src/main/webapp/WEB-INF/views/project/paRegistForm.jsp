@@ -13,7 +13,7 @@
 		<legend class="mb-3" style="text-align:center;">자료실 글 등록</legend><hr>
 		<div class="mb-3">
 		<label class="form-label" for="paTitle">제목</label>
-		<input class="form-control" type="text" id="paTitle" name="paTitle" placeholder="제목을 입력하세요" maxlength="20">
+		<input class="form-control" type="text" id="paTitle" name="paTitle" placeholder="제목을 입력하세요">
 		</div>
 		<div class="mb-3">
 		<label class="form-label" for="paContent">내용</label>
@@ -32,7 +32,7 @@
 		</div>
 		<div style="width:210px;  margin:0 auto; margin-top: 30px;">
 			<button type="button" class="btn btn-primary w-100px me-5px" id="registBtn" onclick="regist_go();">등록</button>
-			<button type="button" class="btn btn-default w-100px" id="cancelBtn" onclick="CloseWindow();">취소</button>
+			<button type="button" class="btn btn-gray w-100px" id="cancelBtn" onclick="CloseWindow();">취소</button>
 		</div>
 	</fieldset>
 </form>
@@ -40,7 +40,20 @@
     	window.onload=function(){
 		 	$('.fileInput').on('change','input[type="file"]',function(event){
 		 		if(this.files[0].size>1024*1024*40){
-		 			alert("파일 용량이 40MB를 초과하였습니다.");
+		 			swal({
+		   			    title: '자료실',
+		   			    text: '파일 용량이 40MB를 초과하였습니다.',
+		   			    icon: 'warning', // primary success warning danger
+		   			    buttons: {
+		   			          confirm: {
+		   			            text: '확인',
+		   			            value: true,
+		   			            visible: true,
+		   			            className: 'btn btn-primary',
+		   			            closeModal: true
+		   			          }
+		   			    }
+		   			  });
 		 			this.value="";
 		 			$(this).click();		 			
 		 			return false;
@@ -56,7 +69,20 @@
     	function addFile_go(){
     		//alert("click addFile btn");
     		if($('input[name="uploadFile"]').length >=5){
-    			alert("파일추가는 5개까지만 가능합니다.");
+    			swal({
+   			    title: '자료실',
+   			    text: '파일추가는 5개까지만 가능합니다.',
+   			    icon: 'warning', // primary success warning danger
+   			    buttons: {
+   			          confirm: {
+   			            text: '확인',
+   			            value: true,
+   			            visible: true,
+   			            className: 'btn btn-primary',
+   			            closeModal: true
+   			          }
+   			    }
+   			  });
     			return;
     		}
     		
@@ -67,11 +93,42 @@
     	}
     	
     	function regist_go(){
+    		if($('input[name="uploadFile"]').length == 0){
+    			swal({
+       			    title: '자료실',
+       			    text: '파일첨부는 필수입니다.',
+       			    icon: 'warning', // primary success warning danger
+       			    buttons: {
+       			          confirm: {
+       			            text: '확인',
+       			            value: true,
+       			            visible: true,
+       			            className: 'btn btn-primary',
+       			            closeModal: true
+       			          }
+       			    }
+       			  });
+    			return;
+    		}
+    		
     		var files = $('input[name="uploadFile"]');
     		for(var file of files){
     			console.log(file.name+" : "+file.value);
     			if(file.value==""){
-    				alert("파일을 선택하세요.");
+    				swal({
+    	   			    title: '자료실',
+    	   			    text: '파일을 선택하세요.',
+    	   			    icon: 'warning', // primary success warning danger
+    	   			    buttons: {
+    	   			          confirm: {
+    	   			            text: '확인',
+    	   			            value: true,
+    	   			            visible: true,
+    	   			            className: 'btn btn-primary',
+    	   			            closeModal: true
+    	   			          }
+    	   			    }
+    	   			  });
     				file.focus();
     				file.click();
     				return;
@@ -79,7 +136,20 @@
     		}	
     		
     		if($("input[name='paTitle']").val()==""){ //form.title.value
-    			alert("제목은 필수입니다.");
+    			swal({
+       			    title: '자료실',
+       			    text: '제목은 필수입니다.',
+       			    icon: 'warning', // primary success warning danger
+       			    buttons: {
+       			          confirm: {
+       			            text: '확인',
+       			            value: true,
+       			            visible: true,
+       			            className: 'btn btn-primary',
+       			            closeModal: true
+       			          }
+       			    }
+       			  });
     			$("input[name='paTitle']").focus();
     			return;
     		}

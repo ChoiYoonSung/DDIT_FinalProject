@@ -49,25 +49,21 @@
 
 </head>
 
-<body style="padding: 10px; ">
+<body style="">
 			<div class="project-wrapper">
 				<div class="panel panel-inverse" data-sortable-id="index-6">
 					<div class="panel-heading ui-sortable-handle">
-						<h4 class="panel-title">Analytics Details</h4>
-						<div class="panel-heading-btn">
-							<a href="javascript:;" class="btn btn-xs btn-icon btn-default"
-								data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
-						</div>
+						<h4 class="panel-title">업무 수정</h4>
 					</div>
 					<div class="table-responsive">
 
-<h1 style="padding-left: 10px;"><img src="<%=request.getContextPath() %>/resources/images/logo-remove.png" 
-		alt="" style="width: 100px;">업무 수정 화면</h1>
+<%-- <h1 style="padding-left: 10px;"><img src="<%=request.getContextPath() %>/resources/images/logo-remove.png"  --%>
+<!-- 		alt="" style="width: 100px;">업무 수정 화면</h1> -->
 
 		<form id="sub" style="padding-left: 100px; padding-top: 25px; padding-right: 100px;" action="JobModify.do" method="post" name="sendForm">
 			
 			<div class="row mb-15px">
-			<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+						<span class="badge  text-black col-3" style=" height: 30px;">
 			<h6 style="line-height: 25px;">업무 이름</h6>
 			</span>
 				<div class="col-md-9">
@@ -76,19 +72,17 @@
 			</div>
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+							<span class="badge  text-black col-3" style=" height: 30px;">
 				<h6 style="line-height: 25px;">업무 내용</h6>
 				</span>
 				<div class="col-md-9">
-					<textarea class="form-control" rows="5" name="content" id="content">
-						${job.jobContent }
-					</textarea>
+					<textarea class="form-control" rows="5" name="content" id="content">${job.jobContent }</textarea>
 				</div>
 			</div>
 			
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+								<span class="badge  text-black col-3" style=" height: 30px;">
 				<h6 style="line-height: 25px;">업무 기간</h6>
 				</span>
 				<div class="col-md-9">
@@ -107,7 +101,7 @@
 			</div>
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+								<span class="badge  text-black col-3" style=" height: 30px;">
 				<h6 style="line-height:25px;">담당 사원</h6>
 				</span>
 				<div class="col-md-9">
@@ -122,7 +116,7 @@
 			</div>
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+								<span class="badge  text-black col-3" style=" height: 30px;">
 				<h6 style="line-height:25px;">진척도</h6>
 				</span>
 				<div class="col-md-9">
@@ -146,7 +140,7 @@
 			
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+								<span class="badge  text-black col-3" style=" height: 30px;">
 				<h6 style="line-height:25px;">기능 분류</h6>
 				</span>
 				<div class="col-md-9">
@@ -167,10 +161,10 @@
 			
 </form>
 
-
+<div style="padding-left: 330px;">
 <button class="btn btn-gray " onclick="CloseWindow();">취소</button>
 <button class="btn btn-warning " onclick="send();">수정</button>
-
+</div>
 
 
 				</div>

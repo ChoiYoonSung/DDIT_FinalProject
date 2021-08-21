@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="Document-Mapper">
+
+
+<select id="selectFileListById" parameterType="str" resultType="document">
+select *
+from document
+where emp_id = #{empId}
+</select>
+
+<select id="selectFileListByFolder" parameterType="document" resultType="document">
+select *
+from document
+where emp_id=#{empId}
+and DOC_FOLDER =#{docFolder}
+
+</select>
+
+
+<update id="insertDocument" parameterType="document">
+INSERT INTO 
+document(DOC_CODE,EMP_ID,DOC_PATH,DOC_NAME,DOC_REGDATE,DOC_FOLDER)
+values(concat('doc',DOCUMENT_SEQ.NEXTVAL),#{empId},#{docPath},#{docName},to_char(sysdate,'yyyy-mm-dd/hh24:mi'),#{docFolder})
+
+</update>
+
+
+<update id="updateDocument" parameterType="document">
+		update document
+		set DOC_FOLDER = #{docFolder}
+		where DOC_CODE=#{docCode}
+</update>
+
+
+<update id="deleteDocument">
+
+	DELETE FROM document WHERE DOC_CODE=#{docCode}
+
+</update>
+
+
+<select id="selectImfoDocument" resultType="document">
+select * 
+from document
+where DOC_CODE=#{docCode}
+
+
+</select>
+
+
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

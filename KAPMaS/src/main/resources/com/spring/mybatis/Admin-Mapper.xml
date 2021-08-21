@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Admin-Mapper">
+
+	<select id="selectProjectStatistics" resultType="map">
+	select p_enabled
+	, round(RATIO_TO_REPORT(count(*)) over(partition by grouping(p_enabled))* 100,1) as percent 
+	from project
+	GROUP BY p_enabled
+	</select>
+	
+	<select id="selectProjectByMonth" resultType="map">
+	SELECT TO_CHAR(b.dt, 'YYYY-MM') AS p_startdate, NVL(SUM(a.cnt), 0) AS cnt
+	FROM ( SELECT TO_CHAR(TO_DATE(SUBSTR(p_startdate,1,10)), 'YYYY-MM-DD') AS p_startdate, COUNT(*) cnt
+	       FROM project
+	       WHERE TO_CHAR(TO_DATE(SUBSTR(p_startdate,1,10)), 'YYYY-MM-DD') BETWEEN TO_DATE('2021-01-01', 'YYYY-MM-DD')
+	                             AND TO_DATE('2021-12-31', 'YYYY-MM-DD') 
+	       GROUP BY TO_CHAR(TO_DATE(SUBSTR(p_startdate,1,10)), 'YYYY-MM-DD')
+	      ) a
+	      , ( SELECT TO_DATE('2021-01-01','YYYY-MM-DD') + LEVEL - 1 AS dt
+	            FROM dual 
+	         <![CDATA[CONNECT BY LEVEL <= (TO_DATE('2021-12-31','YYYY-MM-DD')]]>
+	                            - TO_DATE('2021-01-01','YYYY-MM-DD') + 1)
+	        ) b
+	WHERE b.dt = a.p_startdate(+)
+	GROUP BY TO_CHAR(b.dt, 'YYYY-MM')
+	ORDER BY TO_CHAR(b.dt, 'YYYY-MM')
+	</select>
+	
+	<select id="selectKMSByMonth" resultType="map">
+	select max(pcnt) as pcnt
+	  , max(kcnt) as kcnt
+	  , max(tcnt) as tcnt
+	  , dt
+	from   
+	(
+	    SELECT NVL(SUM(a.cnt), 0) pcnt 
+	        , 0 as kcnt
+	        , 0 as tcnt
+	        , TO_CHAR(b.dt, 'YYYY-MM') dt
+	    FROM ( SELECT TO_CHAR(TO_DATE(pr_regdate), 'YYYY-MM-DD') AS pr_regdate, 
+	    COUNT(*) cnt FROM projectreportboard WHERE TO_CHAR(TO_DATE(pr_regdate), 'YYYY-MM-DD') 
+	    BETWEEN TO_DATE('2021-01-01', 'YYYY-MM-DD') 
+	    AND TO_DATE('2021-12-31', 'YYYY-MM-DD') GROUP BY TO_CHAR(TO_DATE(pr_regdate), 'YYYY-MM-DD')) a,
+	    ( SELECT TO_DATE('2021-01-01','YYYY-MM-DD') + LEVEL - 1 AS dt 
+	    FROM dual <![CDATA[CONNECT BY LEVEL <= (TO_DATE('2021-12-31','YYYY-MM-DD')]]> - TO_DATE('2021-01-01','YYYY-MM-DD') + 1)
+	            ) b
+	    WHERE b.dt = a.pr_regdate(+)
+	    GROUP BY TO_CHAR(b.dt, 'YYYY-MM')
+	    union all
+	    SELECT 0 as pcnt
+	           , NVL(SUM(a.cnt), 0) kcnt
+	           , 0 as tcnt
+	           , TO_CHAR(b.dt, 'YYYY-MM') dt
+	    FROM ( SELECT TO_CHAR(TO_DATE(kh_regdate), 'YYYY-MM-DD') AS kh_regdate, COUNT(*) cnt
+	           FROM knowhowboard
+	           WHERE TO_CHAR(TO_DATE(kh_regdate), 'YYYY-MM-DD') BETWEEN TO_DATE('2021-01-01', 'YYYY-MM-DD')
+	                                 AND TO_DATE('2021-12-31', 'YYYY-MM-DD') 
+	           GROUP BY TO_CHAR(TO_DATE(kh_regdate), 'YYYY-MM-DD')
+	          ) a
+	          , ( SELECT TO_DATE('2021-01-01','YYYY-MM-DD') + LEVEL - 1 AS dt
+	                FROM dual 
+	             <![CDATA[CONNECT BY LEVEL <= (TO_DATE('2021-12-31','YYYY-MM-DD')]]>
+	                                - TO_DATE('2021-01-01','YYYY-MM-DD') + 1)
+	            ) b
+	    WHERE b.dt = a.kh_regdate(+)
+	    GROUP BY TO_CHAR(b.dt, 'YYYY-MM')
+	    union all
+	    SELECT   0 pcnt
+	           , 0 kcnt
+	           , NVL(SUM(a.cnt), 0) tcnt
+	           , TO_CHAR(b.dt, 'YYYY-MM') dt
+	    FROM ( SELECT TO_CHAR(TO_DATE(tk_regdate), 'YYYY-MM-DD') AS tk_regdate, COUNT(*) cnt
+	           FROM totalknowledgeboard
+	           WHERE TO_CHAR(TO_DATE(tk_regdate), 'YYYY-MM-DD') BETWEEN TO_DATE('2021-01-01', 'YYYY-MM-DD')
+	                                 AND TO_DATE('2021-12-31', 'YYYY-MM-DD') 
+	           GROUP BY TO_CHAR(TO_DATE(tk_regdate), 'YYYY-MM-DD')
+	          ) a
+	          , ( SELECT TO_DATE('2021-01-01','YYYY-MM-DD') + LEVEL - 1 AS dt
+	                FROM dual 
+	             <![CDATA[CONNECT BY LEVEL <= (TO_DATE('2021-12-31','YYYY-MM-DD')]]>
+	                                - TO_DATE('2021-01-01','YYYY-MM-DD') + 1)
+	            ) b
+	    WHERE b.dt = a.tk_regdate(+)
+	    GROUP BY TO_CHAR(b.dt, 'YYYY-MM')
+	
+	)
+	GROUP BY dt
+	order by dt asc
+
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+<!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+
+
+	<select id="selectBoardOrderByRegDate" resultType="boardSelect">
+	SELECT SUBSTR(K.KH_CODE,0,3) AS BD_TYPE , K.KH_CODE AS BD_CODE, K.KH_TITLE AS BD_TITLE, K.EMP_ID AS EMP_ID ,K.KH_REGDATE AS BD_REGDATE
+	FROM KNOWHOWBOARD K
+	UNION
+	SELECT SUBSTR(T.TK_CODE,0,3) AS BD_TYPE , T.TK_CODE AS BD_CODE, T.TK_TITLE AS BD_TITLE, T.EMP_ID AS EMP_ID, T.TK_REGDATE AS BD_REGDATE
+	FROM TOTALKNOWLEDGEBOARD T
+	UNION
+	SELECT SUBSTR(P.PR_CODE,0,3) AS BD_TYPE , P.PR_CODE AS BD_CODE, P.PR_TITLE AS BD_TITLE, P.EMP_ID AS EMP_ID,P.PR_REGDATE AS BD_REGDATE
+	FROM PROJECTREPORTBOARD P
+	ORDER BY BD_REGDATE DESC
+	</select>
+	
+	<select id="countEmployee" resultType="int">SELECT COUNT(*) FROM EMPLOYEE</select>
+	<select id="countReport" resultType="int">
+	SELECT COUNT(*) FROM REPORT WHERE BD_CODE IN (
+		SELECT DISTINCT A.BD_CODE AS BD_CODE
+		FROM REPORT A INNER JOIN TOTALKNOWLEDGEBOARD B ON A.BD_CODE = B.TK_CODE
+	    WHERE B.TK_REPORTCNT >= 5
+		UNION
+		SELECT DISTINCT A.BD_CODE AS BD_CODE
+		FROM REPORT A INNER JOIN KNOWHOWBOARD B ON A.BD_CODE = B.KH_CODE
+	    WHERE B.KH_REPORTCNT >= 5
+    )
+	</select>
+	<select id="countQNA" resultType="int">SELECT count(*) FROM QNA A left join QNAREPLY B on A.QNA_NO != B.QNA_NO</select>
+	<select id="countGuide" resultType="int">SELECT COUNT(*) FROM SYSTEMGUIDE</select>
+	<select id="countNotice" resultType="int">SELECT COUNT(*) FROM NOTICE</select>
+
+</mapper>

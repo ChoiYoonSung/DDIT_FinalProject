@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Answer-Mapper">
+
+	<select id="selectAnswerList" resultType="answer">
+		SELECT
+		A.A_CODE as aCode,
+		A.KH_CODE as khCode,
+		A.A_WRITER as aWriter,
+		A.A_CONTENT as aContent,
+		A.A_REGDATE as aRegdate,
+		A.A_LIKECNT as aLikecnt,
+		(SELECT C.EMP_NAME FROM EMPLOYEE C WHERE A.A_WRITER = C.EMP_ID) as empName
+		FROM ANSWER A
+		WHERE A.KH_CODE = #{khCode}
+		order by substr(A.A_CODE,1)
+	</select>
+	
+	<select id="countAnswer" resultType="int">
+		SELECT COUNT(A_CODE)
+		FROM ANSWER
+		WHERE KH_CODE = #{khCode}
+	</select>
+	
+	<update id="insertAnswer" parameterType="answer">
+		INSERT INTO ANSWER(A_CODE,KH_CODE,A_WRITER,A_CONTENT,A_REGDATE,A_LIKECNT)
+		VALUES(concat('a',ANSWER_SEQ.NEXTVAL), #{khCode}, #{aWriter}, #{aContent},to_char(sysdate,'yyyy-MM-dd'),0)
+	</update>
+
+	<update id="updatAnswer" parameterType="answer">
+		UPDATE ANSWER
+		SET
+		A_CONTENT = #{aContent}
+		WHERE A_CODE = #{aCode}
+	</update>
+
+	<update id="deleteAnswer">
+		DELETE FROM ANSWER
+		WHERE A_CODE = #{aCode}
+	</update>
+
+
+	<select id="selectAnswerListById" resultType="answer">
+
+		SELECT
+		A.A_CODE as aCode,
+		A.KH_CODE as khCode,
+		A.A_WRITER as aWriter,
+		A.A_CONTENT as aContent,
+		A.A_REGDATE as aRegdate,
+		A.A_LIKECNT as aLikecnt,
+		(SELECT C.EMP_NAME FROM EMPLOYEE C WHERE A.A_WRITER = C.EMP_ID) as empName,
+		(SELECT COUNT(D.A_CODE) FROM ANSWERREPLY D WHERE A.A_CODE = D.A_CODE) as replyCnt
+		FROM ANSWER A
+		inner join KNOWHOWBOARD B ON A.KH_CODE = B.KH_CODE
+		where A.A_WRITER = #{aWriter}
+		and B.KH_ENABLED = 1
+	
+	</select>
+
+	<update id="increaseCnt" >
+		UPDATE ANSWER
+		SET
+		A_LIKECNT = A_LIKECNT+1
+		WHERE A_CODE = #{aCode}
+	</update>
+
+	<update id="decreaseCnt" >
+		UPDATE ANSWER
+		SET
+		A_LIKECNT = A_LIKECNT-1
+		WHERE A_CODE = #{aCode}
+	</update>
+	
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

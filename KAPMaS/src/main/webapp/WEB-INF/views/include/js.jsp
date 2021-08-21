@@ -47,7 +47,10 @@
 	<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/plugins/gritter/js/jquery.gritter.js"></script>
 	<script src="<%=request.getContextPath() %>/resources/js/common.js"></script>
 	<script src="<%=request.getContextPath() %>/resources/js/index.js"></script>	
-	<!-- ================== END page-js ================== -->
 	<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/plugins/isotope-layout/dist/isotope.pkgd.min.js" type="text/javascript"></script>
 	<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/js/demo/gallery.demo.js" type="text/javascript"></script>
-	
+	<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/plugins/apexcharts/dist/apexcharts.min.js"></script>
+	<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/js/forum/forum-details-page.js"></script>
+	<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
+	<!-- ================== END page-js ================== -->
+

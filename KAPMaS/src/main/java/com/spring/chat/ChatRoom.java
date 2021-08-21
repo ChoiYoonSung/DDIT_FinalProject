@@ -1,25 +1,33 @@
 package com.spring.chat;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.Getter;
-import lombok.Setter;
 
 public class ChatRoom {
     private String roomId;
     private String name;
+    private String pCode;
     
-    
-    
-    public String getRoomId() {
+	public String getpCode() {
+		return pCode;
+	}
+
+	public void setpCode(String pCode) {
+		this.pCode = pCode;
+	}
+
+	public String getRoomId() {
 		return roomId;
 	}
 
@@ -35,43 +43,42 @@ public class ChatRoom {
 		this.name = name;
 	}
 
-	public Set<WebSocketSession> getSessions() {
-		return sessions;
-	}
-
-	public void setSessions(Set<WebSocketSession> sessions) {
-		this.sessions = sessions;
-	}
-
-	private Set<WebSocketSession> sessions = new HashSet<>();
-
-    public static ChatRoom create(String name){
-        ChatRoom chatRoom = new ChatRoom();
-        chatRoom.setRoomId(UUID.randomUUID().toString());
-        chatRoom.setName(name);
-        
-        return chatRoom;
-    }
-
+	private static Map<String,List<WebSocketSession>> rmem = new HashMap<>();
+	
+	
     public void handleMessage(WebSocketSession session, ChatMessage chatMessage,
-                              ObjectMapper objectMapper) throws IOException {
+                              ObjectMapper objectMapper,String roomId) throws IOException {
+    	
+    	
         if(chatMessage.getType() == MessageType.ENTER){
+        	 List<WebSocketSession> sessions = rmem.get(roomId);
+        	 if(sessions == null) {
+        		 sessions = new ArrayList<WebSocketSession>();
+        	 }
+        			 
             sessions.add(session);
+            rmem.put(roomId,sessions);
             chatMessage.setMessage(chatMessage.getWriter() + "님이 입장하셨습니다.");
         }
+        
         else if(chatMessage.getType() == MessageType.LEAVE){
+        	 List<WebSocketSession> sessions = rmem.get(roomId);
             sessions.remove(session);
             chatMessage.setMessage(chatMessage.getWriter() + "님임 퇴장하셨습니다.");
         }
-        else{
+        
+        else if(chatMessage.getType() == MessageType.CHAT){
             chatMessage.setMessage(chatMessage.getWriter() + " : " + chatMessage.getMessage());
         }
-        send(chatMessage,objectMapper);
+        send(chatMessage,objectMapper,roomId);
     }
 
-    private void send(ChatMessage chatMessage, ObjectMapper objectMapper) throws IOException {
-        TextMessage textMessage = new TextMessage(objectMapper.
-                                    writeValueAsString(chatMessage.getMessage()));
+    
+    private void send(ChatMessage chatMessage, ObjectMapper objectMapper,String roomId) throws IOException {
+        TextMessage textMessage = new TextMessage(objectMapper.writeValueAsString(chatMessage.getMessage()));
+        
+   	 	List<WebSocketSession> sessions = rmem.get(roomId);
+        
         for(WebSocketSession sess : sessions){
             sess.sendMessage(textMessage);
         }

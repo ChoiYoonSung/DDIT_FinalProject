@@ -11,8 +11,8 @@
 	<meta content="" name="author" />
 	
 	<!-- ================== BEGIN core-css ================== -->
-	<link href="<%=request.getContextPath() %>/resources/bootstrap/color_admin/template/assets/css/vendor.min.css" rel="stylesheet" />
-	<link href="<%=request.getContextPath() %>/resources/bootstrap/color_admin/template/assets/css/transparent/app.min.css" rel="stylesheet" />
+	<link href="<%=request.getContextPath() %>/resources/bootstrap/assets/css/vendor.min.css" rel="stylesheet" />
+	<link href="<%=request.getContextPath() %>/resources/bootstrap/assets/css/transparent/app.min.css" rel="stylesheet" />
 	<!-- ================== END core-css ================== -->
 </head>
 <body class='pace-top'>
@@ -30,9 +30,9 @@
 	<div id="app" class="app">
 		<!-- BEGIN error -->
 		<div class="error">
-			<div class="error-code">404</div>
+			<div class="error-code">Unexpected Error</div>
 			<div class="error-content">
-				<div class="error-message">페이지를 찾을 수 없습니다.</div>
+				<div class="error-message">알 수 없는 에러가 발생하였습니다\n 관리자에게 문의하세요..</div>
 				<div>
 					<a href="javascript:history.go(-1);" class="btn btn-success px-3">돌아가기</a>
 				</div>
@@ -47,9 +47,9 @@
 	<!-- END #app -->
 	
 	<!-- ================== BEGIN core-js ================== -->
-	<script src="<%=request.getContextPath() %>/resources/bootstrap/color_admin/template/assets/js/vendor.min.js"></script>
-	<script src="<%=request.getContextPath() %>/resources/bootstrap/color_admin/template/assets/js/app.min.js"></script>
-	<script src="<%=request.getContextPath() %>/resources/bootstrap/color_admin/template/assets/js/theme/transparent.min.js"></script>
+	<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/js/vendor.min.js"></script>
+	<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/js/app.min.js"></script>
+	<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/js/theme/transparent.min.js"></script>
 	<!-- ================== END core-js ================== -->
 </body>
 </html>

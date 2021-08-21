@@ -49,26 +49,22 @@
 
 </head>
 
-<body style="padding: 10px; ">
+<body style="">
 			<div class="project-wrapper">
 				<div class="panel panel-inverse" data-sortable-id="index-6">
 					<div class="panel-heading ui-sortable-handle">
-						<h4 class="panel-title">Analytics Details</h4>
-						<div class="panel-heading-btn">
-							<a href="javascript:;" class="btn btn-xs btn-icon btn-default"
-								data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
-						</div>
+						<h4 class="panel-title">업무 등록</h4>
 					</div>
 					<div class="table-responsive">
 
-<h1 style="padding-left: 10px;"><img src="<%=request.getContextPath() %>/resources/images/logo-remove.png" 
-		alt="" style="width: 100px;">업무 등록 화면</h1>
+<%-- <h1 style="padding-left: 10px;"><img src="<%=request.getContextPath() %>/resources/images/logo-remove.png"  --%>
+<!-- 		alt="" style="width: 100px;">업무 등록 화면</h1> -->
 
 		<form id="sub" style="padding-left: 100px; padding-top: 25px; padding-right: 100px;" action="jobRegist.do" method="post" name="sendForm">
 			
 			<div class="row mb-15px">
-			<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
-			<h6 style="line-height: 25px;">업무 이름</h6>
+							<span class="badge  text-black col-3" style=" height: 30px;">
+			<h6 style="line-height: 25px;" onclick="fillForm();">업무 이름</h6>
 			</span>
 				<div class="col-md-9">
 					<input type="text" name="name" id="name" class="form-control mb-5px" placeholder="이름을 입력해주세요">
@@ -76,7 +72,7 @@
 			</div>
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+				<span class="badge  text-black col-3" style=" height: 30px;">
 				<h6 style="line-height: 25px;">업무 내용</h6>
 				</span>
 				<div class="col-md-9">
@@ -86,7 +82,7 @@
 			
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+								<span class="badge  text-black col-3" style=" height: 30px;">
 				<h6 style="line-height: 25px;">업무 기간</h6>
 				</span>
 				<div class="col-md-9">
@@ -106,7 +102,7 @@
 			</div>
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+							<span class="badge  text-black col-3" style=" height: 30px;">
 				<h6 style="line-height:25px;">담당 사원</h6>
 				</span>
 				<div class="col-md-9">
@@ -122,7 +118,7 @@
 			</div>
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+							<span class="badge  text-black col-3" style=" height: 30px;">
 				<h6 style="line-height:25px;">진척도</h6>
 				</span>
 				<div class="col-md-9">
@@ -146,7 +142,7 @@
 			
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+								<span class="badge  text-black col-3" style=" height: 30px;">
 				<h6 style="line-height:25px;">기능 분류</h6>
 				</span>
 				<div class="col-md-9">
@@ -167,11 +163,10 @@
 </form>
 
 
+<div style="padding-left: 330px;">
 <button class="btn btn-gray " onclick="CloseWindow();">취소</button>
 <button class="btn btn-warning " onclick="send();">등록</button>
-
-
-
+</div>
 
 
 				</div>
@@ -261,9 +256,61 @@ $("#selbox").change(function() {
 
 });
 
-
+function fillForm(){
+	$('input[name="name"]').val("MyOffice 테스트");
+	$('textarea[name="content"]').val("My Office 정상 작동 테스트");
+};
 
 function send(){
+	
+	
+	if($("#selbox").val()==""){
+		
+		/* alert("기능을 선택하거나 새로운 기능을 입력해주세요");
+		return; */
+		
+		swal({
+			title: '실패',
+			text: '기능을 선택하거나 새로운 기능을 입력해주세요',
+			icon: 'danger', // primary success warning danger
+			buttons: {
+		        	confirm: {
+				text: '확인',
+		                value: true,
+		                visible: true,
+		                className: 'btn btn-danger',
+		                closeModal: true
+		              }
+		        }
+		});
+		return;
+	}
+	
+	
+	if($("#selbox").val() == "direct" && $('#selboxDirect').val()==""){
+		
+		/* alert("기능입력이 되지 않았습니다.다시입력해주세요");
+		return; */
+		
+		swal({
+			title: '실패',
+			text: '기능입력이 되지 않았습니다.다시입력해주세요',
+			icon: 'danger', // primary success warning danger
+			buttons: {
+		        	confirm: {
+				text: '확인',
+		                value: true,
+		                visible: true,
+		                className: 'btn btn-danger',
+		                closeModal: true
+		              }
+		        }
+		});
+		return;
+		
+	}
+	
+	
 	var html='';
 	var len = $(".service").length;
 	for(var i = 0; i < len; i++){
@@ -271,9 +318,12 @@ function send(){
 	}
 	
 	if(len == 1){
-		 var id= $(".service");
-		html += ''+id.val()+'';
+		var ser = $("#selboxDirect").val();
 		
+		var id= $(".service");
+		html += ''+id.val()+'';
+		html += ',';
+		html += ''+ser+'';
 		$('#ser').val(html);   
 	}else if(len == 0){
 		
@@ -317,6 +367,7 @@ function send(){
 	
 	
 }
+
 
 function change(){
 	

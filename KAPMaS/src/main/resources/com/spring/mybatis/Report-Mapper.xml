@@ -3,6 +3,49 @@
 
 <mapper namespace="Report-Mapper">
 
+	<sql id="code">
+		<if test="rpBd == 'KNO'.toString()">KH_CODE</if>
+		<if test="rpBd == 'kno'.toString()">KH_CODE</if>
+		<if test="rpBd == 'TKB'.toString()">TK_CODE</if>
+		<if test="rpBd == 'tkb'.toString()">TK_CODE</if>
+	</sql>
+	<sql id="title">
+		<if test="rpBd == 'KNO'.toString()">KH_TITLE</if>
+		<if test="rpBd == 'kno'.toString()">KH_TITLE</if>
+		<if test="rpBd == 'TKB'.toString()">TK_TITLE</if>
+		<if test="rpBd == 'tkb'.toString()">TK_TITLE</if>
+	</sql>
+	<sql id="content">
+		<if test="rpBd == 'KNO'.toString()">KH_CONTENT</if>
+		<if test="rpBd == 'kno'.toString()">KH_CONTENT</if>
+		<if test="rpBd == 'TKB'.toString()">TK_CONTENT</if>
+		<if test="rpBd == 'tkb'.toString()">TK_CONTENT</if>
+	</sql>
+	<sql id="table">
+		<if test="rpBd == 'KNO'.toString()">KNOWHOWBOARD</if>
+		<if test="rpBd == 'kno'.toString()">KNOWHOWBOARD</if>
+		<if test="rpBd == 'TKB'.toString()">TOTALKNOWLEDGEBOARD</if>
+		<if test="rpBd == 'tkb'.toString()">TOTALKNOWLEDGEBOARD</if>
+	</sql>
+	<sql id="reportCnt">
+		<if test="rpBd == 'KNO'.toString()">KH_REPORTCNT</if>
+		<if test="rpBd == 'kno'.toString()">KH_REPORTCNT</if>
+		<if test="rpBd == 'TKB'.toString()">TK_REPORTCNT</if>
+		<if test="rpBd == 'tkb'.toString()">TK_REPORTCNT</if>
+	</sql>
+
+
+	<select id="selectReportBoardOrderByCount" resultType="report">
+		SELECT DISTINCT SUBSTR(B.TK_CODE, 0, 3) AS RP_BD, A.BD_CODE AS BD_CODE, B.TK_TITLE AS RP_TITLE, A.EMP_ID AS EMP_ID, B.TK_REPORTCNT AS RP_COUNT
+		FROM REPORT A INNER JOIN TOTALKNOWLEDGEBOARD B ON A.BD_CODE = B.TK_CODE
+	    WHERE B.TK_REPORTCNT >= 5
+		UNION
+		SELECT DISTINCT SUBSTR(B.KH_CODE, 0, 3) AS RP_BD, A.BD_CODE AS BD_CODE, B.KH_TITLE AS RP_TITLE, A.EMP_ID AS EMP_ID, B.KH_REPORTCNT AS RP_COUNT
+		FROM REPORT A INNER JOIN KNOWHOWBOARD B ON A.BD_CODE = B.KH_CODE
+	    WHERE B.KH_REPORTCNT >= 5
+		ORDER BY RP_COUNT
+	</select>
+
 	<update id="insertReport" parameterType="report">
 		insert into report
 		(emp_id, bd_code)
@@ -19,22 +62,36 @@
 		select count(bd_code)
 		from report
 		where emp_id = #{empId}
+		and bd_code = #{bdCode}
 	</select>
-
+	
+	<update id="deleteReportAdmin" parameterType="str">
+		delete from report
+		where bd_code = #{bdCode}
+	</update>
+	
+	<update id="deleteBoardAdmin" parameterType="report">
+		delete from <include refid="table" />
+		where <include refid="code" /> = #{bdCode}
+	</update>
+	
+	<update id="resetReportCntAdmin" parameterType="report">
+		update <include refid="table" />
+		set <include refid="reportCnt" /> = 0
+		where <include refid="code" /> = #{bdCode}
+	</update>
+	
+	
+	<select id="selectReportByBdCode" parameterType="report" resultType="report">
+		SELECT
+			SUBSTR(B.<include refid="code" />, 0, 3) AS RP_BD,
+			A.BD_CODE AS BD_CODE,
+			B.<include refid="title" /> AS RP_TITLE,
+			A.EMP_ID AS EMP_ID,
+			B.<include refid="content" /> AS RP_CONTENT,
+			B.<include refid="reportCnt" /> AS RP_COUNT
+		FROM REPORT A INNER JOIN <include refid="table" /> B ON A.BD_CODE = B.<include refid="code" />
+		WHERE B.<include refid="code" /> = #{bdCode}
+	</select>
+	
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -7,25 +7,33 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"  %>
 
 
+<head>
+</head>
 <body>
-
-<div class="row" style="padding: 20px;">
+<div id="content" class="app-content" >
+<div class="row" style="padding:20px">
+	<div class="page-title has-bg col-md-10" style="padding: 0px">
+		<h1 style="color: black;">${proi.pName } - 회의일지</h1>
+	</div>
+</div>
+<div class="row">
 			<div class="project-wrapper" style="width: 48%;  height: 700px;">
 				<div class="panel panel-inverse" data-sortable-id="index-6">
 					<div class="panel-heading ui-sortable-handle">
-						<h4 class="panel-title">Analytics Details</h4>
-						<div class="panel-heading-btn">
-							<a href="javascript:;" class="btn btn-xs btn-icon btn-default"
-								data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
-						</div>
+						<h4 class="panel-title">타임라인</h4>
 					</div>
 					<div class="table-responsive">
-
-<div id="content" class="app-content">
+					<c:if test="${auth ne 'OB' }">
+					<c:if test="${pro.pEnabled == 1 }">
+						<div style="text-align: center; background-color: #348fe2; color: #fff; height: 50px;" onclick="OpenWindow('<%=request.getContextPath() %>/project/meeting2.do','프로젝트 회의방',535,700);">
+							 <h5 style=" line-height: 3;">회의방 참여</h5>
+						</div>
+					</c:if>
+					</c:if>
+			<div style="height: 700px; padding: 10px;">
+			<div data-scrollbar="true" data-height="100%" data-skip-mobile="true" >
+			
 			<!-- BEGIN breadcrumb -->
-			<ol class="breadcrumb float-xl-end">
-				<li class="breadcrumb-item"><a href="#" onclick="OpenWindow('<%=request.getContextPath() %>/project/chatting.do','프로젝트 회의방',400,400);">회의방 참여</a></li>
-			</ol>
 			<!-- END breadcrumb -->
 			<!-- BEGIN page-header -->
 			<h1 class="page-header">회의 일지<small>&nbsp;&nbsp;&nbsp;회의 일지를 등록하시오</small></h1>
@@ -35,27 +43,28 @@
 				<!-- BEGIN timeline-item -->
 				<div class="timeline-item">
 					<!-- BEGIN timeline-time -->
-				
+				 
+				<c:forEach items="${meetingList}" var="meeting">
 				<div class="timeline-item">
 					<!-- BEGIN timeline-time -->
 					<div class="timeline-time">
-						<span class="date">21일 7월 2021년</span>
-						<span class="time">14:05</span>
+					<c:set var="mtRegdate" value="${fn:split(meeting.mtRegdate,'/')}"></c:set>
+						<span class="date"><c:out value='${mtRegdate[0]}'/></span>
+						<span class="time"><c:out value='${mtRegdate[1]}'/></span>
 					</div>
 					<!-- END timeline-time -->
 					<!-- BEGIN timeline-icon -->
 					<div class="timeline-icon">
-						<a href="javascript:;">&nbsp;</a>
+						<a href="javascript:;" class="<c:out value='${mtRegdate[0]}'/>">&nbsp;</a>
 					</div>
 					<!-- END timeline-icon -->
 					<!-- BEGIN timeline-content -->
-					<div class="timeline-content" style="width: 20%;background-color: #E0F2F7">
+					<div class="timeline-content" style="width: 70%;background-color: #E0F2F7">
 						<!-- BEGIN timeline-header -->
 						<div class="timeline-header">
-							<div class="userimage"><img src="../assets/img/user/user-4.jpg" alt="" /></div>
 							<div class="username">
-								<a href="javascript:;">PMS회의 <i class="fa fa-check-circle text-blue ms-1"></i></a>
-								<div class="text-muted fs-12px">1 days ago <i class="fa fa-globe-americas opacity-5 ms-1"></i></div>
+								<a href="javascript:;">${meeting.mtTitle }</a>
+								<!-- <div class="text-muted fs-12px">1 days ago <i class="fa fa-globe-americas opacity-5 ms-1"></i></div> -->
 							</div>
 						</div>
 						<!-- END timeline-header -->
@@ -65,14 +74,8 @@
 							<div class="mb-3">
 								<h4 class="mb-1">
 								</h4>
-								<div class="mb-2">첨부파일</div>
-								<div class="row gx-1">
-									<div class="col-6">
-										<img src="../assets/img/gallery/gallery-4.jpg" alt="" class="mw-100 d-block" />
-									</div>
-									<div class="col-6">
-										<img src="../assets/img/gallery/gallery-5.jpg" alt="" class="mw-100 d-block" />
-									</div>
+								<div class="mb-2">
+								<button type="button" class="btn btn-success me-1 mb-1" onclick="location.href='<%=request.getContextPath() %>/project/meetingDown?mtCode=${meeting.mtCode}'">회의록 다운</button>
 								</div>
 							</div>
 						</div>
@@ -81,6 +84,8 @@
 					<!-- END timeline-content -->
 				</div>
 				<!-- END timeline-item -->
+				</c:forEach>
+				
 				
 				<!-- BEGIN timeline-item -->
 				<div class="timeline-item">
@@ -90,7 +95,7 @@
 					</div>
 					<!-- END timeline-icon -->
 					<!-- BEGIN timeline-content -->
-					<div class="timeline-content" style="width: 20%;">
+					<div class="timeline-content" style="width: 70%;">
 						<!-- BEGIN timeline-body -->
 						<div class="timeline-body" style="background-color: #E0F2F7">
 							<div class="d-flex align-items-center">
@@ -108,21 +113,20 @@
 			</div>
 			<!-- END timeline -->
 		</div>
-	</div>
+		
+		</div>
+		</div>
+
 			</div>
 			</div>
 		</div>
 		
 		
 		
-			<div class="project-wrapper" style="width: 35%;  height: 700px;">
+			<div class="project-wrapper" style="width: 50%;  height: 700px;">
 				<div class="panel panel-inverse" data-sortable-id="index-6">
 					<div class="panel-heading ui-sortable-handle">
-						<h4 class="panel-title">Analytics Details</h4>
-						<div class="panel-heading-btn">
-							<a href="javascript:;" class="btn btn-xs btn-icon btn-default"
-								data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
-						</div>
+						<h4 class="panel-title">보고싶은 회의일지의 날짜를 선택하시오</h4>
 					</div>
 					
 					<div class="table-responsive">
@@ -138,26 +142,59 @@
 </div>
 
 
-
+</div>
 </body>
 
 <script type="text/javascript">
 		
-window.onload = function() {
-	  $('tbody').attr("onclick","find()")
-}
-		
+window.setTimeout(function(){	
+	
+	 $('tbody').attr("onclick","find()")
+	
+}, 200);
 		
 function find(){
-	setTimeout(function() {
-		
-		var storm=prompt("쓰실오");
-		
-		alert($(".active").html());
-		alert($(".datepicker-switch").html());
-		
 	
-	
+ 	setTimeout(function() {
+		
+ 		var html ="";
+ 		
+		var day =$(".active").html();
+		var asd = $(".datepicker-switch").html();
+		var aaa = asd.split(" ");
+		var year = aaa[1]
+		var month = "";
+		
+		if(aaa[0] == "January"){
+			month = "01";
+		}else if(aaa[0] == "February"){
+			month = "02";
+		}else if(aaa[0] == "March"){
+			month = "03";
+		}else if(aaa[0] == "April"){
+			month = "04";
+		}else if(aaa[0] == "May"){
+			month = "05";
+		}else if(aaa[0] == "June"){
+			month = "06";
+		}else if(aaa[0] == "July"){
+			month = "07";
+		}else if(aaa[0] =="August"){
+			month = "08";
+		}else if(aaa[0] == "September"){
+			month = "09";
+		}else if(aaa[0] == "October"){
+			month = "10";
+		}else if(aaa[0] ==  "November"){
+			month = "11";
+		}else if(aaa[0] == "December"){
+			month = "12";
+		}
+		
+		html += ""+year+"-"+month+"-"+day+"";
+		
+		$('.'+html).focus();
+		
 	
 	}, 100);
 }

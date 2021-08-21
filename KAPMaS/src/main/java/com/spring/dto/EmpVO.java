@@ -9,7 +9,6 @@ public class EmpVO {
 	private String empName ;
 	private String empEmail ;
 	private String empPhone;
-	private String empAdd;
 	private int empEnabled;
 	private String empAuth;
 	private String empImg ;
@@ -56,12 +55,6 @@ public class EmpVO {
 	}
 	public void setEmpPhone(String empPhone) {
 		this.empPhone = empPhone;
-	}
-	public String getEmpAdd() {
-		return empAdd;
-	}
-	public void setEmpAdd(String empAdd) {
-		this.empAdd = empAdd;
 	}
 	public int getEmpEnabled() {
 		return empEnabled;

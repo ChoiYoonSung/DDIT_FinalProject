@@ -46,12 +46,9 @@
 .project-wrapper{
 	margin-top:20px; overflow:auto; 
 	padding: 10px;
+	height: 95%;
 }
 
-li {
-
-	font-size: 17px;
-}
 #dom {
 	box-shadow: 2px 2px 10px silver;
 	border-radius: 10px;
@@ -93,22 +90,33 @@ li {
     border-radius: 10px;
     box-shadow: inset 0px 0px 5px white;
   }
-  
+.dataTables_wrapper.dt-bootstrap .dataTables_filter label .form-control, .dataTables_wrapper.dt-bootstrap4 .dataTables_filter label .form-control{
+
+		width:50%;
+}
+
+.justify-content-center{
+	width: 30%;
+}
+
+.justify-content-center{
+	padding: 1px;
+} 
 </style>
 
 </head>
 <body>
-
-
-<div class="row" style="margin: 0 auto;">
-			<div class="project-wrapper" style="width: 48%;  height: 700px;">
+<div class="app-content">
+<div class="row" style="padding:20px">
+	<div class="page-title has-bg col-md-10" style="padding: 0px">
+		<h1 style="color: black;">${proi.pName } - 업무관리</h1>
+	</div>
+</div>
+<div class="row" style="height: 98%;">
+			<div class="project-wrapper col-4" style="height: 700px;">
 				<div class="panel panel-inverse" data-sortable-id="index-6">
 					<div class="panel-heading ui-sortable-handle">
-						<h4 class="panel-title">Analytics Details</h4>
-						<div class="panel-heading-btn">
-							<a href="javascript:;" class="btn btn-xs btn-icon btn-default"
-								data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
-						</div>
+						<h4 class="panel-title">업무 기능 카테고리</h4>
 					</div>
 					<div class="table-responsive">
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -146,7 +154,7 @@ li {
 				col="red";
 				break;
 			case 5:
-				col="black";
+				col="green";
 				break;
 			}
 			%>
@@ -173,28 +181,25 @@ li {
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 
-		<div class="project-wrapper" style="width: 48%;">
+		<div class="project-wrapper col-8">
 	<div class="panel panel-inverse" data-sortable-id="index-6">
 			<div class="panel-heading ui-sortable-handle">
-				<h4 class="panel-title">Analytics Details</h4>
-				<div class="panel-heading-btn">
-					<a href="javascript:;" class="btn btn-xs btn-icon btn-default"
-						data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
-				</div>
+				<h4 class="panel-title">업무 리스트</h4>
 			</div>
 			<div class="table-responsive">
-
 <div class="panel panel-inverse" style="width: 95%;">
 							<div class="panel-body">
-								<div
-									class="col-xl-12 d-block d-sm-flex d-xl-block justify-content-center"
-									style="margin: 15px 25px 15px 0px;">
-									<button class="btn btn-yellow me-1 mb-1" tabindex="0"
-										aria-controls="data-table-combine" type="button"
-										id="registBtn"
-										onclick="OpenWindow('jobRegistForm.do','업무 등록',800,700);">
-										<span>등록</span>
-									</button>
+								<div>
+								<c:if test="${loginUser.empId == pjm.empId }">
+									<c:if test="${pro.pEnabled == 1 }">
+										<button class="btn btn-primary me-1 mb-1" tabindex="0"
+											aria-controls="data-table-combine" type="button"
+											id="registBtn" 
+											onclick="OpenWindow('jobRegistForm.do','업무 등록',800,472);">
+											<span style="padding-left: 2px;">등록</span>
+										</button>
+									</c:if>
+								</c:if>
 								</div>
 								<div id="data-table-combine_wrapper"
 									class="dataTables_wrapper dt-bootstrap4 no-footer">
@@ -242,7 +247,8 @@ li {
 												</thead>
 												<tbody>
 												<c:forEach items="${jobList}" var="job">
-													<tr onclick="OpenWindow('jobDetail.do?jobCode=${job.jobCode}','상세보기',800,700);">
+												<c:set var="st" value="style='color: red'" />
+													<tr ${job.jobEnabled eq '0' ? st : "" } onclick="OpenWindow('jobDetail.do?jobCode=${job.jobCode}','상세보기',800,479);" >												
 														<td width="1%" class="fw-bold text-inverse dtr-control hide"
 															tabindex="0" id="hiding02">
 															<div id="hiding03"
@@ -257,7 +263,7 @@ li {
 															</div>${job.jobCode}</td>
 														<!-- <td width="1%"></td> -->
 														<td class="sorting_1">${job.jobName}</td>
-														<td>${job.empId}</td>
+														<td>${job.empName}</td>
 														<td>${job.jobStartdate}</td>
 														<td>${job.jobEnddate}</td>
 														<td>
@@ -269,9 +275,6 @@ li {
 													</tr>
 													
 												</c:forEach>
-												<c:if test="${empty jobList}" >
-													없습니다.
-												</c:if>
 												</tbody>
 											</table>
 										</div>
@@ -283,7 +286,7 @@ li {
 		</div>
 	</div>
 </div>
-
+</div>
 
 
 <script src="<%=request.getContextPath()%>/resources/bootstrap/assets/js/vendor.min.js" type="6fa72fa030d19bea1f3dc6bb-text/javascript"></script>
@@ -331,7 +334,7 @@ window.onload=function(){
 
 
 var options = {
-		dom : '<"dataTables_wrapper dt-bootstrap"<"row"<"col-xl-7 d-block d-sm-flex d-xl-block justify-content-center"<"d-block d-lg-inline-flex me-0 me-md-3"l><"d-block d-lg-inline-flex"B>><"col-xl-5 d-flex d-xl-block justify-content-center"fr>>t<"row"<"col-md-5"i><"col-md-7"p>>>',
+		dom : '<"dataTables_wrapper dt-bootstrap"<"row"<"col-7 d-block d-xl-block justify-content-center"<"d-block d-lg-inline-flex me-0 me-md-3"l><"d-block d-lg-inline-flex"B>><"col-5 d-xl-block justify-content-center"fr>>t<"row"<"col-md-5"i><"col-md-7"p>>>',
 		buttons : [ {
 			extend : 'copy',
 			className : 'btn-sm'
@@ -344,10 +347,12 @@ var options = {
 		}, {
 			extend : 'pdf',
 			className : 'btn-sm'
-		}, {
+		},
+		/* {
 			extend : 'print',
 			className : 'btn-sm'
-		} ],
+		}  */
+		],
 		responsive : true,
 		colReorder : true,
 		keys : true,

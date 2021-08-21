@@ -2,11 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Scrap-Mapper">
+	
+	<select id="selectScrapList" parameterType="str" resultType="scrap">
+		select *
+		from scrap
+		where emp_id = #{empId}
+	</select>
 
 	<update id="insertScrap" parameterType="scrap">
 		insert into scrap 
 		(sc_code, emp_id, sc_title, sc_url, sc_regdate) 
-		values(SCRAP_SEQ.NEXTVAL, #{empId},#{scTitle},#{scUrl}, sysdate)
+		values(SCRAP_SEQ.NEXTVAL, #{empId},#{scTitle},#{scUrl}, to_char(sysdate,'yyyy-MM-dd'))
 	</update>
 
 	<delete id="deleteScrap" parameterType="scrap">
@@ -21,6 +27,21 @@
 		where sc_url = #{scUrl}
 		and emp_id = #{empId}
 	</select>
+	
+	<update id="deletePrbScrap" parameterType="str">
+		delete from scrap
+		where substr(sc_url,49) = #{bdCode}
+	</update>
+	
+	<update id="deleteKhScrap" parameterType="str">
+		delete from scrap
+		where substr(sc_url,50) = #{bdCode}
+	</update>
+	
+	<update id="deleteTkScrap" parameterType="str">
+		delete from scrap
+		where substr(sc_url,46) = #{bdCode}
+	</update>
 
 </mapper>
 

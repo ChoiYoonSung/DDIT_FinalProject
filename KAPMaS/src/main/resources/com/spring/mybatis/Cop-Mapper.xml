@@ -29,17 +29,19 @@
 		cop_subject,
 		cop_owner,
 		cop_bannerimg,
-		cop_profileimg
+		cop_profileimg,
+		cop_owner_id
 		) VALUES (
 		#{copCode},
 		#{copName},
-		sysdate,
+		to_char(sysdate,'yyyy-MM-dd'),
 		#{copType},
 		#{copDetail},
 		#{copSubject},
 		#{copOwner},
 		#{copBannerimg},
-		#{copProfileimg}
+		#{copProfileimg},
+		#{copUserId}
 		)
 	</select>
 
@@ -137,7 +139,8 @@
 		cop_subject,
 		cop_owner,
 		cop_bannerimg,
-		cop_profileimg
+		cop_profileimg,
+		cop_owner_id
 		FROM
 		cop
 		where cop_code =
@@ -230,7 +233,7 @@
 
 	<select id="getArchiveList" parameterType="str"
 		resultType="cArcVO">
-		SELECT
+SELECT
 		ca_code,
 		cop_code,
 		emp_id,
@@ -243,9 +246,10 @@
 		FROM
 		coparchive
 		where
-		cop_code =
-		#{str}
-	</select>
+			cop_code =
+			#{str}
+		and CA_ENABLED = '1'
+</select>
 
 	<select id="getDiscussionList" parameterType="str"
 		resultType="cFdVO">
@@ -273,12 +277,18 @@
 	</select>
 
 	<select id="getMyArchiveListToCri" resultType="cArcVO">
-		select a.ca_code,
-		a.ca_title, b.cop_name
-		from COPARCHIVE a, cop b
-		where a.cop_code =
-		b.cop_code
-		and a.emp_id = #{empId}
+		select 
+			a.cop_code,
+			a.ca_code,
+			a.ca_title,
+			a.ca_viewcnt,
+			b.cop_name
+		from 
+			COPARCHIVE a, cop b
+		where 
+			a.cop_code = b.cop_code
+		and 
+			a.emp_id = #{empId}
 	</select>
 	
 	<select id="getArchiveDetail" parameterType="str" resultType="cArcVO">
@@ -312,9 +322,340 @@
 	</select>
 	
 	<delete id="deleteArchive">
-		delete from coparchive
+update coparchive
+set ca_enabled = '0'
+where ca_code = #{str}
+</delete>
+	
+	<update id="increaseArchiveViewCnt">
+		update coparchive
+		set ca_viewcnt = ca_viewcnt +1
 		where ca_code = #{str}
+	</update>
+
+	<select id="getMyProjectList" resultType="pro">
+		SELECT
+		    a.p_code, 
+		    a.p_name,
+		    a.p_startdate,
+		    a.p_enddate,
+		    (
+		        SELECT
+		            d.emp_id
+		        FROM
+		            employee d
+		        WHERE
+		            d.emp_id = (
+		                SELECT
+		                    c.emp_id
+		                FROM
+		                    pjmember c
+		                WHERE
+		                    c.pm_authority = 'PL'
+		                    AND   c.p_code = a.p_code
+		            )
+		    ) AS emp_id,
+		    (
+		        SELECT
+		            d.emp_name
+		        FROM
+		            employee d
+		        WHERE
+		            d.emp_id = (
+		                SELECT
+		                    c.emp_id
+		                FROM
+		                    pjmember c
+		                WHERE
+		                    c.pm_authority = 'PL'
+		                    AND   c.p_code = a.p_code
+		            )
+		    ) AS emp_name
+		    FROM
+			    project a,
+			    pjmember b
+			WHERE
+			    a.p_code = b.p_code
+			    AND   emp_id = #{empId}
+	</select>
+	
+	<select id="getCopFamilyList" resultType="emp">
+		SELECT
+		    b.emp_name,
+		    b.emp_id,
+		    b.emp_email
+		FROM 
+		    copmember a, employee b
+		where 
+		    a.emp_id = b.emp_id
+	    and 
+    		not a.COPM_AUTH = '0'
+		and 
+		    cop_code = #{copCode}
+	</select>
+	
+	<insert id="insertProjectObserveMember" parameterType="shareVO">
+		insert into pjmember(emp_id, p_code, pm_authority)
+		values (#{family}, #{projectNo}, 'OB')
+	</insert>
+	
+	<insert id="projectShareSendMail" parameterType="shareVO">
+		insert into RECEIVEMAIL(
+		    rm_code,
+		    emp_id,
+		    rm_title,
+		    rm_content,
+		    rm_sender,
+		    rm_rstatus,
+		    rm_senddate,
+		    rm_receivedate,
+		    rm_enabled)
+		values (    
+		    concat('rma', RECEIVEMAIL_SEQ.NEXTVAL),
+		    #{family},
+		    '프로젝트 공유 알림 메일입니다',
+		    concat(#{projectName}, '프로젝트 공유를 받았습니다. 지금부터 옵저브 멤버로 활동 할 수 있습니다.'),
+		    'SYSTEM',
+		    '1',
+		    to_char(sysdate,'yyyy-mm-dd hh24:mi'),
+			to_char(sysdate,'yyyy-mm-dd hh24:mi'),
+		    '1')
+	</insert>
+	
+	<insert id="shareProjectRequest" parameterType="shareVO">
+		insert into RECEIVEMAIL(
+		    rm_code,
+		    emp_id,
+		    rm_title,
+		    rm_content,
+		    rm_sender,
+		    rm_rstatus,
+		    rm_senddate,
+		    rm_receivedate,
+		    rm_enabled)
+		values (    
+		    concat('rma', RECEIVEMAIL_SEQ.NEXTVAL),
+		    #{projectPLID},
+		    '프로젝트 공유 승인 요청 메일입니다',
+		    #{content},
+		    'SYSTEM',
+		    '1',
+		   	to_char(sysdate,'yyyy-mm-dd hh24:mi'),
+		   	to_char(sysdate,'yyyy-mm-dd hh24:mi'),
+		    '1')
+	</insert>
+	
+	<select id="getProjectPlEmpID" resultType="str">
+		SELECT
+		    emp_id
+		FROM
+		    employee
+		where
+		    emp_name = #{projectPL}
+	</select>
+	
+	<select id="getSignUpRequestMember" resultType="emp">
+		SELECT
+		    b.emp_name,
+		    b.emp_id,
+		    b.emp_email
+		FROM
+		    copmember a, employee b
+		where a.emp_id = b.emp_id
+		and a.copm_auth = '0'
+		and cop_code = #{copCode}
+	</select>
+	
+	<update id="approveCopSignUpRequest" parameterType="copMemberVO">
+		update copmember
+		set COPM_AUTH = '1'
+		where emp_id = #{empId}
+		and COP_CODE = #{copCode}
+	</update>
+	
+	<delete id="rejectCopSignUpRequest" parameterType="copMemberVO">
+		delete from COPMEMBER
+		where COP_CODE = #{copCode}  
+		and EMP_ID = #{empId}
 	</delete>
+	
+	<insert id="sendMail" parameterType="copMemberVO">
+		insert into RECEIVEMAIL 
+		(RM_CODE,EMP_ID,RM_TITLE,RM_CONTENT ,RM_SENDER,RM_RSTATUS,RM_SENDDATE,RM_RECEIVEDATE,RM_ENABLED)
+		values(concat('rma',RECEIVEMAIL_SEQ.NEXTVAL),#{empId},#{title},#{content},'SYSTEM',0,to_char(sysdate,'yyyy-mm-dd hh24:mi'),to_char(sysdate,'yyyy-mm-dd hh24:mi'),'1')
+	</insert>
+	
+	<update id="modifyCopInfo" parameterType="cop">
+		update 
+			cop
+		set    
+		    cop_type = #{copType},
+		    cop_detail = #{copDetail},
+		    cop_subject = #{copSubject},
+		    cop_bannerimg = #{copBannerimg},
+		    cop_profileimg = #{copProfileimg}
+		where cop_code = #{copCode}
+	</update>
+	
+	<insert id="createFdis" parameterType="cFdVO">
+		insert into FAMILYDISCUSSION(fdis_code,
+		    cop_code,
+		    fdis_maker,
+		    fdis_name,
+		    fdis_regdate,
+		    fdis_subject)
+	    values (concat('CFD',FAMILYDISCUSSION_SEQ.NEXTVAL), #{copCode}, #{fdisMaker}, #{fdisName}, to_char(sysdate,'yyyy-MM-dd'), #{fdisSubject})
+	</insert>
+	
+	<select id="getCopFdisList" resultType="cFdVO">
+		SELECT
+		    fdis_code,
+		    cop_code,
+		    fdis_maker,
+		    fdis_name,
+		    fdis_regdate,
+		    fdis_subject
+		FROM
+		    familydiscussion
+		where
+		    cop_code = #{copCode}
+	</select>
+	
+	<select id="getIcreatedFdisList" parameterType="cFdVO" resultType="cFdVO">
+		SELECT
+		    fdis_code,
+		    cop_code,
+		    fdis_maker,
+		    fdis_name,
+		    fdis_regdate,
+		    fdis_subject
+		FROM
+		    familydiscussion
+		where
+		    cop_code = #{copCode}
+		and 
+			fdis_maker = #{fdisMaker}
+	</select>
+	
+	<select id="getFdisContent" resultType="cFdContentVO">
+		SELECT
+		    fdis_ct_code,
+		    fdis_code,
+		    fdis_ct_writer,
+		    fdis_ct_content,
+		    fdis_ct_regdate,
+			FDIS_CT_WRITER_NAME		    
+		FROM
+		    familydiscussioncontent
+		where 
+		    fdis_code = #{fdisCode}
+        order by 
+        	FDIS_CT_REGDATE desc
+   	</select>
+   	
+   	<insert id="registDiscussionContent" parameterType="cFdContentVO">
+   		insert into familydiscussioncontent(
+		    fdis_ct_code,
+		    fdis_code,
+		    fdis_ct_writer,
+		    fdis_ct_content,
+		    fdis_ct_regdate,
+		    fdis_ct_writer_name)
+		values (FAMILYDISCUSSIONCONTENT_SEQ.NEXTVAL, #{fdisCode}, #{fdisCtWriter}, #{fdisCtContent}, to_char(sysdate,'yyyy-mm-dd hh24:mi'), #{fdisCtWriterName})
+   	</insert>
+   	
+   	<select id="getFdisInfoByFdisCode" resultType="cFdVO">
+   		SELECT
+		    fdis_code,
+		    cop_code,
+		    fdis_maker,
+		    fdis_name,
+		    fdis_regdate,
+		    fdis_subject
+		FROM
+		    familydiscussion
+		where fdis_code = #{fdisCode}
+   	</select>
+   	
+   	<update id="modifyFdisInfo" parameterType="cFdVO">
+   		update 
+   			FAMILYDISCUSSION
+		set 
+			FDIS_NAME = #{fdisName},
+		    FDIS_SUBJECT = #{fdisSubject}
+		where 
+			fdis_code = #{fdisCode}
+   	</update>
+   	
+   	<select id="getEmpIDByFdisCode" resultType="emp">
+		select b.emp_id
+		from FAMILYDISCUSSION a, employee b
+		where A.FDIS_MAKER = B.EMP_NAME
+		and A.FDIS_CODE = #{fdisCode}
+   	</select>
+   	
+   	<delete id="deleteDiscussionContent">
+	   	delete from FAMILYDISCUSSIONCONTENT
+		where fdis_code = #{fdisCode}
+   	</delete>
+   	
+   	<delete id="deleteDiscussion">
+   		delete from familydiscussion
+		where fdis_code = #{fdisCode}
+   	</delete>
+   	
+   	<insert id="joinCopToInvite" parameterType="cop">
+   		insert into copmember(
+		    emp_id,
+		    cop_code,
+		    copm_auth)
+		values (#{copUserId},#{copCode}, '1')
+   	</insert>
+   	
+   	<!-- COP 삭제  -->
+   	<delete id="deleteArchiveAttachOnDB">
+   		delete from COPARCHIVEATTACH
+		where ca_code = #{caCode}
+   	</delete>
+   	
+   	<delete id="deleteCopArchive">
+   		delete from COPARCHIVE
+		where cop_code = #{copCode}
+   	</delete>
+   	
+   	<delete id="deleteCopMember">
+   		delete from COPMEMBER
+		where cop_code = #{copCode}
+   	</delete>
+   	
+   	<delete id="deleteCop">
+   		delete from cop
+		where cop_code = #{copCode}
+   	</delete>
+   	
+   	<select id="getIcreatedFdisListOnMyCop" resultType="cFdVO">
+		SELECT
+		    a.fdis_code,
+		    a.cop_code,
+		    a.fdis_maker,
+		    a.fdis_name,
+		    a.fdis_regdate,
+		    a.fdis_subject,
+		    b.cop_name
+		FROM
+		    familydiscussion a, cop b
+		where 
+			a.cop_code = b.cop_code
+		and 
+			a.fdis_maker = #{fdisMaker}
+   	</select>
+   	
+   	<select id="getApproveRequestCnt" resultType="int">
+   		select count(emp_id) 
+		from copmember
+		where copm_auth = 0
+		and COP_CODE = #{copCode}
+   	</select>
 </mapper>
 
 

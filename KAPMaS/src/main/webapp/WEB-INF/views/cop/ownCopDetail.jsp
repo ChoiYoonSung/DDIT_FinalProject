@@ -94,7 +94,7 @@ li {
 <body style="background-color: #dee2e6;">
 	<div class="row" style="margin: 0px;">
 		<div class="col-xl-12 ui-sortable">
-					<br> <a onclick="javascript:history.go(-1)"><i
+					<br> <a onclick="javascript:history.go(-1)" style="cursor: pointer;"><i
 				class="ion ion-md-arrow-round-back fa-2x fa-fw float-start me-10px text-black-lighter"></i></a>
 			<h1 class="page-header">소유중 Cop</h1>
 			<div class="panel panel-inverse" data-sortable-id="ui-media-object-1"
@@ -114,22 +114,22 @@ li {
 												class="table table-striped table-bordered align-middle">
 												<thead>
 													<tr role="row">
-														<th width="1%" class="sorting sorting_desc" tabindex="0"
+														<th width="25%" class="sorting sorting_desc" tabindex="0"
 															aria-controls="data-table-combine" rowspan="1"
-															colspan="1" style="width: 6px;" data-column-index="0"
+															colspan="1" data-column-index="0"
 															aria-label=": activate to sort column ascending"
 															aria-sort="descending">#</th>
-														<th width="5%" data-orderable="false"
+														<th width="25%" data-orderable="false"
 															class="sorting_disabled" rowspan="1" colspan="1"
-															style="width: 22px;" data-column-index="1" aria-label="">Cop명</th>
-														<th class="text-nowrap sorting sorting_desc" tabindex="0"
+															data-column-index="1" aria-label="">Cop명</th>
+														<th width="25%" class="text-nowrap sorting sorting_desc" tabindex="0"
 															aria-controls="data-table-combine" rowspan="1"
-															colspan="1" style="width: 104px;" data-column-index="2"
+															colspan="1" data-column-index="2"
 															aria-label=": activate to sort column ascending"
 															aria-sort="descending">참여자 수</th>
-														<th class="text-nowrap sorting sorting_desc" tabindex="0"
+														<th width="25%" class="text-nowrap sorting sorting_desc" tabindex="0"
 															aria-controls="data-table-combine" rowspan="1"
-															colspan="1" style="width: 104px;" data-column-index="3"
+															colspan="1" data-column-index="3"
 															aria-label=": activate to sort column ascending"
 															aria-sort="descending">소유자</th>
 													</tr>
@@ -138,9 +138,7 @@ li {
 													<c:set var="occ" value="${ownCopCnt}" />
 													<c:set var="ocv" value="${ownCopVO}" />
 													<c:forEach var="ocv" items="${ownCopVO}" begin="0" end="${fn:length(ownCopVO)}" varStatus="status">
-														<tr
-															onclick="OpenWindow('detail/${ocv.copCode}','${ocv.copName}','1440','800');"
-															style="cursor: pointer;">
+														<tr onclick="OpenWindow('detail/${ocv.copCode}','${ocv.copName}','1130','700');" style="cursor: pointer;">
 															<td>${ocv.copCode }</td>
 															<td>${ocv.copName }</td>
 															<td>${occ[status.index].copPersonnel}</td>
@@ -162,92 +160,13 @@ li {
 		</div>
 	</div>
 	<script type="text/javascript">
-window.onload = function() {
-	var el = document.getElementById('dom');
-	el.setAttribute('hidden', '');
-	
-}
-
-function page(name,img,authority,depCode,rnkCode,email,phone,add,pCode){
-	var el = document.getElementById('dom');
-	el.removeAttribute('hidden');
-	page_go(name,img,authority,depCode,rnkCode,email,phone,add,pCode)
-}
-
-
-
-function page_go(name,img,authority,depCode,rnkCode,email,phone,add,pCode){
-	
-	
-	var data={
-			"depCode":depCode,
-			"rnkCode":rnkCode
+	window.onload = function() {
+		var el = document.getElementById('dom');
+		el.setAttribute('hidden', '');
 	}
-	
-	$.ajax({
-		url : "<%=request.getContextPath()%>/project/getMemberInfo",
-		type : "post",
-		data : JSON.stringify(data),
-		contentType:"application/json",
-		success:function(data){
-			var result=data.split(',');
-			
-			document.getElementById('dep').innerHTML=result[0];
-			document.getElementById('rnk').innerHTML=result[1];
-			
-		},
-		error:function(error){
-			
-			alert("시스템오류로입니다.관리자에게 문의해주세요.");
-		}
 		
-	});
-	
-	
-	document.getElementById('name').innerHTML=name ;
-	document.getElementById('authority').innerHTML=authority ;
-	var img = document.getElementById('image');
-	img.setAttribute('src', '<%=request.getContextPath()%>/resources/images/logo-remove.png');
-	document.getElementById('mail').innerHTML=email ;
-	document.getElementById('ph').innerHTML=phone ;
-	document.getElementById('ad').innerHTML=add ;
-	
-	
-	
-}
-
-function changeAu(code,id,AU){
-	
-	var au = $("#"+AU+" option:selected").val();
-	
-	var data = {
-			"au":au
-		   ,"code":code
-		   ,"id": id
-			
-	} 
-	
-	$.ajax({
-		url : "<%=request.getContextPath()%>/project/updateAu",
-				type : "post",
-				data : JSON.stringify(data),
-				contentType : "application/json;charset=utf-8",
-				success : function(data) {
-
-					alert("역할을 부여하였습니다");
-					history.go(0);
-				},
-
-				error : function(error) {
-					alert(error.status);
-				}
-
-			})
-
-		}
-
-		var options = {
-			dom : '<"dataTables_wrapper dt-bootstrap"<"row"<"col-xl-7 d-block d-sm-flex d-xl-block justify-content-center"<"d-block d-lg-inline-flex me-0 me-md-3"l><"d-block d-lg-inline-flex"B>><"col-xl-5 d-flex d-xl-block justify-content-center"fr>>t<"row"<"col-md-5"i><"col-md-7"p>>>',
+	var options = {
+			dom : '<"dataTables_wrapper dt-bootstrap"<"row"<"col-xl-12 d-xl-block justify-content-center"fr>>t<"row"<"col-md-5"i><"col-md-7"p>>>',
 			buttons : [ {
 				extend : 'copy',
 				className : 'btn-sm'
@@ -264,30 +183,18 @@ function changeAu(code,id,AU){
 				extend : 'print',
 				className : 'btn-sm'
 			} ],
-			responsive : true,
-			colReorder : true,
 			keys : true,
-			rowReorder : true,
-			select : true,
 			order : [ [ 0, 'desc' ] ],
 			ordering : true,
 			serverSide : false,
 			lengthMenu : [10, 25, 50]
 		};
 
-		if ($(window).width() <= 767) {
-			options.rowReorder = false;
-			options.colReorder = false;
-		}
+	if ($(window).width() <= 767) {
+		options.rowReorder = false;
+		options.colReorder = false;
+	}
 
-		$('#data-table-combine').DataTable(options);
-
-		$(document).ready(
-				function() {
-					$('#hiding01').attr('style', "display:none;"); //숨기기
-					$('.fw-bold text-inverse dtr-control hide').attr('style',
-							"display:none;"); //숨기기
-
-				});
+	$('#data-table-combine').DataTable(options);
 	</script>
 </body>

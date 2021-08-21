@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="Qreply-Mapper">
+
+
+<select id="selectQreList" resultType="qreply">
+select * 
+from QNAREPLY
+where QNA_NO = #{qnaNo}
+</select>
+
+
+<update id="insertQre" parameterType="qreply">
+
+insert into QNAREPLY(QNA_RP_CODE,QNA_NO,QNA_RP_WRITER,QNA_RP_CONTENT,QNA_RP_REGDATE)
+values(concat('qre',QNAREPLY_SEQ.NEXTVAL),#{qnaNo},#{qnaRpWriter},#{qnaRpContent},to_char(sysdate,'yyyy-MM-dd'))
+
+</update>
+
+<update id="updateQre" parameterType="qreply">
+
+update QNAREPLY
+set QNA_RP_CONTENT = #{qnaRpContent}
+where QNA_NO = #{qnaNo} 
+
+</update>
+
+
+<update id="deleteQre">
+
+delete from QNAREPLY
+where QNA_NO = #{qnaNo} 
+
+</update>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

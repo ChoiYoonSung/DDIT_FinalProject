@@ -20,7 +20,7 @@
 		projectarchieve p, employee e, PROJECTARCHIVEATTACH paa
 		where p_code = #{pCode} AND p.emp_id = e.emp_id and p.pa_code = paa.pa_code
 		<include refid="search" />
-		order by pa_code desc
+		order by pa_regdate desc,pa_code desc
 	</select>
 	
 	<select id="selectSearchPAListCount"  resultType="int">
@@ -36,7 +36,7 @@
 	
 	<update id="insertPA" parameterType="pa">
 		insert into PROJECTARCHIEVE(pa_code, p_code, emp_id,pa_title, pa_content, pa_regdate)
-					values(#{paCode}, #{pCode}, #{empId}, #{paTitle}, #{paContent}, sysdate)
+					values(#{paCode}, #{pCode}, #{empId}, #{paTitle}, #{paContent}, to_char(sysdate,'yyyy-MM-dd'))
 	</update>
 
 	<select id="selectPASeqNext" resultType="int">
@@ -58,7 +58,7 @@
 	</update>
 	
 	<update id="deletePA">
-		DELETE FROM projectarchieve
+		update projectarchieve set PA_ENABLED = 0 
 		where pa_code=#{paCode}
 	</update>
 </mapper>

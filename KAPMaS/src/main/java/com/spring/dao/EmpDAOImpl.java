@@ -1,6 +1,7 @@
 package com.spring.dao;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -55,6 +56,25 @@ public class EmpDAOImpl implements EmpDAO{
 		session.update("Emp-Mapper.updateEmpPwd",emp);
 		
 		
+	}
+
+
+	@Override
+	public void seccondEmp(EmpVO emp) throws SQLException {
+		
+		
+		session.update("Emp-Mapper.secondLoginEmp",emp);
+		
+	}
+
+
+	@Override
+	public List<EmpVO> getListEmps() throws SQLException {
+		
+		 List<EmpVO> empList = session.selectList("Emp-Mapper.getListEmps");
+		
+		
+		return empList;
 	}
 
 	

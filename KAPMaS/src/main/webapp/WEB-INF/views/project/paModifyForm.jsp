@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <body style="padding: 40px; background: white;">
 
 
@@ -14,7 +13,7 @@
 		<legend class="mb-3" style="text-align:center;">자료실 글 수정</legend><hr>
 		<div class="mb-3">
 		<label class="form-label" for="paTitle">제목</label>
-		<input class="form-control" type="text" id="paTitle" name="paTitle" placeholder="제목을 입력하세요" maxlength="20" value="${pa.paTitle }">
+		<input class="form-control" type="text" id="paTitle" name="paTitle" placeholder="제목을 입력하세요" value="${pa.paTitle }">
 		</div>
 		<div class="mb-3">
 		<label class="form-label" for="paContent">내용</label>
@@ -48,7 +47,7 @@
 		</div>
 		<div style="width:210px;  margin:0 auto; margin-top: 30px;">
 			<button type="button" class="btn btn-primary w-100px me-5px" id="modifyBtn" onclick="modify_submit();">수정</button>
-			<button type="button" class="btn btn-default w-100px" id="cancelBtn" onclick="CloseWindow();">취소</button>
+			<button type="button" class="btn btn-gray w-100px" id="cancelBtn" onclick="CloseWindow();">취소</button>
 		</div>
 	</fieldset>
 </form>
@@ -59,8 +58,20 @@ window.onload=function(){
 	$('a[name="attachedFile"] > button').click(function(event){
 		
 		var parent = $(this).parent('a[name="attachedFile"]');
-		alert(parent.attr("attach-fileName")+"파일을 삭제합니다.");
-		
+		swal({
+			    title: '자료실',
+			    text: parent.attr("attach-fileName")+'파일을 삭제합니다',
+			    icon: 'warning', // primary success warning danger
+			    buttons: {
+			          confirm: {
+			            text: '확인',
+			            value: true,
+			            visible: true,
+			            className: 'btn btn-primary',
+			            closeModal: true
+			          }
+			    }
+			  });
 		var paAtNo = parent.attr("attach-no");
 		
 		$(this).parents('li.attach-item').remove();
@@ -83,7 +94,20 @@ window.onload=function(){
 	
 	$('.fileInput').on('change','input[type="file"]',function(event){
 		if(this.files[0].size>1024*1024*40){
-			alert("파일 용량이 40MB를 초과하였습니다.");
+			swal({
+   			    title: '자료실',
+   			    text: '파일 용량이 40MB를 초과하였습니다.',
+   			    icon: 'warning', // primary success warning danger
+   			    buttons: {
+   			          confirm: {
+   			            text: '확인',
+   			            value: true,
+   			            visible: true,
+   			            className: 'btn btn-primary',
+   			            closeModal: true
+   			          }
+   			    }
+   			  });
 			this.value="";
 			$(this).focus();
 			return false;
@@ -97,7 +121,20 @@ function addFile_go(){
 	var attachCount=attachedFile+inputFile;
 	
 	if(attachCount >=5){
-		alert("파일추가는 5개까지만 가능합니다.");
+		swal({
+			    title: '자료실',
+			    text: '파일추가는 5개까지만 가능합니다.',
+			    icon: 'warning', // primary success warning danger
+			    buttons: {
+			          confirm: {
+			            text: '확인',
+			            value: true,
+			            visible: true,
+			            className: 'btn btn-primary',
+			            closeModal: true
+			          }
+			    }
+			  });
 		return;
 	}
 	
@@ -113,10 +150,42 @@ function modify_submit(){
 	//alert("click modify btn");
 	
 	var form=document.modifyForm;
+	var fileCount = $('input[name="uploadFile"]').length + $('a[name="attachedFile"]').length;
 	
-	if($("input[name='title']").val()==""){
-		alert(input.name+"은 필수입니다.");
-		$("input[name='title']").focus();
+	if(fileCount == 0){
+		swal({
+			    title: '자료실',
+			    text: '파일첨부는 필수입니다.',
+			    icon: 'warning', // primary success warning danger
+			    buttons: {
+			          confirm: {
+			            text: '확인',
+			            value: true,
+			            visible: true,
+			            className: 'btn btn-primary',
+			            closeModal: true
+			          }
+			    }
+			  });
+		return;
+	}
+	
+	if($("input[name='paTitle']").val()==""){
+		swal({
+			    title: '자료실',
+			    text: input.name+'은 필수입니다.',
+			    icon: 'warning', // primary success warning danger
+			    buttons: {
+			          confirm: {
+			            text: '확인',
+			            value: true,
+			            visible: true,
+			            className: 'btn btn-primary',
+			            closeModal: true
+			          }
+			    }
+			  });
+		$("input[name='paTitle']").focus();
 		return;
 	}
 	
@@ -124,7 +193,20 @@ function modify_submit(){
 	for(var file of files){
 		console.log(file.name+" : "+file.value);
 		if(file.value==""){
-			alert("파일을 선택하세요.");
+			swal({
+   			    title: '자료실',
+   			    text: '파일을 선택하세요.',
+   			    icon: 'warning', // primary success warning danger
+   			    buttons: {
+   			          confirm: {
+   			            text: '확인',
+   			            value: true,
+   			            visible: true,
+   			            className: 'btn btn-primary',
+   			            closeModal: true
+   			          }
+   			    }
+   			  });
 			file.focus();
 			return false;
 		}

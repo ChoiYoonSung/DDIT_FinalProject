@@ -43,13 +43,35 @@ public class TotalKnowledgeDAOImpl implements TotalKnowledgeDAO {
 	@Override
 	public List<TotalKnowledgeVO> selectTkCriteria(SearchCriteria cri) throws SQLException {
 		
-		int offset=cri.getStartRowNum();
-		int limit=cri.getPerPageNum();
-		RowBounds rowBounds=new RowBounds(offset,limit);
+		List<TotalKnowledgeVO> tkList=
+		   session.selectList("Totalknowledge-Mapper.selectSearchTkList",cri);
+			
+		return tkList;
+	}
+	
+	@Override
+	public List<TotalKnowledgeVO> selectTkCriteriaArr(String[] userArray) throws SQLException {
 		
 		List<TotalKnowledgeVO> tkList=
-		   session.selectList("Totalknowledge-Mapper.selectSearchTkList",cri,rowBounds);
-			
+				session.selectList("Totalknowledge-Mapper.selectSearchTkListArr",userArray);
+		
+		return tkList;
+	}
+	@Override
+	public List<TotalKnowledgeVO> selectTkCriteriaArr2(String[] userArray) throws SQLException {
+		
+		List<TotalKnowledgeVO> tkList=
+				session.selectList("Totalknowledge-Mapper.selectSearchTkListArr2",userArray);
+		
+		return tkList;
+	}
+	
+	@Override
+	public List<TotalKnowledgeVO> selectTkCriteria2(SearchCriteria cri) throws SQLException {
+		
+		List<TotalKnowledgeVO> tkList=
+				session.selectList("Totalknowledge-Mapper.selectSearchTkListViewOrder",cri);
+		
 		return tkList;
 	}
 	

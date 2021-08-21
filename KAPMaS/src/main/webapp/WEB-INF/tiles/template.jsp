@@ -18,14 +18,15 @@
 		padding-top: 30px; 
 	}
 </style>
+
 </head>
-<body class="hold-transition sidebar-mini" onload="init()">
+<body class="hold-transition sidebar-mini">
 	<div id="app" class="app app-header-fixed app-sidebar-fixed app-gradient-enabled" style="padding-top : 20px">
 		<tiles:insertAttribute name="header" />
 
 		<tiles:insertAttribute name="aside" />
 
-		<div id="content" class="app-content d-flex flex-column">
+		<div id="content" class="app-content d-flex flex-column" style="margin-left: 200px;">
 			<div class=" flex-grow-1 overflow-hidden ps" data-scrollbar="true" data-height="100%" data-init="true" style="height: 100%;">
 				<tiles:insertAttribute name="body"/>
 			</div>
@@ -36,7 +37,12 @@
 	</div>
 </body>
 <tiles:insertAttribute name="js" />
+<script type="text/javascript">
+window.addEventListener('load',init());
+</script>
 
 </html>
+
+
 
 

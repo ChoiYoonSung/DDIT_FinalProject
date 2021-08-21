@@ -61,7 +61,20 @@
 		window.setTimeout(function(){	
 		 	$('.fileInput').on('change','input[type="file"]',function(event){
 		 		if(this.files[0].size>1024*1024*40){
-		 			alert("파일 용량이 40MB를 초과하였습니다.");
+		 			swal({
+					    title: '알림',
+					    text: '파일 용량이 40MB를 초과하였습니다.',
+					    icon: 'warning', // primary success warning danger
+					    buttons: {
+					          confirm: {
+					            text: '확인',
+					            value: true,
+					            visible: true,
+					            className: 'btn btn-primary',
+					            closeModal: true
+					          }
+					    }
+					  });
 		 			this.value="";
 		 			$(this).click();		 			
 		 			return false;
@@ -80,7 +93,20 @@
     		for(var file of files){
     			console.log(file.name+" : "+file.value);
     			if(file.value==""){
-    				alert("파일을 선택하세요.");
+    				swal({
+    				    title: '알림',
+    				    text: '파일을 선택하세요.',
+    				    icon: 'warning', // primary success warning danger
+    				    buttons: {
+    				          confirm: {
+    				            text: '확인',
+    				            value: true,
+    				            visible: true,
+    				            className: 'btn btn-primary',
+    				            closeModal: true
+    				          }
+    				    }
+    				  });
     				file.focus();
     				file.click();
     				return;

@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="Know-Mapper">
+	<select id="selectSearchKhListArr" parameterType="str"	resultType="know">
+			SELECT
+			A.KH_CODE as khCode,
+			A.EMP_ID as empId,
+			A.KH_TITLE as khTitle,
+			A.KH_REGDATE as khRegdate,
+			A.KH_REPORTCNT as khReportcnt,
+			A.KH_KEYWORD as khKeyword,
+			A.KH_ENABLED as khEnabled,
+			A.KH_VIEWCNT as khViewcnt,
+			A.KH_CATEGORY as khCategory,
+			A.KH_CONTENT as khContent,
+			A.KH_LIKECNT as khLikecnt,
+			(SELECT B.EMP_NAME FROM EMPLOYEE B WHERE A.EMP_ID = B.EMP_ID) as empName
+			FROM KNOWHOWBOARD A
+			WHERE A.KH_CODE is not null
+		<if test="lists =! null">
+			and
+			<foreach collection="array" item="item" index="index"
+				separator="or">
+				A.KH_title LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+				and A.KH_enabled = 1
+			</foreach>
+			or
+			<foreach collection="array" item="item" index="index"
+				separator="or">
+				A.KH_content LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+				and A.KH_enabled = 1
+			</foreach>
+			or
+			<foreach collection="array" item="item" index="index"
+				separator="or">
+				A.KH_KEYWORD LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+				and A.KH_enabled = 1
+			</foreach>
+		</if>
+		order by A.KH_CODE desc
+	</select>
+	<select id="selectSearchKhListArr2" parameterType="str"	resultType="know">
+			SELECT
+			A.KH_CODE as khCode,
+			A.EMP_ID as empId,
+			A.KH_TITLE as khTitle,
+			A.KH_REGDATE as khRegdate,
+			A.KH_REPORTCNT as khReportcnt,
+			A.KH_KEYWORD as khKeyword,
+			A.KH_ENABLED as khEnabled,
+			A.KH_VIEWCNT as khViewcnt,
+			A.KH_CATEGORY as khCategory,
+			A.KH_CONTENT as khContent,
+			A.KH_LIKECNT as khLikecnt
+			FROM KNOWHOWBOARD A
+			WHERE A.KH_CODE is not null
+		<if test="lists =! null">
+			and
+			<foreach collection="array" item="item" index="index"
+				separator="or">
+				A.KH_title LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+				and A.KH_enabled = 1
+			</foreach>
+			or
+			<foreach collection="array" item="item" index="index"
+				separator="or">
+				A.KH_content LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+				and A.KH_enabled = 1
+			</foreach>
+			or
+			<foreach collection="array" item="item" index="index"
+				separator="or">
+				A.KH_KEYWORD LIKE '%'|| #{item,jdbcType=VARCHAR}|| '%'
+				and A.KH_enabled = 1
+			</foreach>
+		</if>
+		order by A.KH_CODE desc
+	</select>
+
+	<select id="getAllKnowList" resultType="know">
+		SELECT
+			A.KH_CODE as khCode,
+			A.EMP_ID as empId,
+			A.KH_TITLE as khTitle,
+			A.KH_REGDATE as	khRegdate,
+			A.KH_REPORTCNT as khReportcnt,
+			A.KH_KEYWORD as khKeyword,
+			A.KH_ENABLED as khEnabled,
+			A.KH_VIEWCNT as khViewcnt,
+			A.KH_CATEGORY as khCategory,
+			A.KH_CONTENT as khContent,
+			A.KH_LIKECNT as khLikecnt,
+			(SELECT COUNT(*) FROM ANSWER B WHERE A.KH_CODE = B.KH_CODE) as	answercnt,
+			(SELECT C.EMP_NAME FROM EMPLOYEE C WHERE A.EMP_ID = C.EMP_ID) as empName
+		FROM KNOWHOWBOARD A
+		WHERE A.KH_ENABLED = 1
+		order by to_number(substr(A.KH_CODE, 4)) desc
+	</select>
+	<select id="getAllKnowListViewOrder" resultType="know">
+		SELECT
+		A.KH_CODE
+		AS khCode,
+		A.EMP_ID as empId,
+		A.KH_TITLE as khTitle,
+		A.KH_REGDATE as
+		khRegdate,
+		A.KH_REPORTCNT as khReportcnt,
+		A.KH_KEYWORD as khKeyword,
+		A.KH_ENABLED as khEnabled,
+		A.KH_VIEWCNT as khViewcnt,
+		A.KH_CATEGORY as khCategory,
+		A.KH_CONTENT as khContent,
+		A.KH_LIKECNT as khLikecnt,
+		(SELECT COUNT(*) FROM ANSWER B WHERE A.KH_CODE = B.KH_CODE) as	answercnt,
+		(SELECT C.EMP_NAME FROM EMPLOYEE C WHERE A.EMP_ID = C.EMP_ID) as empName
+		FROM KNOWHOWBOARD A
+		WHERE A.KH_ENABLED = 1
+		AND A.KH_REGDATE
+		BETWEEN SYSDATE - 7 AND SYSDATE
+		ORDER BY A.KH_VIEWCNT DESC
+	</select>
+
+
+	<select id="getKnowListByCategory" resultType="know">
+		SELECT
+			A.KH_CODE
+			AS khCode,
+			A.EMP_ID as empId,
+			A.KH_TITLE as khTitle,
+			A.KH_REGDATE as	khRegdate,
+			A.KH_REPORTCNT as khReportcnt,
+			A.KH_KEYWORD as khKeyword,
+			A.KH_ENABLED as khEnabled,
+			A.KH_VIEWCNT as khViewcnt,
+			A.KH_CATEGORY as
+			khCategory,
+			A.KH_CONTENT as khContent,
+			A.KH_LIKECNT as khLikecnt,
+			(SELECT COUNT(*) FROM ANSWER B WHERE A.KH_CODE = B.KH_CODE) as	answercnt,
+			(SELECT C.EMP_NAME FROM EMPLOYEE C WHERE A.EMP_ID = C.EMP_ID) as empName		
+		FROM KNOWHOWBOARD A
+		WHERE A.KH_ENABLED = 1
+		AND A.KH_CATEGORY= #{khCategory}
+	</select>
+
+
+	<update id="insertKnow" parameterType="know">
+
+		insert into
+		KNOWHOWBOARD
+		(KH_CODE,EMP_ID,KH_TITLE,KH_REGDATE,KH_REPORTCNT,KH_KEYWORD,KH_ENABLED
+		,KH_VIEWCNT,KH_CATEGORY,KH_CONTENT, KH_LIKECNT)
+		values(concat('kno',JOBLIST_SEQ.NEXTVAL),#{empId},#{khTitle},to_char(sysdate,'yyyy-MM-dd'),0
+		,#{khKeyword},1,0,#{khCategory},#{khContent}, 0)
+
+	</update>
+
+
+
+	<update id="updateKnow" parameterType="know">
+
+		update KNOWHOWBOARD
+
+		set
+		KH_TITLE=#{khTitle},KH_KEYWORD=#{khKeyword},KH_CATEGORY=#{khCategory},KH_CONTENT=#{khContent}
+
+		where KH_CODE=#{khCode}
+
+
+	</update>
+
+
+
+	<update id="deleteKnow">
+
+		delete from KNOWHOWBOARD
+		where KH_CODE=#{khCode}
+
+	</update>
+
+
+	<update id="increaseViewCnt">
+
+		update KNOWHOWBOARD
+
+		set KH_VIEWCNT = KH_VIEWCNT + 1
+
+		where KH_CODE=#{khCode}
+
+
+	</update>
+
+	<update id="disableKnow">
+
+		update KNOWHOWBOARD
+
+		set KH_ENABLED = 0
+
+		where KH_CODE=#{khCode}
+
+
+	</update>
+
+
+	<update id="increaseReportcnt">
+		update
+		KNOWHOWBOARD
+		set
+		KH_REPORTCNT=KH_REPORTCNT+1
+		where KH_CODE=#{khCode}
+	</update>
+
+
+
+	<update id="decreaseReportCnt">
+		update
+		KNOWHOWBOARD
+		set
+		KH_REPORTCNT=KH_REPORTCNT-1
+		where KH_CODE=#{khCode}
+	</update>
+
+	<update id="increaseLikeCnt" parameterType="str">
+		update
+		KNOWHOWBOARD
+		set
+		KH_LIKECNT=KH_LIKECNT+1
+		where KH_CODE=#{khCode}
+	</update>
+	<update id="decreaseLikeCnt" parameterType="str">
+		update
+		KNOWHOWBOARD
+		set
+		KH_LIKECNT=KH_LIKECNT-1
+		where KH_CODE=#{khCode}
+	</update>
+
+
+	<select id="selectInfoKnow" resultType="know">
+		SELECT 
+		A.KH_CODE as khCode,
+		A.EMP_ID as empId,
+		A.KH_TITLE as ,
+		A.KH_REGDATE as khRegdate,
+		A.KH_REPORTCNT as khReportcnt,
+		A.KH_KEYWORD as khKeyword,
+		A.KH_ENABLED as khEnabled,
+		A.KH_VIEWCNT as khViewcnt,
+		A.KH_CATEGORY as khCategory,
+		A.KH_CONTENT as khContent,
+		A.KH_LIKECNT as khLikecnt,
+		(SELECT COUNT(B.KH_CODE) FROM ANSWER B WHERE A.KH_CODE = B.KH_CODE)as answercnt,
+		(SELECT C.EMP_NAME FROM EMPLOYEE C WHERE A.EMP_ID = C.EMP_ID) as empName
+		FROM KNOWHOWBOARD A
+		WHERE A.KH_CODE IS NOT NULL
+		and A.KH_CODE=#{khCode}
+	</select>
+
+
+	<select id="getKnowListById" resultType="know">
+		SELECT 
+		A.KH_CODE as khCode,
+		A.EMP_ID as empId,
+		A.KH_TITLE as ,
+		A.KH_REGDATE as khRegdate,
+		A.KH_REPORTCNT as khReportcnt,
+		A.KH_KEYWORD as khKeyword,
+		A.KH_ENABLED as khEnabled,
+		A.KH_VIEWCNT as khViewcnt,
+		A.KH_CATEGORY as khCategory,
+		A.KH_CONTENT as khContent,
+		A.KH_LIKECNT as khLikecnt,
+		(SELECT COUNT(B.KH_CODE) FROM ANSWER B WHERE A.KH_CODE = B.KH_CODE)as answercnt,
+		(SELECT C.EMP_NAME FROM EMPLOYEE C WHERE A.EMP_ID = C.EMP_ID) as empName
+		FROM KNOWHOWBOARD A
+		WHERE A.EMP_ID = #{empId}
+		and A.KH_ENABLED = 1
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

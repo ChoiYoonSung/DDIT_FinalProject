@@ -29,59 +29,84 @@ th:nth-child(n+3), td:nth-child(n+3){
 
 </style>
 </head>
-<body style="padding: 40px; background: #f0f4f7;">
-	<h2>자료실</h2><hr>
-		
-		<button class="btn btn-yellow me-1 mb-1" onclick="OpenWindow('paRegistForm.do','글 등록',700,700);" >글 등록하기</button>
-		<div class="input-group mb-3" style="float:right;width: 300px;">
-			<input type="text" class="form-control" placeholder="키워드를 입력하세요" name="keyword" value="${pageMaker.cri.keyword }">
-			<div class="input-group-text" onclick="palist_go(1);" style="cursor:pointer;"><i class="fa fa-search"></i></div>
-		</div><br><br><br>
-		<div id="gallery" class="gallery" style="position: relative; height: 1368px;">
-			<% int i = 0; %>
-			<c:forEach items="${paList }" var="pa" >
-			<c:set var="paAtType" value="${pa.paAtType }" />
-			<% i++; %>
-				<div class="image gallery-group-<%=i %>" style="position: absolute; left: 0px; top: 0px;box-shadow: 2px 2px 10px silver;">
-				<div class="image-inner">
-				<a href="javascript:OpenWindow('paDetail.do?pacode=${pa.paCode }','상세보기',700,700);" data-lightbox="gallery-group-1">
-				<div class="img">
-					<c:if test="${paAtType eq 'DOCX'}">
-			    		<img alt="" src="<%=request.getContextPath()%>/resources/images/attachImg/docx.png">
-					</c:if>
-					<c:if test="${paAtType eq 'XLSX'}">
-			    		<img alt="" src="<%=request.getContextPath()%>/resources/images/attachImg/XLSX.png">
-					</c:if>
-					<c:if test="${paAtType eq 'XLS'}">
-			    		<img alt="" src="<%=request.getContextPath()%>/resources/images/attachImg/XLSX.png">
-					</c:if>
-					<c:if test="${paAtType eq 'HWP'}">
-			    		<img alt="" src="<%=request.getContextPath()%>/resources/images/attachImg/hwp.png">
-					</c:if>
-				</div>
-				</a>
-				<p class="image-caption">
-				첨부파일 다운로드
-				</p>
-				</div>
-				<div class="image-info">
-				<h5 class="title">${pa.paTitle }</h5>
-				<div class="d-flex align-items-center mb-2">
-				<div class="ms-auto">
-				<small>by</small> <a href="javascript:;">${pa.empName }</a>
-				</div>
-				</div>
-				<div style="font-size:15px;">
-				등록일 : 20${pa.paRegdate.split("/")[0] }년 ${pa.paRegdate.split("/")[1] }월 ${pa.paRegdate.split("/")[2] }일
-				</div>
-				</div>
-				</div>
-			</c:forEach>
+<body>
+	<div class="app-content">
+		<div class="row" style="padding:20px">
+			<div class="page-title has-bg col-md-10" style="padding: 0px">
+				<h1 style="color: black;">${pro.pName } - 자료실</h1>
+			</div>
 		</div>
-	<form id="jobForm">
-		<input type='hidden' name="page" value="${pageMaker.cri.page}" />
-		<input type='hidden' name="keyword" value="${pageMaker.cri.keyword }" />
-	</form>
+		<div class="panel panel-inverse">
+			<div class="panel-heading">
+				<div class="panel-title" style="height: 16px;"></div>
+			</div>
+			<div class="panel-body">
+				<c:if test="${auth ne 'OB' }">
+					<c:if test="${pro.pEnabled eq '1' }">
+						<button class="btn btn-primary me-1 mb-1" onclick="OpenWindow('paRegistForm.do','글 등록',700,700);" >자료 등록</button>
+					</c:if>
+				</c:if>
+				<div class="input-group mb-3" style="float:right;width: 300px;">
+					<input type="text" class="form-control" placeholder="키워드를 입력하세요" name="keyword" value="${pageMaker.cri.keyword }"  onkeyup="enterkey()">
+					<div class="input-group-text" onclick="palist_go(1);" style="cursor:pointer;"><i class="fa fa-search"></i></div>
+				</div><br><br><br>
+				<div id="gallery" class="gallery" style="position: relative; height: 1368px;">
+					<c:forEach items="${paList }" var="pa" >
+					<c:set var="paAtType" value="${pa.paAtType }" />
+						<div class="image gallery-group-1" style="box-shadow: 2px 2px 10px silver;width:221px;">
+						<div class="image-inner">
+						<a href="javascript:OpenWindow('paDetail.do?pacode=${pa.paCode }','상세보기',700,700);" data-lightbox="gallery-group-1">
+						<div class="img">
+						<c:choose>
+							<c:when test="${paAtType eq 'DOCX'}">
+					    		<img alt="" src="<%=request.getContextPath()%>/resources/images/attachImg/docx.png">
+							</c:when>
+							<c:when test="${paAtType eq 'XLSX'}">
+					    		<img alt="" src="<%=request.getContextPath()%>/resources/images/attachImg/XLSX.png">
+							</c:when>
+							<c:when test="${paAtType eq 'XLS'}">
+					    		<img alt="" src="<%=request.getContextPath()%>/resources/images/attachImg/XLSX.png">
+							</c:when>
+							<c:when test="${paAtType eq 'HWP'}">
+					    		<img alt="" src="<%=request.getContextPath()%>/resources/images/attachImg/hwp.png">
+							</c:when>
+							<c:when test="${paAtType eq 'PPTX'}">
+					    		<img alt="" src="<%=request.getContextPath()%>/resources/images/attachImg/powerpoint.png">
+							</c:when>
+							<c:otherwise>
+								<img alt="" src="<%=request.getContextPath()%>/resources/images/attachImg/file.png" 
+								style="width: 190px; margin: 0 auto;display: block; height: 190px;padding-top: 12px;">
+							</c:otherwise>
+						</c:choose>
+						</div>
+						</a>
+						<p class="image-caption">
+						첨부파일 다운로드
+						</p>
+						</div>
+						<div class="image-info">
+						<h5 class="title">${pa.paTitle }</h5>
+						<div class="d-flex align-items-center mb-2">
+						<div class="ms-auto">
+						<small>by</small> <a href="javascript:;">${pa.empName }</a>
+						</div>
+						</div>
+						<div style="font-size:15px;">
+						등록일 : ${pa.paRegdate.split("-")[0] }년 ${pa.paRegdate.split("-")[1] }월 ${pa.paRegdate.split("-")[2] }일
+						</div>
+						</div>
+						</div>
+					</c:forEach>
+				</div>
+			<form id="jobForm">
+				<input type='hidden' name="page" value="${pageMaker.cri.page}" />
+				<input type='hidden' name="keyword" value="${pageMaker.cri.keyword }" />
+			</form>
+			</div>
+		</div>
+	</div>
+		
+		
 	<script>
 	function palist_go(page, url) {
 
@@ -100,6 +125,13 @@ th:nth-child(n+3), td:nth-child(n+3){
 		}).submit();
 
 	}
+	
+	function enterkey() { 
+		if (window.event.keyCode == 13) { 
+			palist_go(1);
+		}
+	}
+
 	</script>
 	
 </body>

@@ -19,7 +19,6 @@
 <link	href="<%=request.getContextPath()%>/resources/bootstrap/assets/plugins/datatables.net-select-bs4/css/select.bootstrap4.min.css"	rel="stylesheet" />
 
 <script	src="<%=request.getContextPath()%>/resources/bootstrap/assets/plugins/datatables.net/js/jquery.dataTables.js"></script>
-
 <script	src="<%=request.getContextPath()%>/resources/bootstrap/assets/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script	src="<%=request.getContextPath()%>/resources/bootstrap/assets/plugins/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
 <script	src="<%=request.getContextPath()%>/resources/bootstrap/assets/plugins/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
@@ -35,10 +34,7 @@
 <script	src="<%=request.getContextPath()%>/resources/bootstrap/assets/plugins/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
 <script	src="<%=request.getContextPath()%>/resources/bootstrap/assets/plugins/datatables.net-buttons/js/buttons.colVis.min.js"></script>
 <script	src="<%=request.getContextPath()%>/resources/bootstrap/assets/plugins/datatables.net-buttons/js/buttons.flash.min.js"></script>
-<!-- <script -->
-<%-- 	src="<%=request.getContextPath()%>/resources/bootstrap/assets/plugins/datatables.net-buttons/js/buttons.html5.js"></script> --%>
 <script	src="<%=request.getContextPath()%>/resources/bootstrap/assets/plugins/datatables.net-buttons/js/buttons.print.js"></script>
-
 <script	src="<%=request.getContextPath()%>/resources/bootstrap/assets/plugins/pdfmake/build/vfs_fonts.js"></script>
 <script	src="<%=request.getContextPath()%>/resources/bootstrap/assets/plugins/jszip/dist/jszip.min.js"></script>
 
@@ -55,44 +51,50 @@ li {
 	padding: 17px;
 }
 
+
+.dataTables_wrapper.dt-bootstrap .dataTables_filter label .form-control, .dataTables_wrapper.dt-bootstrap4 .dataTables_filter label .form-control{
+
+		width:50%;
+}
+
+.justify-content-center{
+	width: 30%;
+}
+
 </style>
 
 </head>
 
-<body style="background-color: #f0f4f7; padding: 10px;">
+<body style="background-color: #f0f4f7;">
+<div class="app-content" style="height: 750px;">
+<div class="row" style="padding:20px">
+	<div class="page-title has-bg col-md-10" style="padding: 0px">
+		<h1 style="color: black;">${proi.pName } - 인원관리</h1>
+	</div>
+</div>
 <div class="row">
-		<div class="widget widget-stats bg-info">
-			<div class="stats-icon">
-				<i class="fa fa-users"></i>
-			</div>
-			<div class="stats-info">
-				<p>
-					${proi.pName }의 프로젝트 참여자
-				</p>
-			</div>
-			<div class="stats-link">
-			</div>
-		</div>
-	<br><br><br><br>
-	<div class="col-xl-3 ui-sortable" style=" padding-left: 40px;">
-	<button type="button" class="btn btn-yellow me-1 mb-1" style="float: left: ;" onclick="OpenWindow('projecterCome.do','쪽지보내기',800,600);" >참여자 초대</button>
+	<br>
+	<div class="col-xl-3 ui-sortable">
+	
+	<c:if test="${loginUser.empId == pjm.empId }">
+		<c:if test="${pro.pEnabled == 1 }">
+			<button type="button" class="btn btn-primary me-1 mb-1" style="float: left: ;" onclick="OpenWindow('projecterCome.do','쪽지보내기',530,425);" >프로젝트 초대</button>
+		</c:if>
+	</c:if>
+	
 	</div>
 </div>
 	<br>
-	<div class="row" style="margin-top: 20px; padding-left: 30px;">
-		<div class="project-wrapper" style="width: 48%;">
-			<div class="panel panel-inverse" data-sortable-id="index-6">
+	<div class="row" style="height: 100%">
+		<div class="project-wrapper" style="width: 55%; height: 100%">
+			<div class="panel panel-inverse" data-sortable-id="index-6" style="width: 100%; height: 85%">
 				<div class="panel-heading ui-sortable-handle">
-					<h4 class="panel-title">Analytics Details</h4>
-					<div class="panel-heading-btn">
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-default"
-							data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
-					</div>
+					<h4 class="panel-title">참여자 리스트</h4>
 				</div>
 				<div class="table-responsive">
 
 
-					<div style="margin: 20px auto; width: 95%; height: 295px;">
+					<div style="margin: 20px auto; width: 95%; height: 40%;">
 
 						<div class="panel panel-inverse"
 							style="width: 99%; padding-left: 10px;">
@@ -118,31 +120,20 @@ li {
 															aria-controls="data-table-combine" rowspan="1"
 															colspan="1" style="width: 6px;" data-column-index="0"
 															aria-label=": activate to sort column descending"
-															aria-sort="ascending"></th>
-														<th width="5%" data-orderable="false"
-															class="sorting_disabled" rowspan="1" colspan="1"
-															style="width: 22px;" data-column-index="1" aria-label=""></th>
+															aria-sort="ascending">no</th>
 														<th class="text-nowrap sorting sorting_desc" tabindex="0"
 															aria-controls="data-table-combine" rowspan="1"
-															colspan="1" style="width: 104px;" data-column-index="2"
+															colspan="1" style="width: 10px;" data-column-index="2"
 															aria-label="Rendering engine: activate to sort column ascending"
-															aria-sort="descending">번호</th>
+															aria-sort="descending">이름</th>
 														<th class="text-nowrap sorting" tabindex="0"
 															aria-controls="data-table-combine" rowspan="1"
 															colspan="1" style="width: 118px;" data-column-index="3"
-															aria-label="Browser: activate to sort column ascending">이름</th>
+															aria-label="Browser: activate to sort column ascending">역할</th>
 														<th class="text-nowrap sorting" tabindex="0"
 															aria-controls="data-table-combine" rowspan="1"
 															colspan="1" style="width: 109px;" data-column-index="4"
-															aria-label="Platform(s): activate to sort column ascending">Authority</th>
-														<th class="text-nowrap sorting" tabindex="0"
-															aria-controls="data-table-combine" rowspan="1"
-															colspan="1" style="width: 87px;" data-column-index="5"
-															aria-label="Engine version: activate to sort column ascending">진척도</th>
-														<th class="text-nowrap sorting" tabindex="0"
-															aria-controls="data-table-combine" rowspan="1"
-															colspan="1" style="width: 58px;" data-column-index="6"
-															aria-label="CSS grade: activate to sort column ascending">추천수</th>
+															aria-label="Platform(s): activate to sort column ascending">해당 프로젝트 진척도</th>
 													</tr>
 												</thead>
 
@@ -155,46 +146,57 @@ li {
 														<% b++; %>
 														<tr
 															onclick="page('${proEmp.empName}','${proEmp.empImg}','${proEmp.pmAuthority}'
-															,'${proEmp.depCode}','${proEmp.rnkCode}','${proEmp.empEmail}','${proEmp.empPhone}','${proEmp.empAdd}',
-															'${proEmp.pCode}')">
+															,'${proEmp.depCode}','${proEmp.rnkCode}','${proEmp.empEmail}','${proEmp.empPhone}',
+															'${proEmp.pCode}','${proEmp.empId}');">
 															<td width="1%"
 																class="fw-bold text-inverse dtr-control hide"
 																tabindex="0" id="hiding02">
 																<div id="hiding03"
 																	style="position: absolute; height: 1px; width: 0px; overflow: hidden;">
 																	<input type="text" tabindex="0">
-																</div><%=b++ %></td>
+																</div></td>
 															<td width="1%" class="fw-bold text-inverse dtr-control"
 																tabindex="0">
 																<div
 																	style="position: absolute; height: 1px; width: 0px; overflow: hidden;">
 																	<input type="text" tabindex="0">
-																</div>1
+																</div><%=b %>
 															</td>
-															<td width="1%"></td>
 															<td class="sorting_1">${proEmp.empName}</td>
-															<td><select style="width: 90px; float: left;"
-																name="AU" id="AU<%=b %>" class="form-select"
-																onchange="changeAu('${proEmp.pCode}','${proEmp.empId}','AU<%=b %>');"
-																onclick="event.cancelBubble = true;">
-																	<option value="">-${proEmp.pmAuthority}-</option>
-																	<option value="AA">AA</option>
-																	<option value="DA">DA</option>
-																	<option value="UA">UA</option>
-																	<option value="BA">BA</option>
-																	<option value="TA">TA</option>
-															</select></td>
+															<td>
+															<c:if test="${loginUser.empId == pjm.empId }">
+																<c:if test="${proEmp.pmAuthority != 'PL' }">
+																	<c:if test="${proEmp.pmAuthority != 'OB' }">
+																		<select style="width: 90px; float: left;"
+																			name="AU" id="AU<%=b %>" class="form-select"
+																			onchange="changeAu('${proEmp.pCode}','${proEmp.empId}','AU<%=b %>');"
+																			onclick="event.cancelBubble = true;">
+																				<option value="">-${proEmp.pmAuthority}-</option>
+																				<option value="AA">AA</option>
+																				<option value="DA">DA</option>
+																				<option value="UA">UA</option>
+																				<option value="BA">BA</option>
+																				<option value="TA">TA</option>
+																		</select>
+																	</c:if>
+																</c:if>
+																<c:if test="${proEmp.pmAuthority == 'PL' }">
+																	${proEmp.pmAuthority}	
+																</c:if>
+																<c:if test="${proEmp.pmAuthority == 'OB' }">
+																	${proEmp.pmAuthority}	
+																</c:if>
+															</c:if>
+															<c:if test="${loginUser.empId != pjm.empId }">
+															${proEmp.pmAuthority}
+															</c:if>
+															</td>
 															<td><div class="progress mb-2">
 																	<div class="progress-bar fs-10px fw-bold"
-																		style="width: 80%">Basic</div>
+																		style="width: ${proEmp.empAvg}%">${proEmp.empAvg}%</div>
 																</div></td>
-															<td>${proEmp.empName}</td>
-															<td>${proEmp.empName}</td>
 														</tr>
 													</c:forEach>
-													<c:if test="${empty pjmList}">
-													없습니다.
-												</c:if>
 												</tbody>
 											</table>
 										</div>
@@ -207,14 +209,10 @@ li {
 			</div>
 		</div>
 
-		<div class="project-wrapper" style="width: 48%; height: 95%;">
-			<div class="panel panel-inverse" data-sortable-id="index-6">
+		<div class="project-wrapper" style="width: 45%; height: 100%;">
+			<div class="panel panel-inverse" data-sortable-id="index-6" style="height: 85%;">
 				<div class="panel-heading ui-sortable-handle">
-					<h4 class="panel-title">Analytics Details</h4>
-					<div class="panel-heading-btn">
-						<a href="javascript:;" class="btn btn-xs btn-icon btn-default"
-							data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
-					</div>
+					<h4 class="panel-title">참여자 정보</h4>
 				</div>
 				<div class="table-responsive">
 
@@ -222,7 +220,7 @@ li {
 						style="margin: 20px;">
 						<div class="note-content text-end">
 							<h4>
-								<b>회원을 선택하시오!</b>
+								<b>회원을 선택하세요</b>
 							</h4>
 							<p>회원을 선택하면 회원의 상세정보를 확인할수있습니다</p>
 						</div>
@@ -235,33 +233,35 @@ li {
 						<div class="result-list">
 							<div class="result-item" id="dom" style="margin: 20px;">
 								<a href="#" class="result-image" id="image"
-									style="background-image: url(<%=request.getContextPath() %>/resources/images/logo-remove.png)"></a>
-								<div class="result-info" style="padding-left: 50px;">
+									style="width: 100px; height:100px; background-image: url(<%=request.getContextPath() %>/resources/images/logo-remove.png)"></a>
+								<div class="result-info" style="margin-top: 225px;">
 									<h4 class="title">
 										<a href="#" id="name">이름</a> <span class="badge bg-primary"
 											style="margin-left: 5px; padding: 5px; width: 100px;"
-											id="authority">Authority</span>
+											id="authority">역할</span>
 									</h4>
 									<p class="desc">
-									<ul class="list-unstyled">
-										<li>부서 : <span id="dep"></span></li>
-										<li>직급 : <span id="rnk"></span></li>
-										<li>이메일 : <span id="mail"></span></li>
-										<li>전화번호 : <span id="ph"></span></li>
-										<li>주소 : <span id="ad"></span></li>
-									</ul>
+										<ul class="list-unstyled">
+											<li>부서 : <span id="dep"></span></li>
+											<li>직급 : <span id="rnk"></span></li>
+											<li>이메일 : <span id="mail"></span></li>
+											<li>전화번호 : <span id="ph"></span></li>
+										</ul>
 									</p>
 									<div class="btn-row">
-										<a href="javascript:;" data-toggle="tooltip"
-											data-container="body" data-title="Configuration"> 프로젝트 제명<i
+									<c:if test="${loginUser.empId == pjm.empId }">
+										<a href="#" data-toggle="tooltip" onclick="deleteMemberForm();"
+											data-container="body" data-title="Configuration">제명<i
 											class="fa fa-fw fa-cog"></i>
 										</a>
-										<a href="javascript:;" data-toggle="tooltip"
-											data-container="body" data-title="Users"> 쪽지 보내기<i
+									</c:if>	
+										<a data-toggle="tooltip" onclick="reSend();"
+											data-container="body" data-title="Users">쪽지<i
 											class="fa fa-fw fa-user"></i>
 										</a>
 									</div>
 								</div>
+								
 							</div>
 						</div>
 					</div>
@@ -269,6 +269,9 @@ li {
 			</div>
 		</div>
 	</div>
+
+<input type="text" hidden="" id="dm" value="">
+</div>
 
 
 <script type="text/javascript">
@@ -279,20 +282,19 @@ window.onload = function() {
 	
 }
 
-function page(name,img,authority,depCode,rnkCode,email,phone,add,pCode){
+function page(name,img,authority,depCode,rnkCode,email,phone,pCode,empId){
 	var e2 = document.getElementById('start');
 	e2.setAttribute('hidden', '');
 	
 	var el = document.getElementById('dom');
 	el.removeAttribute('hidden');
 	
-	page_go(name,img,authority,depCode,rnkCode,email,phone,add,pCode);
+	page_go(name,img,authority,depCode,rnkCode,email,phone,pCode,empId);
 }
 
 
 
-function page_go(name,img,authority,depCode,rnkCode,email,phone,add,pCode){
-	
+function page_go(name,img,authority,depCode,rnkCode,email,phone,pCode,empId){
 	
 	var data={
 			"depCode":depCode,
@@ -321,13 +323,11 @@ function page_go(name,img,authority,depCode,rnkCode,email,phone,add,pCode){
 	
 	document.getElementById('name').innerHTML=name ;
 	document.getElementById('authority').innerHTML=authority ;
-	var img = document.getElementById('image');
-	img.setAttribute('style', 'background-image: url(<%=request.getContextPath() %>/resources/images/logo-remove.png)');
+	var img2 = document.getElementById('image');
+	img2.setAttribute('style', ' margin: auto;width: 250px;height:225px;background-image: url(<%=request.getContextPath() %>/emp/getPicture.do?empImg='+img+')');
 	document.getElementById('mail').innerHTML=email ;
 	document.getElementById('ph').innerHTML=phone ;
-	document.getElementById('ad').innerHTML=add ;
-	
-	
+	$("#dm").val(empId);
 	
 }
 
@@ -349,9 +349,26 @@ function changeAu(code,id,AU){
 		contentType:"application/json;charset=utf-8",
 		success:function(data){
 			
-			alert("역할을 부여하였습니다");
+		/* 	alert("역할을 부여하였습니다");
+			history.go(0); */
 			
-			history.go(0);
+			swal({
+				title: '성공',
+				text: '역할을 부여하였습니다',
+				icon: 'success', // primary success warning danger
+				buttons: {
+			        	confirm: {
+					text: '확인',
+			                value: true,
+			                visible: true,
+			                className: 'btn btn-success',
+			                closeModal: true
+			              }
+			        }
+			}).then(function(e){
+				history.go(0);
+			});
+			
 		},
 		
 		error:function(error){
@@ -363,7 +380,7 @@ function changeAu(code,id,AU){
 }
 
 var options = {
-		dom : '<"dataTables_wrapper dt-bootstrap"<"row"<"col-xl-7 d-block d-sm-flex d-xl-block justify-content-center"<"d-block d-lg-inline-flex me-0 me-md-3"l><"d-block d-lg-inline-flex"B>><"col-xl-5 d-flex d-xl-block justify-content-center"fr>>t<"row"<"col-md-5"i><"col-md-7"p>>>',
+		dom : '<"dataTables_wrapper dt-bootstrap"<"row"<"col-7"<"d-block d-lg-inline-flex me-0 me-md-3"l><"d-block d-lg-inline-flex"B>><"col-5"fr>>t<"row"<"col-5"i><"col-7"p>>>',
 		buttons : [ {
 			extend : 'copy',
 			className : 'btn-sm'
@@ -376,10 +393,13 @@ var options = {
 		}, {
 			extend : 'pdf',
 			className : 'btn-sm'
-		}, {
+		}, 
+		/* {
 			extend : 'print',
 			className : 'btn-sm'
-		} ],
+		} */ 
+		
+		],
 		responsive : true,
 		colReorder : true,
 		keys : true,
@@ -399,9 +419,19 @@ var options = {
 				$('.fw-bold text-inverse dtr-control hide').attr('style', "display:none;");  //숨기기
 
 			});
-
 			
-			
+	
+	function reSend(){
+		var id = $("#dm").val();
+		  OpenWindow('<%=request.getContextPath()%>/mypage/reSend?sender='+id+'','쪽지보내기','1000','800'); 
+	}
+	
+	
+	function deleteMemberForm(){
+		var id = $("#dm").val();
+		  OpenWindow('<%=request.getContextPath()%>/project/deleteM?empId='+id+'','사원제명','1000','800'); 
+	}
+	
 </script>
 
 </body>

@@ -1,15 +1,18 @@
 package com.spring.service;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.spring.command.SearchCriteriaByPA;
+import com.spring.command.SearchCriteriaByPro;
 import com.spring.dto.PAAttachVO;
 import com.spring.dto.PAVO;
 import com.spring.dto.PIVO;
 import com.spring.dto.PjmVO;
 import com.spring.dto.ProEmpVO;
+import com.spring.dto.ProLogVO;
 import com.spring.dto.ProPjmVO;
 import com.spring.dto.ProVO;
 import com.spring.dto.RelegateVO;
@@ -20,13 +23,13 @@ public interface ProService {
 		List<ProPjmVO> getListProById(String empId) throws SQLException;
 	
 		//아이디로 내가 참여중인 프로젝트 리스트 검색
-		List<ProVO> getListDoProById(String empId)throws SQLException;
+		List<ProVO> getListDoProById(SearchCriteriaByPro cri)throws SQLException;
 		
 		//아이디로 내가 옵저버중인 프로젝트 리스트 검색
-		List<ProVO> getListAopProById(String empId)throws SQLException;
+		List<ProVO> getListAopProById(SearchCriteriaByPro cri)throws SQLException;
 		
 		//아이디로 내가 참여중인 비활성화 프로젝트 리스트 검색
-		List<ProVO> getListNotProById(String empId)throws SQLException;
+		List<ProVO> getListNotProById(SearchCriteriaByPro cri)throws SQLException;
 		
 		//프로젝트 증록
 		public void insertProject(ProVO pro)throws SQLException;
@@ -45,6 +48,11 @@ public interface ProService {
 		
 		//프로젝트 참여자 추가
 		public void insertMember(PjmVO pjm)throws SQLException;
+		
+		//프로젝트 참여자 제거
+		public void deleteMember(String empId)throws SQLException;
+		//프로젝트 PL 검색
+		PjmVO projectPl(String pCode)throws SQLException;
 		
 		//프로젝트 참여자 역활 추가
 		void updateAu(PjmVO pjm)throws SQLException;
@@ -106,12 +114,28 @@ public interface ProService {
 		public PIVO selectPI(String piCode) throws SQLException;
 		//이슈 등록(기존 마일스톤)
 		public void insertPI(PIVO pi) throws SQLException;
-		//이슈 등록(새 마일스톤)
-		public void insertPINew(PIVO pi) throws SQLException;
 		//이슈 수정
 		public void updatePI(PIVO pi) throws SQLException;
 		//이슈 완료
 		public void completePI(String piCode) throws SQLException;
 		//이슈 삭제
 		public void deletePI(String piCode) throws SQLException;
+
+		// 프로젝트 대시보드 담당자별 업무 현황
+		List<HashMap<String, Object>> getMainWorkByManager(String pCode) throws SQLException;
+		
+		// 프로젝트 대시보드 기능별 업무 현황
+		List<HashMap<String, Object>> getMainWorkByCate(String pCode) throws SQLException;
+
+		// 프로젝트 전체 진척도 구하기
+		HashMap<String, Object> getTotalProgress(String pCode) throws SQLException;
+		
+		// 프로젝트 로그 생성
+		public void insertLog(Map<String, Object> log) throws SQLException;
+		
+		// 프로젝트 로그 조회
+		public List<ProLogVO> selectLogList(String pCode) throws SQLException;
+
+		public String selectPjmAuthById(PjmVO pjm) throws SQLException;
+		
 }

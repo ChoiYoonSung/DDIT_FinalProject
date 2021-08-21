@@ -10,6 +10,7 @@ public class CoPVO {
 	private String copSubject;
 	private String copOwner;
 
+	private String copOwnerId;
 	// 로그인 유저
 	private String copUserId;
 	// 인원수
@@ -18,6 +19,14 @@ public class CoPVO {
 	// 이미지 파일
 	private String copBannerimg;
 	private String copProfileimg;
+
+	public String getCopOwnerId() {
+		return copOwnerId;
+	}
+
+	public void setCopOwnerId(String copOwnerId) {
+		this.copOwnerId = copOwnerId;
+	}
 
 	public String getCopBannerimg() {
 		return copBannerimg;

@@ -9,16 +9,21 @@ public class ProEmpVO {
 	private String empName ;
 	private String empEmail ;
 	private int empPhone;
-	private String empAdd;
 	private int empEnabled;
 	private String empAuth;
 	private String empImg ;
 	private String pjmId      ;
 	private String pCode      ;
 	private String pmAuthority;
+	private int empAvg;
 	
 	
-	
+	public int getEmpAvg() {
+		return empAvg;
+	}
+	public void setEmpAvg(int empAvg) {
+		this.empAvg = empAvg;
+	}
 	public String getEmpId() {
 		return empId;
 	}
@@ -60,12 +65,6 @@ public class ProEmpVO {
 	}
 	public void setEmpPhone(int empPhone) {
 		this.empPhone = empPhone;
-	}
-	public String getEmpAdd() {
-		return empAdd;
-	}
-	public void setEmpAdd(String empAdd) {
-		this.empAdd = empAdd;
 	}
 	public int getEmpEnabled() {
 		return empEnabled;

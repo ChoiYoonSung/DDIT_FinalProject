@@ -4,9 +4,15 @@ public class SearchCriteria extends Criteria {
 
 	private String searchType=""; // 검색구분
 	private String keyword=""; //검색어
+	private String[] userArray;
 	
 	
-	
+	public String[] getUserArray() {
+		return userArray;
+	}
+	public void setUserArray(String[] userArray) {
+		this.userArray = userArray;
+	}
 	public String getSearchType() {
 		return searchType;
 	}

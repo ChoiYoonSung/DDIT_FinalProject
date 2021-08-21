@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="Qna-Mapper">
+
+	<select id="selectQnaList" resultType="qna">
+		SELECT
+		A.QNA_NO as qnaNo,
+		A.EMP_ID as empId,
+		A.QNA_TITLE as qnaTitle,
+		A.QNA_CONTENT as qnaContent,
+		A.QNA_REGDATE as qnaRegdate,
+		A.QNA_VIEWCNT as qnaViewcnt,
+		(SELECT EMP_NAME FROM EMPLOYEE B WHERE A.EMP_ID = B.EMP_ID) as empName
+		FROM QNA A
+	</select>
+
+	<select id="selectQnaInfo" resultType="qna">
+		SELECT
+		A.QNA_NO as qnaNo,
+		A.EMP_ID as empId,
+		A.QNA_TITLE as qnaTitle,
+		A.QNA_CONTENT as qnaContent,
+		A.QNA_REGDATE as qnaRegdate,
+		A.QNA_VIEWCNT as qnaViewcnt,
+		(SELECT EMP_NAME FROM EMPLOYEE B WHERE A.EMP_ID = B.EMP_ID) as empName
+		FROM QNA A
+		WHERE A.QNA_NO = #{qnaNo}
+	</select>
+
+
+	<update id="insertQna" parameterType="qna">
+
+		insert into qna(QNA_NO,EMP_ID,QNA_TITLE,QNA_CONTENT,QNA_REGDATE,QNA_VIEWCNT)
+		values(#{qnaNo},#{empId},#{qnaTitle},#{qnaContent},to_char(sysdate,'yyyy-MM-dd'),0)
+
+	</update>
+
+	<update id="updateQna" parameterType="qna">
+
+		update qna
+		set QNA_TITLE = #{qnaTitle} , QNA_CONTENT = #{qnaContent}
+		where QNA_NO = #{qnaNo}
+
+	</update>
+
+
+	<update id="deleteQna">
+
+		delete from qna
+		where QNA_NO = #{qnaNo}
+
+	</update>
+
+	<update id="increaseQnaCnt">
+		update
+		qna
+		set
+		QNA_VIEWCNT=QNA_VIEWCNT+1
+		where QNA_NO = #{qnaNo}
+	</update>
+	<update id="decreaseQnaCnt">
+		update
+		qna
+		set
+		QNA_VIEWCNT=QNA_VIEWCNT-1
+		where QNA_NO = #{qnaNo}
+	</update>
+
+	<select id="getQnaSequenceNO" resultType="str">
+		select QNA_SEQ.NEXTVAL
+		from dual
+	</select>
+
+
+
+
+
+
+
+
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

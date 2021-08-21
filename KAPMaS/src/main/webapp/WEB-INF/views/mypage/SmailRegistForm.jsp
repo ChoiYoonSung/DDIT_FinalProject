@@ -3,12 +3,6 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-
-
-
-
-
-
 <head>
 	<style type="text/css">
 	body{
@@ -28,14 +22,12 @@
 <meta content="" name="description" />
 <meta content="" name="author" />
 
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-<link href="<%=request.getContextPath() %>/resources/bootstrap/assets/css/vendor.min.css" rel="stylesheet" />
-<link href="<%=request.getContextPath() %>/resources/bootstrap/assets/css/default/app.min.css" rel="stylesheet" />
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.5/js/min/perfect-scrollbar.jquery.min.js"></script>
 
 
 <link href="<%=request.getContextPath() %>/resources/bootstrap/assets/plugins/tag-it/css/jquery.tagit.css" rel="stylesheet" />
 <link href="<%=request.getContextPath() %>/resources/bootstrap/assets/plugins/summernote/dist/summernote-lite.css" rel="stylesheet" />
+
 </head>
 
 
@@ -63,13 +55,12 @@
 					</div>
 					<ul class="nav nav-inbox">
 						<li><a href="<%=request.getContextPath() %>/mypage/receivemail.do"><i class="fa fa-hdd fa-lg fa-fw me-2"></i> 
-						수신함 <span class="badge bg-gray-600 fs-10px rounded-pill ms-auto fw-bolder pt-4px pb-5px px-8px">52</span></a></li>
+						수신함 <span class="badge bg-gray-600 fs-10px rounded-pill ms-auto fw-bolder pt-4px pb-5px px-8px"></span></a></li>
 					<!-- 	<li><a href="email_inbox.html"><i
 								class="fa fa-flag fa-lg fa-fw me-2"></i> Important</a></li> -->
 						<li  class="active"><a href="#"><i class="fa fa-envelope fa-lg fa-fw me-2"></i> 발신함</a></li>
 						<!-- <li><a href="email_inbox.html"><i
 								class="fa fa-save fa-lg fa-fw me-2"></i> Drafts</a></li> -->
-						<li><a href="email_inbox.html"><i class="fa fa-trash-alt fa-lg fa-fw me-2"></i> 휴지통</a></li>
 					</ul>
 					<!-- <div class="nav-title">
 						<b>LABEL</b>
@@ -122,6 +113,14 @@
 						<a href="email_inbox.html" class="btn btn-white btn-sm"><i
 							class="fa fa-fw fa-times"></i> <span class="hidden-xs">Discard</span></a>
 					</div> -->
+					
+					<div class="btn-group">
+						&nbsp;&nbsp;&nbsp;
+						<button class="btn btn-sm btn-white" onclick="CloseWindow();">
+							<span class="hidden-xs" >닫기</span>
+						</button>
+					</div>
+					
 				</div>
 
 			</div>
@@ -164,11 +163,6 @@
 				</div>
 
 			</div>
-			<!-- <div
-				class="mailbox-content-footer d-flex align-items-center justify-content-end">
-				<button type="submit" class="btn btn-white ps-40px pe-40px me-5px">Discard</button>
-				<button type="submit" class="btn btn-primary ps-40px pe-40px">Send</button>
-			</div> -->
 		</div>
 
 	</div>
@@ -178,8 +172,24 @@
 	
 	<script type="text/javascript">
 
-	
-	
+	window.onload = function() {
+		$(".summernote").summernote({
+		    placeholder: '내용을 입력해주세요.',
+		    height: "300",
+		    minHeight: "300",              
+		    maxHeight: "300",
+		    disableResizeEditor: true,
+		    disableDragAndDrop:true,
+	 		toolbar: [
+	    	    ['style', ['bold', 'italic', 'underline', 'clear']],
+	    	    ['font', ['strikethrough', 'superscript', 'subscript']],
+	    	    ['fontsize', ['fontsize']],
+	    	    ['color', ['color']],
+	    	    ['para', ['ul', 'ol', 'paragraph']],
+	    	    ['height', ['height']]
+	    	  ]
+	    });
+	}
 	function getList(){
 		
 		
@@ -236,8 +246,21 @@
 			return;
 			}
 			
-			alert("이미 추가하였습니다");	
-		
+			/* alert("이미 추가하였습니다");	 */
+			swal({
+				title: '성공',
+				text: '이미 추가하였습니다',
+				icon: 'error', // primary success warning danger
+				buttons: {
+			        	confirm: {
+					text: '확인',
+			                value: true,
+			                visible: true,
+			                className: 'btn btn-danger',
+			                closeModal: true
+			              }
+			        }
+			});
 		}
 		
 		
@@ -282,7 +305,6 @@
 			
 			
 		}
-	
 	</script>
 	
 	

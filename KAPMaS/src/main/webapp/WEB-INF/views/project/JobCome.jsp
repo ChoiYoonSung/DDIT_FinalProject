@@ -25,11 +25,6 @@
 <meta content="" name="description" />
 <meta content="" name="author" />
 
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-<link href="<%=request.getContextPath() %>/resources/bootstrap/assets/css/vendor.min.css" rel="stylesheet" />
-<link href="<%=request.getContextPath() %>/resources/bootstrap/assets/css/default/app.min.css" rel="stylesheet" />
-
-
 <link href="<%=request.getContextPath() %>/resources/bootstrap/assets/plugins/tag-it/css/jquery.tagit.css" rel="stylesheet" />
 <link href="<%=request.getContextPath() %>/resources/bootstrap/assets/plugins/summernote/dist/summernote-lite.css" rel="stylesheet" />
 </head>
@@ -74,7 +69,7 @@
 
 					<form action="<%=request.getContextPath() %>/mypage/jobShare.do" method="post" enctype="multipart/form-data" name="sendForm">
 
-						<div class="mailbox-to">
+						<div class="mailbox-to" style="height: 300px; overflow: auto;">
 						 <table class="table">
 							  <thead>
 								<tr>
@@ -89,21 +84,19 @@
 						<div class="mailbox-to">
 							<label class="control-label">To: </label>
 							&nbsp;&nbsp;&nbsp;&nbsp;
-							<u id="addList"></u>
+							<p id="addList"></p>
 						</div>						
 				
 						<div data-id="extra-cc"></div>
 
-						<div class="mailbox-subject">
+						<div class="mailbox-subject" hidden="">
 							<input type="text" hidden=""  class="form-control" id="paTitle" name="title" placeholder=""  value="${loginUser.empName }님의 업무공유">
 						</div>
-					
-						<h2>&nbsp;&nbsp;send를 누르면 업무 공유 쪽지가 갑니다.</h2>
 						<textarea class="form-control"  hidden="" rows="15" name="content">
 						
 						<script>
 						
-							window.location.href="<%=request.getContextPath()%>/project/jobDetail.do?jobCode=${jobCode}";
+							window.location.href="<%=request.getContextPath()%>/project/jobDetail2.do?jobCode=${jobCode}";
 						
 						</script>
 						
@@ -186,8 +179,8 @@
 			var html="";
 			html += '<span id='+empId+' class="empId" value='+empId+'>';
 			html += ''+empName+'';
-			html += '<a href="javascript:remove(&#39;'+empId+'&#39;);" class="btn btn-danger btn-icon btn-circle btn-sm"><i class="fa fa-times"></i></a>'
-			html += '</span>';
+			html += '<a href="javascript:remove(&#39;'+empId+'&#39;);" class="btn btn-danger btn-icon btn-circle btn-xs"><i class="fa fa-times fa-xs"></i></a>'
+			html += '</span>&nbsp;&nbsp;&nbsp;';
 			$("#addList").append(html);
 				
 			return;
@@ -195,6 +188,21 @@
 			
 			alert("이미 추가하였습니다");	
 		
+			swal({
+				title: '중단',
+				text: '이미 추가하였습니다',
+				icon: 'warning', // primary success warning danger
+				buttons: {
+			        	confirm: {
+					text: '확인',
+			                value: true,
+			                visible: true,
+			                className: 'btn btn-warning',
+			                closeModal: true
+			              }
+			        }
+			});
+			
 		}
 		
 		
@@ -211,8 +219,25 @@
 			var html='';
 			var len = $(".empId").length;
 			if(len==0){
-				alert("사원을 선택해야 합니다.");
-				return;
+			/* 	alert("사원을 선택해야 합니다.");
+				return; */
+				swal({
+					title: '중단',
+					text: '사원을 선택해야 합니다.',
+					icon: 'warning', // primary success warning danger
+					buttons: {
+				        	confirm: {
+						text: '확인',
+				                value: true,
+				                visible: true,
+				                className: 'btn btn-warning',
+				                closeModal: true
+				              }
+				        }
+				}).then(function(e){
+					return;
+				});
+				
 			}
 			
 			for(var i = 0; i < len; i++){

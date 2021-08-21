@@ -5,6 +5,24 @@
 
 
 <script>
-	alert("프로젝트 활성화를 완료하였습니다!");	
-	window.location.href="<%=request.getContextPath() %>/project/main.do";
+/* 	alert("프로젝트 활성화를 완료하였습니다!");	
+	window.opener.parent.location.reload();
+	window.close();	 */
+	swal({
+		title: '성공',
+		text: '프로젝트 활성화를 완료하였습니다!',
+		icon: 'success', // primary success warning danger
+		buttons: {
+	        	confirm: {
+			text: '확인',
+	                value: true,
+	                visible: true,
+	                className: 'btn btn-success',
+	                closeModal: true
+	              }
+	        }
+	}).then(function(e){
+		window.opener.parent.location.reload();
+		window.close();	
+	});
 </script>

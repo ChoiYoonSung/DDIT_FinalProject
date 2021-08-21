@@ -4,6 +4,7 @@
  * Licensed under the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
+
 (function(factory){
     if (typeof define === 'function' && define.amd) {
         define(['jquery'], factory);
@@ -894,6 +895,7 @@
         }
 			}
 			return cls;
+			
 		},
 
 		_fill_yearsView: function(selector, cssClass, factor, year, startYear, endYear, beforeFn){
@@ -952,6 +954,7 @@
 
 			view.find('.datepicker-switch').text(startVal + '-' + endVal);
 			view.find('td').html(html);
+			
 		},
 
 		fill: function(){
@@ -1128,6 +1131,7 @@
 				endYear,
 				this.o.beforeShowCentury
 			);
+			
 		},
 
 		updateNavArrows: function(){
@@ -1182,6 +1186,7 @@
 
 			// Clicked on today button
 			if (target.hasClass('today') && !target.hasClass('day')){
+				
 				this.setViewMode(0);
 				this._setDate(UTCToday(), this.o.todayBtn === 'linked' ? null : 'view');
 			}
@@ -1225,13 +1230,15 @@
 				this._focused_from.focus();
 			}
 			delete this._focused_from;
+			
+			
 		},
 
 		dayCellClick: function(e){
 			var $target = $(e.currentTarget);
 			var timestamp = $target.data('date');
 			var date = new Date(timestamp);
-
+			
 			if (this.o.updateViewDate) {
 				if (date.getUTCFullYear() !== this.viewDate.getUTCFullYear()) {
 					this._trigger('changeYear', this.viewDate);
@@ -1241,6 +1248,7 @@
 					this._trigger('changeMonth', this.viewDate);
 				}
 			}
+			
 			this._setDate(date);
 		},
 
@@ -1280,6 +1288,7 @@
 		},
 
 		_setDate: function(date, which){
+			
 			if (!which || which === 'date')
 				this._toggle_multidate(date && new Date(date));
 			if ((!which && this.o.updateViewDate) || which === 'view')
@@ -1287,6 +1296,10 @@
 
 			this.fill();
 			this.setValue();
+			
+			
+			
+			
 			if (!which || which !== 'view') {
 				this._trigger('changeDate');
 			}
@@ -1294,6 +1307,7 @@
 			if (this.o.autoclose && (!which || which === 'date')){
 				this.hide();
 			}
+			
 		},
 
 		moveDay: function(date, dir){
@@ -1519,6 +1533,7 @@
 		this.pickers = $.map(this.inputs, function(i){
 			return $.data(i, 'datepicker');
 		});
+		
 		this.updateDates();
 	};
 	DateRangePicker.prototype = {

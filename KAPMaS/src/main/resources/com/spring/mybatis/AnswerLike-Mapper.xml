@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="AnswerLike-Mapper">
+
+	<update id="insertAnswerLike" parameterType="aLike">
+		insert into answerLike
+		(emp_id, a_code)
+		values(#{empId}, #{aCode})
+	</update>
+
+	<delete id="deleteAnswerLike" parameterType="aLike">
+		delete from answerLike
+		where a_code = #{aCode}
+		and emp_id = #{empId}
+	</delete>
+	
+	<select id="answerLikeCount" parameterType="aLike" resultType="int">
+		select count(a_code)
+		from answerLike
+		where emp_id = #{empId}
+		and a_code = #{aCode}
+	</select>
+
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

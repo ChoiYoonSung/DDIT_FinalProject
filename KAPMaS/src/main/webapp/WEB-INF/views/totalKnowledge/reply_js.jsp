@@ -1,19 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page trimDirectiveWhitespaces="true" %>
+<body>
+<input type="hidden" value="${loginUser.empId}" id="loginId">
+</body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>
 <script type="text/x-handlebars-template"  id="reply-list-template" >
 {{#each .}}
-<div class="replyLi" id="replyLi" >
+<div class="byun">
 	<div class="chats-item start">
 		<span class="date-time">{{prettifyDate tkRpRegdate}}</span> 
-		<a href="javascript:;" class="name"><strong style="display:none;">{{tkRpCode}}</strong>{{tkRpWriter}}</a> 
+		<a href="javascript:;" class="name"><strong style="display:none;">{{tkRpCode}}</strong>&nbsp;&nbsp;&nbsp;{{empName}}</a> 
 		<a href="javascript:;" class="image"><img alt="" src="<%=request.getContextPath()%>/emp/getPictureById/{{tkRpWriter}}" style="width:60px;height:60px;"></a>
 		<div class="message" id="{{tkRpCode}}-tkRpContent">
 			{{tkRpContent}}
 		</div>
+		<input type="hidden" class="modal-title" value="{{tkRpCode}}" id="{{tkRpCode}}">
+		<input type="hidden" class="tkRpWriter" value="{{tkRpWriter}}" id="{{tkRpWriter}}">
+		<input type="hidden" name="tkRpWriter" value="{{tkRpWriter}}">
 	</div>
 <div>
+<hr>
 {{/each}}	
 </script>
 <script type="text/x-handlebars-template"  id="reply-pagination-template" >
@@ -51,20 +58,21 @@
 <script> //댓글 리스트
 var replyPage=1;
 
-window.addEventListener('load',function(){
+window.setTimeout(function(){
 	getPage("<%=request.getContextPath()%>/tkReplies/${tk.tkCode}/"+replyPage);
 	
 	$('.pagination').on('click','li a',function(event){
-		//alert();
-				
+		
 		if($(this).attr("href")) {
-			replyPage=$(this).attr("href");
+			replyPage = $(this).attr("href");
 			getPage("<%=request.getContextPath()%>/tkReplies/${tk.tkCode}/"+replyPage);
-		}	
+		}
 		
 		return false;
 	});
-});
+	
+	
+}, 200);
 
 Handlebars.registerHelper({
 	"prettifyDate":function(timeValue){ //Handlbars에 날짜출력함수 등록
@@ -77,7 +85,9 @@ Handlebars.registerHelper({
 	"VisibleByLoginCheck":function(tkRpWriter){
 		var result="none";
 		
-		if(tkRpWriter == "${loginUser.empId}") result="visible";
+		if(tkRpWriter == "${loginUser.empId}"){
+			result="visible";
+		}
 		
 		return result;						  
 	},
@@ -87,44 +97,94 @@ Handlebars.registerHelper({
 });
 
 function printData(replyArr,target,templateObject){
-	alert("printData 실행중");
 	var template=Handlebars.compile(templateObject.html());
 	var html = template(replyArr);	
-	$('#replyLi').remove();
+	$('.byun').remove();
 	target.after(html);
 }
+
+function printData2(){
+	$('.byun').remove();
+}
+
 function printPagination(pageMaker,target,templateObject){
+	var rpArr = document.getElementsByClassName("chats-item start");
+	if(rpArr.length == 0){
+		return;
+	}else{
+		var pageNum = new Array(pageMaker.endPage-pageMaker.startPage+1);
+		
+		for(var i=0;i<pageMaker.endPage-pageMaker.startPage+1;i++){
+			pageNum[i]=pageMaker.startPage+i;
+		}	
+		pageMaker.pageNum=pageNum;
+		pageMaker.prevPageNum=pageMaker.startPage-1;
+		pageMaker.nextPageNum=pageMaker.endPage+1;
+		
+		var template=Handlebars.compile(templateObject.html());	
+		var html = template(pageMaker);	
+		target.html("").html(html);
+		var removeIcon = '<div class="removeIcon" style="float:right; margin:5px;"><a href="javascript:replyRemove_go();"><i class="fas fa-lg fa-fw me-10px fa-trash-alt"></i></a></div>';
+		
+		for(var i = 0; i <rpArr.length; i++){
+			if($('.tkRpWriter')[i].value == $('#loginID').val()){
+				 let div = document.createElement('div');
+				 div.innerHTML = removeIcon;
+				 rpArr[i].appendChild(div);
+				
+			}
+		}
+	}
 	
-	var pageNum = new Array(pageMaker.endPage-pageMaker.startPage+1);
-	
-	for(var i=0;i<pageMaker.endPage-pageMaker.startPage+1;i++){
-		pageNum[i]=pageMaker.startPage+i;
-	}	
-	pageMaker.pageNum=pageNum;
-	pageMaker.prevPageNum=pageMaker.startPage-1;
-	pageMaker.nextPageNum=pageMaker.endPage+1;
-	
-	var template=Handlebars.compile(templateObject.html());	
-	var html = template(pageMaker);	
-	target.html("").html(html);
 }
 
 
 function getPage(pageInfo){	 
 	$.getJSON(pageInfo,function(data){	
+		printData2();
 		printData(data.replyList,$('#tkRepliesDiv'),$('#reply-list-template'));
 		printPagination(data.pageMaker,$('ul#pagination'),$('#reply-pagination-template'));
 	});
+	
 }
 
 function replyRegist_go(){
-	//alert("add reply btn");
 	var tkRpWriter=$('#newReplyWriter').val();
 	var tkRpContent=$('#newTkRpContent').val();
 	var tkCode=$('input[name="tkCode"]').val()
 	
-	if(!(tkRpWriter && tkRpContent)){
-		alert("작성자 혹은 내용은 필수입니다.");
+	if(!tkRpWriter){
+		swal({
+			title : '알림',
+			text : '다시 로그인 해주세요.',
+			icon : 'warning',
+			buttons : {
+				confirm : {
+					text : '확인',
+					value : true,
+					visible : true,
+					className : 'btn btn-warning me-1',
+					closeModal : true
+				}
+			}
+		});
+		return;
+	}
+	if(!tkRpContent){
+		swal({
+			title : '알림',
+			text : '내용을 입력해주세요.',
+			icon : 'warning',
+			buttons : {
+				confirm : {
+					text : '확인',
+					value : true,
+					visible : true,
+					className : 'btn btn-warning me-1',
+					closeModal : true
+				}
+			}
+		});
 		return;
 	}
 	
@@ -141,13 +201,42 @@ function replyRegist_go(){
 		success:function(data){
 			var result=data.split(',');
 			if(result[0]=="SUCCESS"){
-				alert('댓글이 등록되었습니다.');
-				replyPage=result[1]; //페이지이동
-				getPage("/tkReplies/"+tkCode+"/"+result[1]); //리스트 출력
-				$('#newReplyText').val("");				
-				window.location.reload()
+				swal({
+					title : '알림',
+					text : '댓글이 등록되었습니다.',
+					icon : 'success',
+					buttons : {
+						confirm : {
+							text : '확인',
+							value : true,
+							visible : true,
+							className : 'btn btn-success me-1',
+							closeModal : true
+						}
+					}
+				}).then(function(val) {
+			        if (val == true) {
+						replyPage=result[1]; //페이지이동
+						getPage("<%=request.getContextPath() %>/tkReplies/"+tkCode+"/"+result[1]); //리스트 출력
+						$('#newReplyText').val("");				
+						window.location.reload() 
+			     	}
+				});
 			}else{
-				alert('댓글이 등록을 실패했습니다.');	
+				swal({
+					title : '알림',
+					text : '댓글이 정상적으로 등록되지 않았습니다.',
+					icon : 'error',
+					buttons : {
+						confirm : {
+							text : '확인',
+							value : true,
+							visible : true,
+							className : 'btn btn-danger me-1',
+							closeModal : true
+						}
+					}
+				});
 			}
 		},
 		error:function(error){
@@ -157,72 +246,73 @@ function replyRegist_go(){
 	});
 }
 
-//댓글 수정
-function replyModifyModal_go(tkRpCode){
-	//alert("click modify btn");
-	//alert(rno);
-	//alert("rno:"+rno+"\nreplyer:"+replyer+"\nreplytext:"+replytext);
-	
-	$('#tkRpContent').val($('div#'+tkRpCode+'-tkRpContent').text());
-	$('.modal-title').text(tkRpCode);
-}
-
-
-function replyModify_go(){
-	var tkRpCode=$('.modal-title').text();
-	var tkRpContent=$('#replytext').val();
-	
-	var sendData={		
-			tkRpContent:tkRpContent
-	}
-	
-
-	$.ajax({
-		url:"<%=request.getContextPath()%>/tkReplies/"+tkRpCode,
-		type:"PUT",
-		headers:{			
-			"X-HTTP-Method-Override":"PUT"
-		},
-		data:JSON.stringify(sendData),
-		contentType:"application/json",
-		success:function(result){
-			alert("수정되었습니다.");			
-			getPage("<%=request.getContextPath()%>/tkReplies/${tk.tkCode}/"+replyPage);
-		},
-		error:function(error){
-			AjaxErrorSecurityRedirectHandler(error.status);
-		},
-		complete:function(){
-			$('#modifyModal').modal('hide');
-		}
-	});
-	
-}
 
 function replyRemove_go(){
-	//alert("click remove btn");
-	
-	var rno=$('.modal-title').text();
-	
-	$.ajax({
-		url:"<%=request.getContextPath()%>/tkReplies/${tk.tkCode}/"+tkRpCode+"/"+replyPage,
-		type:"DELETE",
-		headers:{
-			"X-HTTP-Override":"delete"
-		},	
-		success:function(page){
-			alert("삭제되었습니다.");
-			getPage("<%=request.getContextPath()%>/tkReplies/${tk.tkCode}/"+page);
-			replyPage=page;
-		},
-		error:function(error){
-			AjaxErrorSecurityRedirectHandler(error.status);
-		},
-		complete:function(){
-			$('#modifyModal').modal('hide');
-		}
-	});
+    swal({
+        title : '확인',
+        text : '삭제하시겠습니까?\n삭제한 댓글은 복구할 수 없습니다.',
+        icon : 'warning', 
+        buttons : {
+           cancel : {
+              text : '취소',
+              value : false,
+              visible : true,
+              className : 'btn btn-warning',
+              closeModal : true,
+           },
+           confirm : {
+              text : '확인',
+              value : true,
+              visible : true,
+              className : 'btn btn-warning',
+              closeModal : true
+           }
+        }
+     }).then(function(val) {
+        if (val != true) {
+			return;
+			
+
+     	}else if(val == true){
+    		var tkRpCode=$('.modal-title').val();
+    		
+    		$.ajax({
+    			url:"<%=request.getContextPath()%>/tkReplies/${tk.tkCode}/"+tkRpCode+"/"+replyPage,
+    			type:"DELETE",
+    			headers:{
+    				"X-HTTP-Override":"delete"
+    			},	
+    			success:function(page){
+    			    swal({
+    			        title : '알림',
+    			        text : '삭제되었습니다.',
+    			        icon : 'success', 
+    			        buttons : {
+    			           confirm : {
+    			              text : '확인',
+    			              value : true,
+    			              visible : true,
+    			              className : 'btn btn-success',
+    			              closeModal : true
+    			           }
+    			        }
+    			     });
+    				getPage("<%=request.getContextPath()%>/tkReplies/${tk.tkCode}/"+page);
+    				replyPage=page;
+    			},
+    			error:function(error){
+    				AjaxErrorSecurityRedirectHandler(error.status);
+    			},
+    			complete:function(){
+    				$('#modifyModal').modal('hide');
+    			}
+    		});     		
+     		
+     	}
+	});	
 }
+	 
+	
 </script>
 
 

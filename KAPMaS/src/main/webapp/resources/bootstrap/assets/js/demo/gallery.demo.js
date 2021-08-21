@@ -6,13 +6,15 @@ Website: http://www.seantheme.com/color-admin/
 */
 
 function calculateDivider() {
-	var dividerValue = 4;
+	var dividerValue = 6;
 	if ($(this).width() <= 576) {
-		dividerValue = 1;
-	} else if ($(this).width() <= 992) {
 		dividerValue = 2;
-	} else if ($(this).width() <= 1200) {
+	} else if ($(this).width() <= 992) {
 		dividerValue = 3;
+	} else if ($(this).width() <= 1200) {
+		dividerValue = 4;
+	}else if ($(this).width() <= 1600) {
+		dividerValue = 5;
 	}
 	return dividerValue;
 }

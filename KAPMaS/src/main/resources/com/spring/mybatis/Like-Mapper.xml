@@ -19,8 +19,10 @@
 		select count(bd_code)
 		from boardlike
 		where emp_id = #{empId}
+		and bd_code = #{bdCode}
 	</select>
 
+	
 </mapper>
 
 

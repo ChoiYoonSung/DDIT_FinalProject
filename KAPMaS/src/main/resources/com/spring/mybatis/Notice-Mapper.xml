@@ -5,45 +5,65 @@
 
 <mapper namespace="Notice-Mapper">
 	<select id="selectNoticeList" resultType="notice">
-	select *
-	from notice
+		select *
+		from notice
 	</select>
 	
 	<select id="selectNoticeByNno" resultType="notice">
-	select *
-	from notice
-	where notice_no = #{noticeNo}
+		select *
+		from notice
+		where notice_no = #{noticeNo}
 	</select>
 	
 	<update id="insertNotice">
-	insert into notice
-	(
-	NOTICE_NO
-	,EMP_ID
-	,NOTICE_TITLE
-	,NOTICE_CONTENT
-	,NOTICE_REGDATE
-	)
-	values(
-	concat('ntc',NOTICE_SEQ.NEXTVAL)
-	,#{empId}
-	,#{noticeTitle}
-	,#{noticeContent}
-	,sysdate
-	)
+		insert into notice
+		(
+		NOTICE_NO
+		,NOTICE_TITLE
+		,NOTICE_CONTENT
+		,NOTICE_REGDATE
+		,NOTICE_VIEWCNT
+		)
+		values(
+		concat('ntc',NOTICE_SEQ.NEXTVAL)
+		,#{noticeTitle}
+		,#{noticeContent}
+		,to_char(sysdate,'yyyy-MM-dd')
+		,0
+		)
 	</update>
 	
 	<update id="updateNotice">
-	UPDATE notice
-    SET
-        notice_title=#{noticeTitle}
-        , notice_content=#{noticeContent}
-        , notice_regdate=#{noticeRegdate}
-	WHERE emp_id = #{empId}
+		UPDATE notice
+	    SET
+	        notice_title=#{noticeTitle}
+	        , notice_content=#{noticeContent}
+		WHERE NOTICE_NO = #{noticeNo}
 	</update>
 	
 	<update id="deleteNotice">
-	delete from notice
-	where notice_no = #{noticeNo}
+		delete from notice
+		where notice_no = #{noticeNo}
 	</update>
+	
+	
+	<update id="increaseNoticeCnt" >
+		update 
+		notice 
+		set 
+		NOTICE_VIEWCNT=NOTICE_VIEWCNT+1 
+		where  notice_no = #{noticeNo}
+	</update>
+	<update id="decreaseNoticeCnt" >
+		update 
+		notice 
+		set 
+		NOTICE_VIEWCNT=NOTICE_VIEWCNT-1 
+		where  notice_no = #{noticeNo}
+	</update>
+
+	
+	
+	
+	
 </mapper>

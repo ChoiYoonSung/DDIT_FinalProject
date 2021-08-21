@@ -8,6 +8,7 @@ import java.util.Map;
 import com.spring.command.PageMaker;
 import com.spring.command.PageMakerByPA;
 import com.spring.command.SearchCriteriaByPA;
+import com.spring.command.SearchCriteriaByPro;
 import com.spring.dao.PAAttachDAO;
 import com.spring.dao.ProDAO;
 import com.spring.dto.PAAttachVO;
@@ -15,6 +16,7 @@ import com.spring.dto.PAVO;
 import com.spring.dto.PIVO;
 import com.spring.dto.PjmVO;
 import com.spring.dto.ProEmpVO;
+import com.spring.dto.ProLogVO;
 import com.spring.dto.ProPjmVO;
 import com.spring.dto.ProVO;
 import com.spring.dto.RelegateVO;
@@ -40,23 +42,23 @@ public class ProServiceImpl implements ProService {
 	}
 
 	@Override
-	public List<ProVO> getListDoProById(String empId) throws SQLException {
+	public List<ProVO> getListDoProById(SearchCriteriaByPro cri) throws SQLException {
 
-		List<ProVO> proList = proDAO.getListDoProById(empId);
-
-		return proList;
-	}
-
-	@Override
-	public List<ProVO> getListAopProById(String empId) throws SQLException {
-		List<ProVO> proList = proDAO.getListAopProById(empId);
+		List<ProVO> proList = proDAO.getListDoProById(cri);
 
 		return proList;
 	}
 
 	@Override
-	public List<ProVO> getListNotProById(String empId) throws SQLException {
-		List<ProVO> proList = proDAO.getListNotProById(empId);
+	public List<ProVO> getListAopProById(SearchCriteriaByPro cri) throws SQLException {
+		List<ProVO> proList = proDAO.getListAopProById(cri);
+
+		return proList;
+	}
+
+	@Override
+	public List<ProVO> getListNotProById(SearchCriteriaByPro cri) throws SQLException {
+		List<ProVO> proList = proDAO.getListNotProById(cri);
 
 		return proList;
 	}
@@ -273,11 +275,6 @@ public class ProServiceImpl implements ProService {
 	}
 
 	@Override
-	public void insertPINew(PIVO pi) throws SQLException {
-		proDAO.insertPINew(pi);
-	}
-	
-	@Override
 	public void updatePI(PIVO pi) throws SQLException {
 		proDAO.updatePI(pi);
 	}
@@ -287,9 +284,55 @@ public class ProServiceImpl implements ProService {
 		proDAO.completePI(piCode);
 	}
 
-	@Override
 	public void deletePI(String piCode) throws SQLException {
 		proDAO.deletePI(piCode);
+	}
+
+	@Override
+	public void deleteMember(String empId) throws SQLException {
+		
+		proDAO.deleteMember(empId);
+		
+		
+	}
+
+	@Override
+	public List<HashMap<String, Object>> getMainWorkByManager(String pCode) throws SQLException {
+		return proDAO.getMainWorkByManager(pCode);
+	}
+
+	@Override
+	public List<HashMap<String, Object>> getMainWorkByCate(String pCode) throws SQLException {
+		return proDAO.getMainWorkByCate(pCode);
+	}
+
+	@Override
+	public HashMap<String, Object> getTotalProgress(String pCode) throws SQLException {
+		return proDAO.getTotalProgress(pCode);
+	}
+
+	@Override
+	public void insertLog(Map<String, Object> log) throws SQLException {
+		proDAO.insertLog(log);
+	}
+
+	@Override
+	public List<ProLogVO> selectLogList(String pCode) throws SQLException {
+		return proDAO.getLogList(pCode);
+	}
+
+	@Override
+	public PjmVO projectPl(String pCode) throws SQLException {
+		
+		PjmVO pjm = proDAO.projectPl(pCode);
+		
+		return pjm;
+	}
+
+	@Override
+	public String selectPjmAuthById(PjmVO pjm) throws SQLException {
+		String auth = proDAO.selectPjmAuthById(pjm);
+		return auth;
 	}
 
 }

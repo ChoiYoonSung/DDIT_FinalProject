@@ -18,6 +18,7 @@
 		from sendmail
 		where emp_id=#{empId}
 		AND NOT(SM_ENABLED = '0')
+		order by SM_SENDDATE DESC
 	</select>
 	
 	

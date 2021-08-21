@@ -22,7 +22,7 @@ var calendar = $('#calendar').fullCalendar({
                               },
   eventLimitClick           : 'week', //popover
   navLinks                  : true,
-  defaultDate               : moment('2019-05'), //실제 사용시 현재 날짜로 수정
+  defaultDate               : moment('2021-08'), //실제 사용시 현재 날짜로 수정
   timeFormat                : 'HH:mm',
   defaultTimedEventDuration : '01:00:00',
   editable                  : true,
@@ -37,8 +37,8 @@ var calendar = $('#calendar').fullCalendar({
   selectLongPressDelay      : 0,  
   header                    : {
                                 left   : 'today, prevYear, nextYear, viewWeekends',
-                                center : 'prev, title, next',
-                                right  : 'month, agendaWeek, agendaDay, listWeek'
+                                center : 'prev, title, next'
+                                /*right  : 'month, agendaWeek, agendaDay, listWeek'*/
                               },
   views                     : {
                                 month : {
@@ -73,7 +73,7 @@ var calendar = $('#calendar').fullCalendar({
   eventRender: function (event, element, view) {
 
     //일정에 hover시 요약
-    element.popover({
+  /*  element.popover({
       title: $('<div />', {
         class: 'popoverTitleCalendar',
         text: event.title
@@ -95,7 +95,7 @@ var calendar = $('#calendar').fullCalendar({
       placement: 'top',
       html: true,
       container: 'body'
-    });
+    });*/
 
     return filtering(event);
 
@@ -131,11 +131,11 @@ var calendar = $('#calendar').fullCalendar({
   },
 
   //일정 리사이즈
-  eventResize: function (event, delta, revertFunc, jsEvent, ui, view) {
+ /* eventResize: function (event, delta, revertFunc, jsEvent, ui, view) {
     $('.popover.fade.top').remove();
 
-    /** 리사이즈시 수정된 날짜반영
-     * 하루를 빼야 정상적으로 반영됨. */
+    *//** 리사이즈시 수정된 날짜반영
+     * 하루를 빼야 정상적으로 반영됨. *//*
     var newDates = calDateWhenResize(event);
 
     //리사이즈한 일정 업데이트
@@ -151,9 +151,9 @@ var calendar = $('#calendar').fullCalendar({
       }
     });
 
-  },
+  },*/
 
-  eventDragStart: function (event, jsEvent, ui, view) {
+  /*eventDragStart: function (event, jsEvent, ui, view) {
     draggedEventIsAllDay = event.allDay;
   },
 
@@ -185,7 +185,7 @@ var calendar = $('#calendar').fullCalendar({
       }
     });
 
-  },
+  },*/
 
   select: function (startDate, endDate, jsEvent, view) {
 

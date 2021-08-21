@@ -10,8 +10,16 @@ public class PIVO {
 	private int piStatus;
 	private String piMileStone;
 	
+	private String empName;
 	
 	
+	
+	public String getEmpName() {
+		return empName;
+	}
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
 	public String getPiCode() {
 		return piCode;
 	}

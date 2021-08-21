@@ -49,30 +49,26 @@
 
 </head>
 
-<body style="padding: 10px; ">
+<body style="">
 			<div class="project-wrapper">
 				<div class="panel panel-inverse" data-sortable-id="index-6">
 					<div class="panel-heading ui-sortable-handle">
-						<h4 class="panel-title">Analytics Details</h4>
-						<div class="panel-heading-btn">
-							<a href="javascript:;" class="btn btn-xs btn-icon btn-default"
-								data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
-						</div>
+<!-- 						<h4 class="panel-title">Analytics Details</h4> -->
+							<h3 class="panel-title">업무 상세 정보 화면</h3>
 					</div>
 					<div class="table-responsive">
 
-				<div class="col-lg-4" style="padding-left: 5px; padding-top: 15px; padding-right: 5px;">
-					<div class="col-md-12">
-						<div class="alert alert-primary alert-dismissible fade show mb-2">
-							<h5><i class="fa fa-globe fa-4x text-success"></i>업무 상세 정보 화면</h5>
-						</div>
-					</div>
-				</div>
+<!-- 				<div class="col-lg-4" style="padding-left: 5px; padding-top: 15px; padding-right: 5px;"> -->
+<!-- 					<div class="col-md-12"> -->
+<!-- 						<div class="alert alert-primary alert-dismissible fade show mb-2"> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
 
 				<form id="sub" style="padding-left: 100px; padding-top: 25px; padding-right: 100px;" action="jobRegist.do" method="post" name="sendForm">
 			
 			<div class="row mb-15px">
-			<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+						<span class="badge  text-black col-3" style=" height: 30px;">
 			<h6 style="line-height: 25px;">업무 이름</h6>
 			</span>
 				<div class="col-md-9">
@@ -81,17 +77,17 @@
 			</div>
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+							<span class="badge  text-black col-3" style=" height: 30px;">
 				<h6 style="line-height: 25px;">업무 내용</h6>
 				</span>
 				<div class="col-md-9">
-					<textarea class="form-control" readonly="readonly" rows="5" name="content" id="content" >${job.jobContent }</textarea>
+					<textarea class="form-control" readonly="readonly" rows="5" name="content" id="content" style="resize: none; overflow: auto;">${job.jobContent }</textarea>
 				</div>
 			</div>
 			
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+								<span class="badge  text-black col-3" style=" height: 30px;">
 				<h6 style="line-height: 25px;">업무 기간</h6>
 				</span>
 				<div class="col-md-9">
@@ -111,7 +107,7 @@
 			</div>
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+								<span class="badge  text-black col-3" style=" height: 30px;">
 				<h6 style="line-height:25px;">담당 사원</h6>
 				</span>
 				<div class="col-md-9">
@@ -120,7 +116,7 @@
 			</div>
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+							<span class="badge  text-black col-3" style=" height: 30px;">
 				<h6 style="line-height:25px;">진척도</h6>
 				</span>
 				<div class="col-md-9">
@@ -133,7 +129,7 @@
 			</div>
 			
 			<div class="row mb-15px">
-				<span class="badge bg-yellow text-black" style="width: 100px; height: 30px;">
+								<span class="badge  text-black col-3" style=" height: 30px;">
 				<h6 style="line-height:25px;">기능 분류</h6>
 				</span>
 				<div class="col-md-9">
@@ -145,32 +141,37 @@
 </form>
 
 
-				<div class="btn-wrapper" style="padding-left: 210px;">
+				<div class="btn-wrapper" style="padding-left: 250px;">
 					<button class="btn btn-gray " onclick="CloseWindow();">취소</button>
 					<c:if test="${job.jobEnabled == '1' }">
-					<button class="btn btn-warning "
-						onclick="OpenWindow('JobModifyForm.do?jobCode=${job.jobCode}','업무 수정',800,700);">
-						수정&nbsp;<i class="fas fa-cog fa-spin"></i>
-					</button>
+					<c:if test="${loginUser.empId == pjm.empId }">
+						<button class="btn btn-warning "
+							onclick="OpenWindow('JobModifyForm.do?jobCode=${job.jobCode}','업무 수정',800,472);">
+							수정&nbsp;
+						</button>
+					</c:if>
+					
 					<button class="btn btn-info "
-						onclick="OpenWindow('JobCome.do?jobCode=${job.jobCode}','프로젝트 등록',900,900);">
-						업무 공유&nbsp;<i class="fas fa-circle-notch fa-spin"></i>
+						onclick="OpenWindow('JobCome.do?jobCode=${job.jobCode}','업무 공유',530,425);">
+						업무 공유&nbsp;
 					</button>
 					</c:if>
-					<c:if test="${job.jobEnabled == '0' }">
-						<button type="button" class="btn btn-primary " onclick="doJob();">
-							활성화&nbsp;<i class="fas fa-sync fa-spin"></i>
-						</button>
+					
+					<c:if test="${loginUser.empId == pjm.empId }">
+						<c:if test="${job.jobEnabled == '0' }">
+							<button type="button" class="btn btn-primary " onclick="doJob();">
+								활성화&nbsp;
+							</button>
+						</c:if>
+						<c:if test="${job.jobEnabled == '1' }">
+							<button type="button" class="btn btn-red "
+								onclick="doNotJob();">
+								중지&nbsp;
+							</button>
+						</c:if>
 					</c:if>
-					<c:if test="${job.jobEnabled == '1' }">
-						<button type="button" class="btn btn-red "
-							onclick="doNotJob();">
-							중지&nbsp;<i class="fas fa-sync fa-spin"></i>
-						</button>
-					</c:if>
+					
 				</div>
-
-
 
 
 			</div>
@@ -216,23 +217,79 @@
 <script type="text/javascript">
 
 function doNotJob(){
-	if(confirm("업무를 중지하시겠습니까? 다시 활성화 할수 있습니다.")){
+/* 	if(confirm("업무를 중지하시겠습니까? 다시 활성화 할수 있습니다.")){
 		var form=document.getElementById('pp');
 		form.submit();
 }else{
 	return;
-}
+} */
+	 swal({
+         title: '업무 중지',
+         text: '업무를 중지하시겠습니까? 다시 활성화 할수 있습니다.',
+         icon: 'warning', // primary success warning danger
+         buttons: {
+             cancel: {
+                 text: '취소',
+                 value: false,
+                 visible: true,
+                 className: 'btn btn-default',
+                 closeModal: true,
+               },
+               confirm: {
+                 text: '확인',
+                 value: true,
+                 visible: true,
+                 className: 'btn btn-primary',
+                 closeModal: true
+               }
+         }
+       }).then(function(val){
+          if(val == true){
+        	  var form=document.getElementById('pp');
+      		form.submit();
+          } else {
+        	  return;
+          }
+       });
 }
 
 
 function doJob(){
-		if(confirm("업무를 활성화 하게시겠습니까? 다시 중지 할수 있습니다.")){
+	/* 	if(confirm("업무를 활성화 하게시겠습니까? 다시 중지 할수 있습니다.")){
 			var form=document.getElementById('pd');
 			form.submit();
 	}else{
 		return;
-	}
-
+	} */
+		   swal({
+               title: '업무 활성화',
+               text: '업무를 활성화 하게시겠습니까? 다시 중지 할수 있습니다.',
+               icon: 'warning', // primary success warning danger
+               buttons: {
+                   cancel: {
+                       text: '취소',
+                       value: false,
+                       visible: true,
+                       className: 'btn btn-default',
+                       closeModal: true,
+                     },
+                     confirm: {
+                       text: '확인',
+                       value: true,
+                       visible: true,
+                       className: 'btn btn-primary',
+                       closeModal: true
+                     }
+               }
+             }).then(function(val){
+                if(val == true){
+                	var form=document.getElementById('pd');
+        			form.submit();
+                } else {
+                	return;
+                }
+             });
+		
 }
 
 

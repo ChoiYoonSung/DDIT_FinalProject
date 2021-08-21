@@ -1,6 +1,7 @@
 package com.spring.service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.springframework.web.servlet.ModelAndView;
 
@@ -94,6 +95,27 @@ public class EmpServiceImpl implements EmpService{
 		empDAO.updateEmpPwd(emp);
 		
 		
+	}
+
+
+
+
+	@Override
+	public void seccondEmp(EmpVO emp) throws SQLException {
+		
+		empDAO.seccondEmp(emp);
+		
+	}
+
+
+
+
+	@Override
+	public List<EmpVO> getListEmps() throws SQLException {
+		
+		List<EmpVO> empList = empDAO.getListEmps();
+		
+		return empList;
 	}
 
 

@@ -9,8 +9,6 @@
        	<put-attribute name="footer" value="/WEB-INF/views/include/main_footer.jsp" />  
 		<put-attribute name="style" value="/WEB-INF/views/include/style.jsp" />
 		<put-attribute name="js" value="/WEB-INF/views/include/js.jsp" />    
-		<put-attribute name="copheader" value="/WEB-INF/views/include/cop_header.jsp" />
-		<put-attribute name="copaside" value="/WEB-INF/views/include/cop_aside.jsp" />   	     	
 	</definition>
 	<!-- 헤더 서브메뉴 표시 -->
 	<definition name="*.page" extends="index" >
@@ -54,6 +52,29 @@
 	<definition name="*/*/*.copopen" extends="cop" >
 		<put-attribute name="body"  value="/WEB-INF/views/{1}/{2}/{3}.jsp"/>
 	</definition>
+	
+	
+	
+	
+	
+	<!-- 관리자화면 -->
+	<definition name="admin" template="/WEB-INF/tiles/admin_template.jsp" >	
+       	<put-attribute name="header" value="/WEB-INF/views/include/admin_header.jsp" />
+		<put-attribute name="style" value="/WEB-INF/views/include/admin_style.jsp" />
+		<put-attribute name="js" value="/WEB-INF/views/include/admin_js.jsp" /> 
+	</definition>	
+
+	<definition name="*.admin" extends="admin" >
+		<put-attribute name="body"  value="/WEB-INF/views/{1}.jsp"/>
+	</definition>
+	<definition name="*/*.admin" extends="admin" >
+		<put-attribute name="body"  value="/WEB-INF/views/{1}/{2}.jsp"/>
+	</definition>
+	<definition name="*/*/*.admin" extends="admin" >
+		<put-attribute name="body"  value="/WEB-INF/views/{1}/{2}/{3}.jsp"/>
+	</definition>
+
+	
 </tiles-definitions>
 
 

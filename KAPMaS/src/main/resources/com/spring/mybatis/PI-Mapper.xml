@@ -6,6 +6,7 @@
 	 SELECT *
 	 FROM PROJECTISSUE
 	 WHERE P_CODE = #{pCode}
+	 order by pi_code asc
 	 </select>
 	 
 	 <!-- 마일스톤 조회(프로젝트 내의 마일스톤) -->
@@ -15,8 +16,6 @@
 	 WHERE P_CODE = #{pCode}
 	 ORDER BY pi_milestone ASC
 	 </select>
-	 
-	 
 	 
 	<!-- 이슈 조회(선택 이슈 조회) -->
 	 <select id="selectPI" parameterType="str" resultType="pi">
@@ -28,28 +27,22 @@
 	 
 	 
 	 <!-- 이슈 등록(새 마일스톤 등록) -->
-	 <update id="insertPI" parameterType="pi">
-	 	INSERT INTO PROJECTISSUE()
-	 	VALUES()
-	 </update>
-	 
-	 <!-- 이슈 등록(기존 마일스톤 등록) -->
-	 <update id="insertPINew" parameterType="pi">
-	 	INSERT INTO PROJECTISSUE()
-	 	VALUES()
+	 <update id="insertPI">
+	 	INSERT INTO PROJECTISSUE(PI_CODE, EMP_ID, P_CODE, PI_TITLE, PI_CONTENT, PI_REGDATE, PI_STATUS, PI_MILESTONE)
+	 	VALUES(concat('PI',PROJECTISSUE_SEQ.NEXTVAL), #{empId}, #{pCode}, #{piTitle}, #{piContent}, to_char(sysdate,'yyyy-MM-dd'), 1, #{piMileStone})
 	 </update>
 	 
 	 <!-- 이슈 완료 -->
 	 <update id="updatePI">
 	 	UPDATE PROJECTISSUE
-	 	SET pi_code = #{piCode}, emp_id = #{empId}, pi_title = #{piTitle}, pi_content = #{piContent}, pi_milestone=#{piMileStone}, pi_regdate = sysdate
+	 	SET pi_code = #{piCode}, emp_id = #{empId}, pi_title = #{piTitle}, pi_content = #{piContent}, pi_milestone=#{piMileStone}, pi_regdate = to_char(sysdate,'yyyy-MM-dd')
 	 	WHERE PI_CODE = #{piCode}
 	 </update>
 	 
 	 <!-- 이슈 수정 -->
 	 <update id="completePI">
 	 	UPDATE PROJECTISSUE
-	 	SET pi_status = 0, pi_regdate = sysdate
+	 	SET pi_status = 0, pi_regdate = to_char(sysdate,'yyyy-MM-dd')
 	 	WHERE PI_CODE = #{piCode}
 	 </update>
 	 
@@ -58,5 +51,45 @@
 	 	DELETE FROM PROJECTISSUE
 	 	WHERE PI_CODE = #{piCode}
 	 </update>
+
+	<!-- 댓글 -->
+	<!-- 댓글 시퀀스 높임 -->
+	<select id="selectPiReplySeqNextValue" resultType="int">
+		select projectissuereply_seq.nextval
+		from dual
+	</select>
+	
+	<!-- 리스트 출력 -->
+	<select id="selectPiReplyList" resultType="piReply">
+		SELECT *
+		FROM PROJECTISSUEREPLY
+		WHERE PI_CODE = #{piCode}
+		ORDER BY PI_RP_CODE ASC
+	</select>
+	
+	<select id="countPiReply" resultType="int">
+		SELECT COUNT(PI_RP_CODE)
+		FROM PROJECTISSUEREPLY
+		WHERE PI_CODE = #{tkCode}
+	</select>
+	
+	<update id="insertPiReply">
+		INSERT INTO PROJECTISSUEREPLY(PI_RP_CODE,PI_CODE,PI_RP_CONTENT,EMP_ID, PI_RP_REGDATE)
+		VALUES(PROJECTISSUEREPLY_SEQ.NEXTVAL, #{piCode}, #{piRpContent}, #{empId}, to_char(sysdate, 'yyyy-MM-dd'))
+	</update>
+
+	<update id="updatPiReply">
+		UPDATE PROJECTISSUEREPLY
+		SET
+		PI_RP_CONTENT = #{piRpContent}
+		WHERE PI_RP_CODE = #{piRpCode}
+	</update>
+
+	<update id="deletePiReply">
+		DELETE FROM PROJECTISSUEREPLY
+		WHERE PI_RP_CODE = #{piRpCode}
+	</update>
+
+
 
 </mapper>

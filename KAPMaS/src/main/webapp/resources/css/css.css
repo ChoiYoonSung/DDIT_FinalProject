@@ -1,12 +1,67 @@
 @charset "UTF-8";
 
 /* body */
-
+/* @font-face { */
+/*     font-family: 'NEXON Lv1 Gothic OTF'; */
+/*     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff') format('woff'); */
+/*     font-weight: normal; */
+/*     font-style: normal; */
+/* } */
+@font-face {
+    font-family: 'ELAND_Choice_M';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/ELAND_Choice_M.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 body{
 	background-color: #f0f4f7;
+/* 	font-family: 'NEXON Lv1 Gothic OTF'; */
+	font-family: 'ELAND_Choice_M';
+	font-size: 15px;
+
+}
+.panel.panel-inverse>.panel-heading {
+    background: #f0f4f7;
+    color: #000;
+}
+.panel-heading {
+    background: #f0f4f7;
+    color: #000;
+}
+.app-sidebar.app-sidebar-grid .menu>.menu-item>.menu-link {
+	border: 0;
 }
 
+.app-sidebar .menu .menu-item .menu-submenu .menu-item .menu-link {
+    color: rgb(0 0 0 / 90%);
+}
+
+.app-gradient-enabled .app-sidebar .menu .menu-item.active>.fst{
+	background: #c5c5c5;
+	color: #fff;
+}
+.app-sidebar .menu .menu-item .menu-submenu .menu-item.active>.snd{
+    color: #06f;
+    font-weight: 500;
+    font-size: 17px;
+}
 iframe.content-wrapper{
 	width:100%;
-	height:85vh;
+	height:89vh;
 }
+a{
+    color: #bad9ff;
+}
+a:focus, a:hover{
+	color: #9fcaff;
+}
+
+.app-sidebar .menu .menu-item .menu-link:focus, .app-sidebar .menu .menu-item .menu-link:hover {
+    color: #000;
+}
+
+.app-sidebar .menu .menu-item .menu-link {
+    color: #000;
+}
+
+

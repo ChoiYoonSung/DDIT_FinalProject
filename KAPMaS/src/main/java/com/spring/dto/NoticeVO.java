@@ -1,46 +1,43 @@
 package com.spring.dto;
 
 public class NoticeVO {
-	private static String noticeNo;
-	private static String empId;
-	private static String noticeTitle;
-	private static String noticeContent;
-	private static String noticeRegdate;
-	private static int noticeViewcnt;
-	public static String getNoticeNo() {
+	private  String noticeNo;
+	private  String noticeTitle;
+	private  String noticeContent;
+	private  String noticeRegdate;
+	private  int noticeViewcnt;
+	
+	
+	public String getNoticeNo() {
 		return noticeNo;
 	}
-	public static void setNoticeNo(String noticeNo) {
-		NoticeVO.noticeNo = noticeNo;
+	public void setNoticeNo(String noticeNo) {
+		this.noticeNo = noticeNo;
 	}
-	public static String getEmpId() {
-		return empId;
-	}
-	public static void setEmpId(String empId) {
-		NoticeVO.empId = empId;
-	}
-	public static String getNoticeTitle() {
+	public String getNoticeTitle() {
 		return noticeTitle;
 	}
-	public static void setNoticeTitle(String noticeTitle) {
-		NoticeVO.noticeTitle = noticeTitle;
+	public void setNoticeTitle(String noticeTitle) {
+		this.noticeTitle = noticeTitle;
 	}
-	public static String getNoticeContent() {
+	public String getNoticeContent() {
 		return noticeContent;
 	}
-	public static void setNoticeContent(String noticeContent) {
-		NoticeVO.noticeContent = noticeContent;
+	public void setNoticeContent(String noticeContent) {
+		this.noticeContent = noticeContent;
 	}
-	public static String getNoticeRegdate() {
+	public String getNoticeRegdate() {
 		return noticeRegdate;
 	}
-	public static void setNoticeRegdate(String noticeRegdate) {
-		NoticeVO.noticeRegdate = noticeRegdate;
+	public void setNoticeRegdate(String noticeRegdate) {
+		this.noticeRegdate = noticeRegdate;
 	}
-	public static int getNoticeViewcnt() {
+	public int getNoticeViewcnt() {
 		return noticeViewcnt;
 	}
-	public static void setNoticeViewcnt(int noticeViewcnt) {
-		NoticeVO.noticeViewcnt = noticeViewcnt;
+	public void setNoticeViewcnt(int noticeViewcnt) {
+		this.noticeViewcnt = noticeViewcnt;
 	}
+
+	
 }

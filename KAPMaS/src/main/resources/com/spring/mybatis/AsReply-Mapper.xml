@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="AsReply-Mapper">
+
+	<select id="selectAsReplyList" resultType="asReply">
+		SELECT
+			A.A_RP_CODE as aRpCode,
+			A.A_CODE as aCode,
+			A.KH_CODE as khCode,
+			A.A_RP_WRITER as aRpWriter,
+			A.A_RP_CONTENT as aRpContent,
+			(SELECT C.EMP_NAME FROM EMPLOYEE C WHERE A.A_RP_WRITER = C.EMP_ID) as empName
+		FROM ANSWERREPLY A
+		WHERE A.A_CODE = #{aCode}
+	</select>
+	
+	<update id="insertAsReply" parameterType="asReply">
+		INSERT INTO ANSWERREPLY(A_RP_CODE,A_CODE,KH_CODE,A_RP_WRITER,A_RP_CONTENT)
+		VALUES(concat('as',ANSWERREPLY_SEQ.NEXTVAL), #{aCode}, #{khCode}, #{aRpWriter},#{aRpContent})
+	</update>
+
+	<update id="updatAsReply" parameterType="asReply">
+		UPDATE ANSWERREPLY
+		SET
+		A_RP_CONTENT = #{aRpContent}
+		WHERE A_RP_CODE = #{aRpCode}
+	</update>
+
+	<update id="deleteAsReply">
+		DELETE FROM ANSWERREPLY
+		WHERE A_RP_CODE = #{aRpCode}
+	</update>
+
+
+	<update id="deleteAsReplyByAcode">
+		DELETE FROM ANSWERREPLY
+		WHERE A_CODE = #{aCode}
+	</update>
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -50,7 +50,8 @@
 		 SELECT TABLE_NAME as tr_Table
 		 FROM USER_TAB_COLUMNS
 		 WHERE COLUMN_NAME LIKE '%ENABLED%'
-		 and NOT table_name IN('EMPLOYEE','JOBLIST','PROJECT')
+		 AND NOT TABLE_NAME IN('EMPLOYEE','JOBLIST','PROJECT')
+		 ORDER BY TABLE_NAME
 	</select>
 
 	<!-- 테이블 형식 별 개수 조회 -->

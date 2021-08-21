@@ -73,7 +73,7 @@
 <body>
 	<div class="row" style="margin: 0px;">
 		<div class="col-xl-12 ui-sortable">
-			<br> <a onclick="javascript:history.go(-1)"> <i
+			<br> <a onclick="javascript:location.href='<%=request.getContextPath()%>/cop/detail/coppds/${copCode}'" style="cursor: pointer;"> <i
 				class="ion ion-md-arrow-round-back fa-2x fa-fw float-start me-10px text-black-lighter"></i>
 			</a>
 			<h1 class="page-header">뒤로가기</h1>
@@ -87,15 +87,18 @@
 						<div class="panel panel-inverse">
 							<div class="panel-body">
 								<form enctype="multipart/form-data" method="post" action="/KAPMaS/cop/detail/pdsRegist.do" name="registForm">
+									<input type="hidden" name="copCode" value="${copCode}">
 									<h1>제목 : ${ca.caTitle }</h1>
 									<h3>작성자 : ${ca.empName }</h3>
 									<hr>
 									<textarea class="summernote" name="caContent">${ca.caContent }</textarea>
 									<hr>
-									<div style="margin-left: auto; width: 210px;">
-										<button type="button" class="btn btn-warning w-100px me-5px" id="registBtn" onclick="location.href='pdsModifyForm/${ca.caCode}'">수정</button>
-										<button type="button" class="btn btn-danger w-100px" id="cancelBtn" onclick="location.href='pdsRemove/${ca.caCode}'">삭제</button>
-									</div>
+									<c:if test="${loginUser == ca.empId || loginUser eq copOwnerId}">
+										<div style="margin-left: auto; width: 210px;">
+											<button type="button" class="btn btn-warning w-100px me-5px" id="registBtn" onclick="location.href='pdsModifyForm/${ca.caCode}'">수정</button>
+											<button type="button" class="btn btn-danger w-100px" id="cancelBtn" onclick="pdsRemoveConfirm();">삭제</button>
+										</div>
+									</c:if>
 									<br>
 									<div class="form-group">
 										<div class="card card-outline card-success">
@@ -104,7 +107,7 @@
 											</div>
 											<div class="card-footer fileInput">
 												<c:forEach var="attach" items="${ca.attachList }">
-													<div class="info-box" style="cursor:pointer;" onclick="location.href='<%=request.getContextPath()%>/project/getPAFile.do?paatno=${attach.caAtNo }';">	
+													<div class="info-box" style="cursor:pointer;" onclick="location.href='<%=request.getContextPath()%>/cop/detail/getCAFile.do?caatno=${attach.caAtNo }';">	
 														<i class="far fa-lg fa-fw me-10px fa-file"></i><span class="badge bg-yellow">${attach.caAtName }</span>
 													</div>
 													&nbsp;
@@ -147,9 +150,35 @@
 		 		$(this).parent('div.inputRow').remove();
 		 	});
 		 	
-		 	var copCode = location.href.substr(-5,5);
 		 	
-		 	$('input[name="copCode"]').val(copCode);
 		}
+		
+		function pdsRemoveConfirm(){
+    		swal({
+				title : '자료실 글 삭제',
+				text : '선택한 글을 삭제하시겠습니까?',
+				icon : 'info', // primary success warning danger
+				buttons : {
+					cancel : {
+						text : '취소',
+						value : false,
+						visible : true,
+						className : 'btn btn-default',
+						closeModal : true,
+					},
+					confirm : {
+						text : '확인',
+						value : true,
+						visible : true,
+						className : 'btn btn-primary',
+						closeModal : true
+					}
+				}
+			}).then(function(val) {
+				if (val == true) {
+					location.href='pdsRemove/${ca.caCode}'
+				}
+			});
+		};
     </script>
 </body>

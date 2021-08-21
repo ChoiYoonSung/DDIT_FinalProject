@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="Dfolder-Mapper">
+
+
+
+<select id="findFolderById" resultType="df">
+
+	SELECT *
+	FROM docfolder
+	WHERE emp_id=#{empId}
+</select>
+
+
+<update id="createFolder" parameterType="df">
+
+	INSERT INTO 
+	docfolder(F_ID,F_NAME,EMP_ID)
+	values(concat('df',CHAT_SEQ.NEXTVAL),#{fName},#{empId})
+
+</update>
+
+
+<update id="deleteFolder">
+	
+	DELETE FROM docfolder WHERE F_ID=#{fId}
+
+</update>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

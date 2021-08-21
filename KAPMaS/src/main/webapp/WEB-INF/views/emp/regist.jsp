@@ -12,9 +12,10 @@
 	<meta content="" name="author" />
 	
 	<!-- ================== BEGIN core-css ================== -->
-	<link href="<%=request.getContextPath() %>/resources/bootstrap/color_admin/template/assets/css/vendor.min.css" rel="stylesheet" />
-	<link href="<%=request.getContextPath() %>/resources/bootstrap/color_admin/template/assets/css/default/app.min.css" rel="stylesheet" />
+	<link href="<%=request.getContextPath() %>/resources/bootstrap/assets/css/vendor.min.css" rel="stylesheet" />
+	<link href="<%=request.getContextPath() %>/resources/bootstrap/assets/css/default/app.min.css" rel="stylesheet" />
 	<!-- ================== END core-css ================== -->
+		<link href="<%=request.getContextPath() %>/resources/css/css.css" rel="stylesheet">
 </head>
 <body class='pace-top'>
 	<div id="app" class="app">
@@ -22,32 +23,29 @@
 		<div class="register register-with-news-feed">
 			<!-- BEGIN news-feed -->
 			<div class="news-feed">
-				<div class="news-image" style="background-image: url(<%=request.getContextPath() %>/resources/bootstrap/assets/img/login-bg/login-bg-15.jpg)"></div>
+				<div class="news-image" style="background-image: url(<%=request.getContextPath() %>/resources/images/wallpaper/login-wallpaper.jpg)"></div>
 				<div class="news-caption">
 					<h4 class="caption-title">
-						<b>KAPMaS</b>란?
+						<b>KAPMaS</b>
 					</h4>
-					<p>Knoledge And Project Management System의 약어로 프로젝트를 사용함과 동시에 지식관리를 할 수 있도록 만들어진 통합프로젝트지식관리시스템 입니다.
-					</p>
+					<p>Knoledge And Project Management System</p>
+					<p>프로젝트 지식 통합 관리 시스템
 				</div>
 			</div>
 			<!-- END news-feed -->
 			
 			<!-- BEGIN register-container -->
 			<div class="register-container">
-				BEGIN register-header
 				<div class="register-header mb-25px h1">
-					<img src="<%=request.getContextPath() %>/resources/images/logo/logo-remove.png" alt="" style="width: 300px">
+					<img src="<%=request.getContextPath() %>/resources/images/logo-remove.png" alt="" style="width: 300px">
 					<div class="mb-1">Sign Up</div>
 					<small class="d-block fs-15px lh-16">계정을 생성하여 KAPMaS를 이용해보세요.</small>
 				</div>
-				END register-header
 				
-				BEGIN register-content
 				<div class="register-content">
-					<form action="index.html" method="GET" class="fs-13px">
+					<form action="<%=request.getContextPath() %>/emp/regist.do" method="post"  name="sendForm">
 						<div class="mb-3">
-							<label class="mb-2">이름 <span class="text-danger">*</span></label>
+							<label class="mb-2" onclick="fillArea();">이름 <span class="text-danger">*</span></label>
 							<input type="text" class="form-control fs-13px" name="empName" id="empName"placeholder="이름" />
 						</div>
 						<div class="mb-3">
@@ -77,7 +75,7 @@
 								</select>
 						</div>
 						<div class="mb-4">
-							<button type="submit" class="btn btn-inverse d-block w-100 btn-lg h-45px fs-13px">Sign Up</button>
+							<button type="button" onclick="send()" class="btn btn-inverse d-block w-100 btn-lg h-45px fs-13px">Sign Up</button>
 						</div>
 						<div class="mb-40px pb-40px text-inverse row">
 							<div class="col-6 text-center">
@@ -93,7 +91,6 @@
 						</p>
 					</form>
 				</div>
-				END register-content
 			</div>
 			<!-- END register-container -->
 		</div>
@@ -105,9 +102,156 @@
 
 	
 	<!-- ================== BEGIN core-js ================== -->
-	<script src="<%=request.getContextPath() %>/resources/bootstrap/color_admin/template/assets/js/vendor.min.js"></script>
-	<script src="<%=request.getContextPath() %>/resources/bootstrap/color_admin/template/assets/js/app.min.js"></script>
-	<script src="<%=request.getContextPath() %>/resources/bootstrap/color_admin/template/assets/js/theme/transparent.min.js"></script>
+	<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/js/vendor.min.js"></script>
+	<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/js/app.min.js"></script>
+	<script src="<%=request.getContextPath() %>/resources/bootstrap/assets/js/theme/transparent.min.js"></script>
 	<!-- ================== END core-js ================== -->
+	
+	
+	<script>
+	function fillArea(){
+		$("#empName").val("김승환");
+		$("#empId").val("kshz0726");
+		$("#empEmail").val("kdhz1001@naver.com");
+	}
+	
+	function send(){
+		var empName = $("#empName").val();
+		if(empName == "") {
+			/* alert("이름을 입력해주세요");
+			return;
+			 */
+
+			swal({
+				title: '실패',
+				text: '이름을 입력해주세요',
+				icon: 'error', // primary success warning danger
+				buttons: {
+			        	confirm: {
+					text: '확인',
+			                value: true,
+			                visible: true,
+			                className: 'btn btn-danger',
+			                closeModal: true
+			              }
+			        }
+			});
+			return;
+		}
+		
+
+		var empId = $("#empId").val();
+		if(empId == "") {
+			/* alert("아이디를 입력해주세요");
+			return; */
+			
+			swal({
+				title: '실패',
+				text: '아이디를 입력해주세요',
+				icon: 'error', // primary success warning danger
+				buttons: {
+			        	confirm: {
+					text: '확인',
+			                value: true,
+			                visible: true,
+			                className: 'btn btn-danger',
+			                closeModal: true
+			              }
+			        }
+			});
+			return;
+		}
+		
+		var empEmail=$("#empEmail").val()
+		var emailTest = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+		if(empEmail == "") {
+			/* alert("이메일을 입력해주세요");
+			return; */
+			
+			swal({
+				title: '실패',
+				text: '이메일을 입력해주세요',
+				icon: 'error', // primary success warning danger
+				buttons: {
+			        	confirm: {
+					text: '확인',
+			                value: true,
+			                visible: true,
+			                className: 'btn btn-danger',
+			                closeModal: true
+			              }
+			        }
+			});
+			return;
+		}
+		if(!emailTest.test(empEmail)){
+			swal({
+				title: '실패',
+				text: '이메일 형식에 맞지 않습니다.',
+				icon: 'error', // primary success warning danger
+				buttons: {
+			        	confirm: {
+					text: '확인',
+			                value: true,
+			                visible: true,
+			                className: 'btn btn-danger',
+			                closeModal: true
+			              }
+			        }
+			});
+			return;
+		}
+		var dep=$("#dep").val()
+		if(dep == "") {
+		/* 	alert("부서를 선택해주세요");
+			return; */
+			
+			swal({
+				title: '실패',
+				text: '부서를 선택해주세요',
+				icon: 'error', // primary success warning danger
+				buttons: {
+			        	confirm: {
+					text: '확인',
+			                value: true,
+			                visible: true,
+			                className: 'btn btn-danger',
+			                closeModal: true
+			              }
+			        }
+			});
+				return;
+		}
+		
+		var rank=$("#rank").val()
+		if(rank == "") {
+			/* alert("직급을 선택해 주세요");
+			return; */
+			
+			swal({
+				title: '실패',
+				text: '직급을 선택해 주세요',
+				icon: 'error', // primary success warning danger
+				buttons: {
+			        	confirm: {
+					text: '확인',
+			                value: true,
+			                visible: true,
+			                className: 'btn btn-danger',
+			                closeModal: true
+			              }
+			        }
+			});
+			return;
+		}
+		
+		document.sendForm.submit();
+		
+		
+	}
+	
+	</script>
+	
 </body>
+
 </html>

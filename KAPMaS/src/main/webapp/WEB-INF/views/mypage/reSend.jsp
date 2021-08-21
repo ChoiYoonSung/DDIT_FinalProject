@@ -22,9 +22,6 @@
 <meta content="" name="description" />
 <meta content="" name="author" />
 
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-<link href="<%=request.getContextPath() %>/resources/bootstrap/assets/css/vendor.min.css" rel="stylesheet" />
-<link href="<%=request.getContextPath() %>/resources/bootstrap/assets/css/default/app.min.css" rel="stylesheet" />
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.5/js/min/perfect-scrollbar.jquery.min.js"></script>
 
 
@@ -56,13 +53,12 @@
 					</div>
 					<ul class="nav nav-inbox">
 						<li><a href="<%=request.getContextPath() %>/mypage/receivemail.do"><i class="fa fa-hdd fa-lg fa-fw me-2"></i> 
-						수신함 <span class="badge bg-gray-600 fs-10px rounded-pill ms-auto fw-bolder pt-4px pb-5px px-8px">52</span></a></li>
+						수신함 <span class="badge bg-gray-600 fs-10px rounded-pill ms-auto fw-bolder pt-4px pb-5px px-8px"></span></a></li>
 					<!-- 	<li><a href="email_inbox.html"><i
 								class="fa fa-flag fa-lg fa-fw me-2"></i> Important</a></li> -->
 						<li  class="active"><a href="#"><i class="fa fa-envelope fa-lg fa-fw me-2"></i> 발신함</a></li>
 						<!-- <li><a href="email_inbox.html"><i
 								class="fa fa-save fa-lg fa-fw me-2"></i> Drafts</a></li> -->
-						<li><a href="email_inbox.html"><i class="fa fa-trash-alt fa-lg fa-fw me-2"></i> 휴지통</a></li>
 					</ul>
 					<!-- <div class="nav-title">
 						<b>LABEL</b>
@@ -97,6 +93,15 @@
 						<a href="#" class="btn btn-white btn-sm"><i
 							class="fa fa-fw fa-envelope"></i> <span class="hidden-xs">Send</span></a>
 					</div>
+					
+					
+						<div class="btn-group">
+						&nbsp;&nbsp;&nbsp;
+						<button class="btn btn-sm btn-white" onclick="CloseWindow();">
+							<span class="hidden-xs" >닫기</span>
+						</button>
+					</div>
+					
 				</div>
 
 			</div>

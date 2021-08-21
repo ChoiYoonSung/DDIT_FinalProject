@@ -70,7 +70,7 @@ public class TkReplyController {
 	}	
 
 
-	@RequestMapping(value = "/{tkRpCode}", method = { RequestMethod.PUT,RequestMethod.PATCH })
+	@RequestMapping(value = "/{tkRpCode}", method = {RequestMethod.PUT,RequestMethod.PATCH})
 	public ResponseEntity<String> modify(@PathVariable("tkRpCode") int tkRpCode,@RequestBody TkReplyModifyCommand modifyReq) 
 																					throws Exception {
 		ResponseEntity<String> entity = null;

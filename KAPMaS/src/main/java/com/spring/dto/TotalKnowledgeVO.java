@@ -15,7 +15,14 @@ public class TotalKnowledgeVO {
 	private int tkEnabled;
 	private int tkReportCnt;
 	private List<TkAttachVO> attachList;
+	private String empName;
 	
+	public String getEmpName() {
+		return empName;
+	}
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
 	public List<TkAttachVO> getAttachList() {
 		return attachList;
 	}

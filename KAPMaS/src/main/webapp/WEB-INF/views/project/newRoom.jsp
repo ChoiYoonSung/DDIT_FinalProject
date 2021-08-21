@@ -7,21 +7,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset = UTF-8" />
     <title>채팅 서비스</title>
 
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-
-    <!-- 부가적인 테마 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-
-    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-
 </head>
 
 <body>
 
 <div class="container">
-
+<br>
     <form class="form-signing" action="<%=request.getContextPath() %>/project/room/new"method= "post">
         <h2 class="form-signing-heading">새로운 채팅방 생성</h2>
         <label for="title" class="sr-only">채팅방 이름</label>

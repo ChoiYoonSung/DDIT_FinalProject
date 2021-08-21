@@ -30,6 +30,7 @@ import com.spring.dto.CoPVO;
 import com.spring.dto.CopArchiveVO;
 import com.spring.dto.CopFamilyDiscussionVO;
 import com.spring.dto.EmpVO;
+import com.spring.dto.caAttachVO;
 import com.spring.service.CoPService;
 import com.spring.utils.MakeFileName;
 
@@ -60,12 +61,11 @@ public class CoPController {
 		String url = "cop/detail.copopen";
 
 		Map<String, Object> copInfoMap = copService.getCopInfo(copCode);
-
-		System.out.println(copInfoMap.get("copInfo"));
-		System.out.println(copInfoMap.get("copPersonnel"));
-
+		int waitingApprove = copService.getCopApproveRequestCnt(copCode);
+		
 		mnv.addObject("copInfo", copInfoMap.get("copInfo"));
 		mnv.addObject("copPer", copInfoMap.get("copPersonnel"));
+		mnv.addObject("copApReq", waitingApprove);
 
 		mnv.setViewName(url);
 
@@ -76,6 +76,7 @@ public class CoPController {
 	public ModelAndView MyCop(HttpSession session, ModelAndView mnv, SearchCriteriaById cri) throws Exception {
 		String url = "cop/mycop.open";
 		EmpVO emp = (EmpVO) session.getAttribute("loginUser");
+		String userName = emp.getEmpName();
 		String userId = emp.getEmpId();
 		cri.setEmpId(userId);
 
@@ -84,7 +85,7 @@ public class CoPController {
 		// 소유중 cop
 		Map<String, Object> ownCopMap = copService.getOwnCopList(cri);
 		// 참여중 토론방
-		List<CopFamilyDiscussionVO> familyDiscussionMap = copService.getFamilyDiscussionList(cri);
+		List<CopFamilyDiscussionVO> fa = copService.getIcreatedFdisListOnMyCop(userName);
 		// 작성한 자료실글
 		List<CopArchiveVO> archiveList = copService.getRegistarchiveList(cri);
 
@@ -101,11 +102,11 @@ public class CoPController {
 		mnv.addObject("ownPageMaker", ownCopMap.get("ownPagerMaker"));
 
 		// 참여중 토론방
-		mnv.addObject("myDiscussionList", familyDiscussionMap);
+		mnv.addObject("myDiscussionList", fa);
 
 		// 작성한 자료실글
 		mnv.addObject("myArchiveList", archiveList);
-		
+
 		mnv.setViewName(url);
 
 		return mnv;
@@ -224,7 +225,7 @@ public class CoPController {
 	public ResponseEntity<String> idCheck(CoPVO copVo) throws Exception {
 
 		ResponseEntity<String> entity = null;
-		
+
 		try {
 			int cop = copService.doubleCheck(copVo.getCopName());
 
@@ -281,17 +282,17 @@ public class CoPController {
 
 		return entity;
 	}
-	
+
 	@RequestMapping(value = "/getBannerByCode/{copCode}", method = RequestMethod.GET, produces = "text/plain;charset=utf-8")
 	@ResponseBody
 	public ResponseEntity<byte[]> getBannerById(@PathVariable("copCode") String copCode) throws Exception {
 		ResponseEntity<byte[]> entity = null;
-		
+
 		CoPVO copPicture = (CoPVO) copService.getCopInfo(copCode).get("copInfo");
 		System.out.println(copPicture);
 		String picture = copPicture.getCopBannerimg();
 		entity = getPicture(picture);
-		
+
 		return entity;
 	}
 
@@ -315,26 +316,26 @@ public class CoPController {
 
 	@RequestMapping(value = "/copInfo/signUp", method = RequestMethod.POST)
 	public String copSignUpSuccess(HttpSession session, String copCode) throws SQLException {
-		String url = "cop/signUp_success";
-		
+		String url = "cop/signUp_success.open";
+
 		System.out.println(copCode);
-		
+
 		EmpVO emp = (EmpVO) session.getAttribute("loginUser");
 		String loginUser = emp.getEmpId();
-		
+
 		CoPVO signUpInfo = new CoPVO();
 		signUpInfo.setCopCode(copCode);
 		signUpInfo.setCopUserId(loginUser);
-		
-		try{
+
+		try {
 			copService.signUpToCop(signUpInfo);
 		} catch (Exception e) {
-			url = "cop/signUp_fail";
+			url = "cop/signUp_fail.open";
 		}
-		
+
 		return url;
 	}
-	
+
 	@RequestMapping(value = "/joinCopDetail", method = RequestMethod.GET)
 	public ModelAndView joinCopDetail(ModelAndView mnv, HttpSession session) throws SQLException {
 
@@ -351,7 +352,7 @@ public class CoPController {
 
 		return mnv;
 	}
-	
+
 	@RequestMapping(value = "/ownCopDetail")
 	public ModelAndView ownCopDetail(HttpSession session, ModelAndView mnv) throws Exception {
 		String url = "cop/ownCopDetail.open";
@@ -369,39 +370,99 @@ public class CoPController {
 
 		return mnv;
 	}
-	
+
 	@RequestMapping(value = "/joinDiscussionDetail")
 	public ModelAndView joinDiscussionDetail(HttpSession session, ModelAndView mnv) throws Exception {
 		String url = "cop/joinDiscussionDetail.open";
 		EmpVO emp = (EmpVO) session.getAttribute("loginUser");
-		String userId = emp.getEmpId();
-		
+		String userName = emp.getEmpName();
+
 		// 소유중 cop
-		List<CopFamilyDiscussionVO> discussionList = copService.getJoinDiscussionNotCri(userId);
-		
+		List<CopFamilyDiscussionVO> fa = copService.getIcreatedFdisListOnMyCop(userName);
+
 		// 소유중 cop
-		mnv.addObject("discussionList", discussionList);
-		
+		mnv.addObject("discussionList", fa);
+
 		mnv.setViewName(url);
-		
+
 		return mnv;
 	}
-	
+
 	@RequestMapping(value = "/myCopArchiveDetail")
 	public ModelAndView myCopArchiveDetail(HttpSession session, ModelAndView mnv) throws Exception {
 		String url = "cop/myCopArchiveDetail.open";
 		EmpVO emp = (EmpVO) session.getAttribute("loginUser");
 		String userId = emp.getEmpId();
-		
+
 		// 소유중 cop
 		List<CopArchiveVO> archiveList = copService.getMyArchiveList(userId);
-		
+
 		// 소유중 cop
 		mnv.addObject("archiveList", archiveList);
-		
+
 		mnv.setViewName(url);
-		
+
 		return mnv;
 	}
 
+	@RequestMapping(value = "/deleteCop")
+	public ResponseEntity<String> deleteCop(String copCode) throws Exception {
+
+		ResponseEntity<String> entity = null;
+
+		String uploadPath = copImgPath;
+
+		// 자료실 삭제 start
+		String caCode = null;
+		// 자료실 리스트
+		List<CopArchiveVO> archiveList = copService.getCopArchiveList(copCode);
+		
+		for (CopArchiveVO archive : archiveList) {
+			caCode = archive.getCaCode();
+			List<caAttachVO> attachList = copService.getArchiveAttach(caCode);
+			copService.deleteArchiveAttachOnDB(caCode);
+			if (attachList != null) {
+				for (caAttachVO attach : attachList) {
+					String fileName = attach.getCaAtName();
+					if (fileName != null && !fileName.isEmpty()) {
+						File file = new File(uploadPath, fileName);
+						if (file.exists()) {
+							file.delete();
+						}
+					}
+				}
+			}
+		}
+		copService.deleteCopArchive(copCode);
+		// 자료실 삭제 end
+		
+		// 토론방 삭제 start
+		String fdisCode = null;
+		// 토론방 리스트
+		List<CopFamilyDiscussionVO> discussionList = copService.getCopDiscussionList(copCode);
+		for(CopFamilyDiscussionVO fdis : discussionList) {
+			fdisCode = fdis.getFdisCode();
+			copService.deleteDiscussionContent(fdisCode);
+			copService.deleteDiscussion(fdisCode);
+		}
+		// 토론방 삭제 end
+		
+		// COP 멤버 삭제
+		copService.deleteCopMember(copCode);
+
+		// COP 삭제
+		int deleteCnt = copService.deleteCop(copCode);
+
+		try {
+			if (deleteCnt != 0) {
+				entity = new ResponseEntity<String>("success", HttpStatus.OK);
+			} else {
+				entity = new ResponseEntity<String>("error", HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		return entity;
+	}
 }

@@ -1,16 +1,20 @@
 package com.spring.dao;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 
 import com.spring.command.SearchCriteriaByPA;
+import com.spring.command.SearchCriteriaByPro;
 import com.spring.dto.PAVO;
 import com.spring.dto.PIVO;
 import com.spring.dto.PjmVO;
 import com.spring.dto.ProEmpVO;
+import com.spring.dto.ProLogVO;
 import com.spring.dto.ProPjmVO;
 import com.spring.dto.ProVO;
 import com.spring.dto.RelegateVO;
@@ -30,26 +34,26 @@ public class ProDAOImpl implements ProDAO{
 	}
 
 	@Override
-	public List<ProVO> getListDoProById(String empId) throws SQLException {
+	public List<ProVO> getListDoProById(SearchCriteriaByPro cri) throws SQLException {
 		
-		List<ProVO> pro = session.selectList("Pro-Mapper.getListDoProById", empId);
+		List<ProVO> pro = session.selectList("Pro-Mapper.getListDoProById", cri);
 		
 		return pro;
 	}
 	
 	
 	@Override
-	public List<ProVO> getListAopProById(String empId) throws SQLException {
+	public List<ProVO> getListAopProById(SearchCriteriaByPro cri) throws SQLException {
 
-		List<ProVO> pro = session.selectList("Pro-Mapper.getListAopProById", empId);
+		List<ProVO> pro = session.selectList("Pro-Mapper.getListAopProById", cri);
 		
 		return pro;
 	}
 	
 	@Override
-	public List<ProVO> getListNotProById(String empId) throws SQLException {
+	public List<ProVO> getListNotProById(SearchCriteriaByPro cri) throws SQLException {
 
-		List<ProVO> pro = session.selectList("Pro-Mapper.getListNotProById", empId);
+		List<ProVO> pro = session.selectList("Pro-Mapper.getListNotProById", cri);
 		
 		return pro;
 	}
@@ -240,12 +244,7 @@ public class ProDAOImpl implements ProDAO{
 	
 	@Override
 	public void insertPI(PIVO pi) throws SQLException{
-		session.update("PI-Mapper.inserPI", pi);
-		
-	}
-	@Override
-	public void insertPINew(PIVO pi) throws SQLException{
-		session.update("PI-Mapper.inserPINew", pi);
+		session.update("PI-Mapper.insertPI", pi);
 		
 	}
 	
@@ -263,6 +262,57 @@ public class ProDAOImpl implements ProDAO{
 	@Override
 	public void deletePI(String piCode) throws SQLException {
 		session.update("PI-Mapper.deletePI",piCode);
+	}
+
+
+	@Override
+	public void deleteMember(String empId) throws SQLException {
+		
+		session.update("Pro-Mapper.proDeleteMem", empId);
+		
+	}
+
+
+	@Override
+	public List<HashMap<String, Object>> getMainWorkByManager(String pCode) throws SQLException {
+		return session.selectList("Pro-Mapper.selectMainWorkByManager", pCode);
+	}
+	@Override
+	public List<HashMap<String, Object>> getMainWorkByCate(String pCode) throws SQLException {
+		return session.selectList("Pro-Mapper.selectMainWorkByCate", pCode);
+	}
+
+
+	@Override
+	public HashMap<String, Object> getTotalProgress(String pCode) throws SQLException {
+		return session.selectOne("Pro-Mapper.selectTotalProgress", pCode);
+	}
+
+	@Override
+	public void insertLog(Map<String, Object> log) throws SQLException {
+		session.update("Pro-Mapper.insertLog",log);
+	}
+
+
+	@Override
+	public List<ProLogVO> getLogList(String pCode) throws SQLException {
+		return session.selectList("Pro-Mapper.selectLogList", pCode);
+	}
+
+
+	@Override
+	public PjmVO projectPl(String pCode) throws SQLException {
+		
+		PjmVO pjm = session.selectOne("Pro-Mapper.projectPl", pCode);
+		
+		return pjm;
+	}
+
+
+	@Override
+	public String selectPjmAuthById(PjmVO pjm) {
+		String auth = session.selectOne("Pro-Mapper.selectPjmAuthById",pjm);
+		return auth;
 	}
 
 }

@@ -19,7 +19,7 @@
 			emp_name
 			)
 		values(     
-			#{caCode}, #{copCode}, #{empId}, #{caTitle}, #{caContent}, sysdate, 1, 0, #{empName})
+			#{caCode}, #{copCode}, #{empId}, #{caTitle}, #{caContent}, to_char(sysdate,'yyyy-MM-dd'), 1, 0, #{empName})
 	</update>
 	
 	<update id="insertAttach" parameterType="caAttach">
@@ -59,7 +59,7 @@
 		update coparchive
 		set ca_title = #{caTitle},
 		    CA_CONTENT = #{caContent},
-		    ca_regdate = sysdate
+		    ca_regdate = to_char(sysdate,'yyyy-MM-dd')
 		where
 		    ca_code = #{caCode}
 	</update>

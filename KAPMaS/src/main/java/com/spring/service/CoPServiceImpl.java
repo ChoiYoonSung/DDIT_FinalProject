@@ -11,7 +11,12 @@ import com.spring.dao.CoPDAO;
 import com.spring.dto.CoPVO;
 import com.spring.dto.CopArchiveVO;
 import com.spring.dto.CopFamilyDiscussionVO;
+import com.spring.dto.CopMemberVO;
+import com.spring.dto.EmpVO;
+import com.spring.dto.ProVO;
 import com.spring.dto.caAttachVO;
+import com.spring.dto.familyDiscussionContentVO;
+import com.spring.dto.shareProjectVO;
 
 public class CoPServiceImpl implements CoPService {
 
@@ -203,8 +208,177 @@ public class CoPServiceImpl implements CoPService {
 
 	@Override
 	public void archiveRemove(String caCode) throws SQLException {
-		caDAO.deleteAllAttach(caCode);
+//		caDAO.deleteAllAttach(caCode);
 		copDAO.deleteArchive(caCode);
+	}
+
+	@Override
+	public void increaseArchiveViewCnt(String caCode) throws SQLException {
+		copDAO.increaseArchiveViewCnt(caCode);
+	}
+
+	@Override
+	public List<ProVO> getMyProjectList(String loginUserId) {
+		List<ProVO> projectList = copDAO.getMyProjectList(loginUserId);
+		return projectList;
+	}
+
+	@Override
+	public List<EmpVO> getCopFamilyList(String copCode) {
+		List<EmpVO> familyList = copDAO.getCopFamilyList(copCode);
+		return familyList;
+	}
+
+	@Override
+	public void projectDirectShare(shareProjectVO sp) {
+		List<String> paramFamily = sp.getSelectedFamily();
+		
+		for(String family : paramFamily) {
+			sp.setFamily(family);
+			copDAO.shareProject(sp);
+		}
+	}
+
+	@Override
+	public void projectConfirmRequest(shareProjectVO sp) {
+		copDAO.projectConfirmRequest(sp);
+	}
+
+	@Override
+	public List<EmpVO> getSignUpRequestMember(String copCode) {
+		List<EmpVO> signUpList = copDAO.getSignUpRequestMember(copCode);
+		return signUpList;
+	}
+
+	@Override
+	public int approveCopSignUpRequest(CopMemberVO copMemberVO) {
+		int cnt = copDAO.approveCopSignUpRequest(copMemberVO);
+		return cnt;
+	}
+
+	@Override
+	public int rejectCopSignUpRequest(CopMemberVO copMemberVO) {
+		int cnt = copDAO.rejectCopSignUpRequest(copMemberVO);
+		return cnt;
+	}
+
+	@Override
+	public void exileMember(CopMemberVO copMember) {
+		copDAO.exileMember(copMember);
+	}
+
+	@Override
+	public void sendMail(CopMemberVO copMemberVO) {
+		copDAO.sendMail(copMemberVO);
+	}
+
+	@Override
+	public void modifyCopInfo(CoPVO cop) {
+		copDAO.modifyCopInfo(cop);
+	}
+
+	@Override
+	public void createFdis(CopFamilyDiscussionVO fdisVO) {
+		copDAO.createFdis(fdisVO);
+	}
+
+	@Override
+	public List<CopFamilyDiscussionVO> getCopFdisList(String copCode) {
+		List<CopFamilyDiscussionVO> list = copDAO.getCopFdisList(copCode);
+		return list;
+	}
+
+	@Override
+	public List<CopFamilyDiscussionVO> getIcreatedFdisList(CopFamilyDiscussionVO fdisVO) {
+		List<CopFamilyDiscussionVO> list = copDAO.getIcreatedFdisList(fdisVO);
+		return list;
+	}
+
+	@Override
+	public List<familyDiscussionContentVO> getFdisContentListByFdisCode(String fdisCode) {
+		List<familyDiscussionContentVO> list = copDAO.getFdisContentListByFdisCode(fdisCode);
+		return list;
+	}
+
+	@Override
+	public int registDiscussionContent(familyDiscussionContentVO fdisVO) {
+		int cnt = copDAO.registDiscussionContent(fdisVO);
+		return cnt;
+	}
+
+	@Override
+	public CopFamilyDiscussionVO getFdisInfoByFdisCode(String fdisCode) {
+		CopFamilyDiscussionVO fdisInfo = copDAO.getFdisInfoByFdisCode(fdisCode);
+		return fdisInfo;
+	}
+
+	@Override
+	public int modifyFdisInfo(CopFamilyDiscussionVO fdisVO) {
+		int cnt = copDAO.modifyFdisInfo(fdisVO);
+		return cnt;
+	}
+
+	@Override
+	public EmpVO getEmpIDByFdisCode(String fdisCode) {
+		EmpVO empId = copDAO.getEmpIDByFdisCode(fdisCode);
+		return empId;
+	}
+
+	@Override
+	public int deleteDiscussionContent(String fdisCode) {
+		int cnt = copDAO.deleteDiscussionContent(fdisCode);
+		return cnt;
+	}
+
+	@Override
+	public int deleteDiscussion(String fdisCode) {
+		int cnt = copDAO.deleteDiscussion(fdisCode);
+		return cnt;
+	}
+
+	@Override
+	public int joinCopToInvite(CoPVO param) {
+		int cnt = copDAO.joinCopToInvite(param);
+		return cnt;
+	}
+
+	@Override
+	public List<caAttachVO> getArchiveAttach(String caCode) throws SQLException {
+		List<caAttachVO> attachList = copDAO.getArchiveAttach(caCode);
+		return attachList;
+	}
+
+	@Override
+	public void deleteArchiveAttachOnDB(String caCode) {
+		copDAO.deleteArchiveAttachOnDB(caCode);
+	}
+
+	@Override
+	public void deleteCopArchive(String copCode) {
+		copDAO.deleteCopArchive(copCode);
+	}
+
+	@Override
+	public void deleteCopMember(String copCode) {
+		copDAO.deleteCopMember(copCode);
+	}
+
+	@Override
+	public int deleteCop(String copCode) {
+		int cnt = copDAO.deleteCop(copCode);
+		return cnt;
+	}
+
+	@Override
+	public List<CopFamilyDiscussionVO> getIcreatedFdisListOnMyCop(String userId) {
+		List<CopFamilyDiscussionVO> list = copDAO.getIcreatedFdisListOnMyCop(userId);
+		return list;
+	}
+
+	@Override
+	public int getCopApproveRequestCnt(String copCode) {
+		int cnt = copDAO.getApproveRequestCnt(copCode);
+		return cnt;
 	}
 
 }

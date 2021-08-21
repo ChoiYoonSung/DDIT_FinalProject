@@ -31,7 +31,7 @@
 </head>
 <body>
 	<div class="app-content">
-		<iframe class="content-wrapper" name="ifr" src="<%=request.getContextPath()%>/cop/detail/main/${copInfo.copCode}" frameborder="0" style="border-radius: 15px; width: 100%; height: 95vh;"></iframe>
+		<iframe class="content-wrapper" name="ifr" src="<%=request.getContextPath()%>/cop/detail/main/${copInfo.copCode}" frameborder="0" style="width: 100%; height: 95vh;"></iframe>
 	</div>
 </body>
 </html>
